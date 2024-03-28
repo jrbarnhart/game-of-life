@@ -1,9 +1,10 @@
 import GameCanvas from "./components/GameCanvas/GameCanvas";
 import useCanvasSize from "./components/GameCanvas/useCanvasSize";
+import useCellData from "./components/GameCanvas/useCellData";
 
 function App() {
-  // Smallest canvas size possible is 300px by 300px
   const canvasSize = useCanvasSize(12);
+  const cellData = useCellData(10);
 
   return (
     <>
