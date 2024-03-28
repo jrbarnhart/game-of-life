@@ -41,7 +41,7 @@ function useCanvasSize(margin: number) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []); // Empty array ensures that effect is only run on mount
+  }, [margin]); // Empty array ensures that effect is only run on mount
   return canvasSize;
 }
 
