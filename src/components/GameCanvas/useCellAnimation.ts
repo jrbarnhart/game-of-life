@@ -8,35 +8,58 @@ const useCellAnimation = (
   cellData: CellData
 ) => {
   const animationFrameRef = useRef<number | null>(null);
-  // All grids are square so this is sqrt of total length
-  const rowsAndCols = Math.sqrt(cellData.current.length);
-  const cellSize = canvas ? canvas.width / rowsAndCols : null;
 
-  const animationLoop = useCallback(() => {
-    for (let i = 0; i < cellData.current.length; i++) {
-      if (cellData.current[i] === cellData.next[i]) {
-        continue;
-      } else if (cellSize && ctx) {
-        const row = Math.floor(i / rowsAndCols);
-        const col = i % rowsAndCols;
-        const x = col * cellSize;
-        const y = row * cellSize;
+  const animationLoop = useCallback(
+    (options?: { restart: boolean }) => {
+      // All grids are square so this is sqrt of total length
+      const rowsAndCols = Math.sqrt(cellData.current.length);
+      const cellSize = canvas ? canvas.width / rowsAndCols : null;
 
-        ctx.strokeStyle = cellData.next[i] === 0 ? "transparent" : "white";
-        ctx.beginPath();
-        ctx.rect(x, y, cellSize, cellSize);
-        ctx.fill();
-        console.log("Drew cell!");
+      // If restarting animation clear it and redraw current cell state
+      if (options?.restart && ctx && canvas) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < cellData.current.length; i++) {
+          if (cellSize) {
+            const row = Math.floor(i / rowsAndCols);
+            const col = i % rowsAndCols;
+            const x = col * cellSize;
+            const y = row * cellSize;
+
+            ctx.strokeStyle = cellData.next[i] === 0 ? "transparent" : "white";
+            ctx.beginPath();
+            ctx.rect(x, y, cellSize, cellSize);
+            ctx.fill();
+            console.log("Drew cell!", canvas.width);
+          }
+        }
+      } else {
+        for (let i = 0; i < cellData.current.length; i++) {
+          if (cellData.current[i] === cellData.next[i]) {
+            continue;
+          } else if (cellSize && ctx) {
+            const row = Math.floor(i / rowsAndCols);
+            const col = i % rowsAndCols;
+            const x = col * cellSize;
+            const y = row * cellSize;
+
+            ctx.strokeStyle = cellData.next[i] === 0 ? "transparent" : "white";
+            ctx.beginPath();
+            ctx.rect(x, y, cellSize, cellSize);
+            ctx.fill();
+            console.log("Drew cell!", canvas?.width);
+          }
+        }
       }
-    }
 
-    // Compute the next cell data state
-    cellData.computeNext();
+      // Compute the next cell data state
+      cellData.computeNext();
 
-    animationFrameRef.current = requestAnimationFrame(() => {
-      animationLoop();
-    });
-  }, [cellData, rowsAndCols, cellSize, ctx]);
+      animationFrameRef.current = requestAnimationFrame(() => {
+        animationLoop();
+      });
+    },
+    [ctx, canvas, cellData]
+  );
 
   // Start the animation if canvas is initialized
   useEffect(() => {
