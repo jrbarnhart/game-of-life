@@ -1,10 +1,8 @@
 import GameCanvas from "./components/GameCanvas/GameCanvas";
 import useCanvasSize from "./components/GameCanvas/useCanvasSize";
-import useCellData from "./components/GameCanvas/useCellData";
 
 function App() {
   const canvasSize = useCanvasSize(12);
-  const cellData = useCellData(10);
 
   return (
     <>
