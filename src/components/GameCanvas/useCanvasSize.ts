@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 // Hook
-function useCanvasSize() {
+function useCanvasSize(margin: number) {
   const [canvasSize, setCanvasSize] = useState({
     width: 300,
     height: 300,
@@ -13,19 +13,20 @@ function useCanvasSize() {
     function handleResize() {
       // TailwindCSS default breakpoints
       const breakpoints = { sm: 640, md: 768, lg: 1024, xl: 1280, xxl: 1536 };
+
       // Set canvas size based on window size and breakpoints
       let newWidth;
 
-      if (window.innerWidth >= breakpoints.xxl) {
-        newWidth = breakpoints.xxl;
-      } else if (window.innerWidth >= breakpoints.xl) {
-        newWidth = breakpoints.xl;
-      } else if (window.innerWidth >= breakpoints.lg) {
-        newWidth = breakpoints.lg;
-      } else if (window.innerWidth >= breakpoints.md) {
-        newWidth = breakpoints.md;
-      } else if (window.innerWidth >= breakpoints.sm) {
-        newWidth = breakpoints.sm;
+      if (window.innerWidth >= breakpoints.xxl - margin) {
+        newWidth = breakpoints.xxl - margin;
+      } else if (window.innerWidth >= breakpoints.xl + margin) {
+        newWidth = breakpoints.xl - margin;
+      } else if (window.innerWidth >= breakpoints.lg + margin) {
+        newWidth = breakpoints.lg - margin;
+      } else if (window.innerWidth >= breakpoints.md + margin) {
+        newWidth = breakpoints.md - margin;
+      } else if (window.innerWidth >= breakpoints.sm + margin) {
+        newWidth = breakpoints.sm - margin;
       } else {
         newWidth = 300;
       }
