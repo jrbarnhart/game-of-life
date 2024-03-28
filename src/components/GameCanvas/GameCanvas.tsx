@@ -1,21 +1,28 @@
+import useCanvasSize from "./useCanvasSize";
 import useCellAnimation from "./useCellAnimation";
 import useCellData from "./useCellData";
 import useInitCanvas from "./useInitCanvas";
 
-const GameCanvas = ({ height, width }: { height: number; width: number }) => {
+const GameCanvas = () => {
+  const canvasSize = useCanvasSize(12);
+
   const cellData = useCellData(10);
+  cellData.initialize();
+
   const { canvasInitialized, canvasRef, contextRef } = useInitCanvas();
+
   useCellAnimation(
     canvasRef.current,
     contextRef.current,
     canvasInitialized,
     cellData
   );
+
   return (
     <canvas
-      className="bg-neutral-500 "
-      height={height}
-      width={width}
+      className="bg-white"
+      height={canvasSize.height}
+      width={canvasSize.width}
       ref={canvasRef}
     />
   );
