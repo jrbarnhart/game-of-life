@@ -4,12 +4,9 @@ import { useState, useEffect } from "react";
 
 // Hook
 function useCanvasSize(margin: number) {
-  const [canvasSize, setCanvasSize] = useState<{
-    width: number | null;
-    height: number | null;
-  }>({
-    width: null,
-    height: null,
+  const [canvasSize, setCanvasSize] = useState({
+    width: 300,
+    height: 300,
   });
   useEffect(() => {
     // Handler to call on window resize
