@@ -3,8 +3,8 @@ import { CellData } from "./useCellData";
 
 const useCellAnimation = (
   canvas: HTMLCanvasElement,
-  canvasInitialized: boolean,
   ctx: CanvasRenderingContext2D,
+  canvasInitialized: boolean,
   cellData: CellData
 ) => {
   const animationFrameRef = useRef<number | null>(null);
