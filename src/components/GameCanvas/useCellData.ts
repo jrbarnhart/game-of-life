@@ -6,9 +6,9 @@ const useCellData = (gridSize: number) => {
 
   // Method for initializing data
   const initialize = () => {
-    // Set values to random for now
+    // Set values to random for now. Later update for default random or provided data.
     for (let i = 0; i < currentValues.current.length; i++) {
-      currentValues.current[i] = Math.round(Math.random());
+      currentValues.current[i] = Math.random() >= 0.5 ? 1 : 0;
     }
   };
 
