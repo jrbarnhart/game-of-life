@@ -4,14 +4,9 @@ import { useState, useEffect } from "react";
 
 // Hook
 function useCanvasSize() {
-  // Initialize state with undefined width/height so server and client renders match
-  // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
-  const [canvasSize, setCanvasSize] = useState<{
-    width: number | undefined;
-    height: number | undefined;
-  }>({
-    width: undefined,
-    height: undefined,
+  const [canvasSize, setCanvasSize] = useState({
+    width: 300,
+    height: 300,
   });
   useEffect(() => {
     // Handler to call on window resize
@@ -29,8 +24,10 @@ function useCanvasSize() {
         newWidth = breakpoints.lg;
       } else if (window.innerWidth >= breakpoints.md) {
         newWidth = breakpoints.md;
-      } else {
+      } else if (window.innerWidth >= breakpoints.sm) {
         newWidth = breakpoints.sm;
+      } else {
+        newWidth = 300;
       }
 
       setCanvasSize({ width: newWidth, height: newWidth });
