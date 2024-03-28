@@ -15,9 +15,9 @@ function useCanvasSize(margin: number) {
       const breakpoints = { sm: 640, md: 768, lg: 1024, xl: 1280, xxl: 1536 };
 
       // Set canvas size based on window size and breakpoints
-      let newWidth;
+      let newWidth = canvasSize.width;
 
-      if (window.innerWidth >= breakpoints.xxl - margin) {
+      if (window.innerWidth >= breakpoints.xxl + margin) {
         newWidth = 850 - margin;
       } else if (window.innerWidth >= breakpoints.xl + margin) {
         newWidth = 850 - margin;
@@ -27,11 +27,14 @@ function useCanvasSize(margin: number) {
         newWidth = 600 - margin;
       } else if (window.innerWidth >= breakpoints.sm + margin) {
         newWidth = 500 - margin;
-      } else {
+      } else if (window.innerWidth < breakpoints.sm + margin) {
         newWidth = 300;
       }
 
-      setCanvasSize({ width: newWidth, height: newWidth });
+      if (newWidth !== canvasSize.width) {
+        console.log("Canvas changed");
+        setCanvasSize({ width: newWidth, height: newWidth });
+      }
     }
     // Add event listener
     window.addEventListener("resize", handleResize);
@@ -41,7 +44,7 @@ function useCanvasSize(margin: number) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [margin]); // Empty array ensures that effect is only run on mount
+  }, [canvasSize.width, margin]); // Empty array ensures that effect is only run on mount
   return canvasSize;
 }
 
