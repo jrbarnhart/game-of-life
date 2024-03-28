@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { CellData } from "./useCellData";
 
 const useCellAnimation = (
-  canvas: HTMLCanvasElement,
+  canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D,
   canvasInitialized: boolean,
   cellData: CellData
@@ -10,7 +10,7 @@ const useCellAnimation = (
   const animationFrameRef = useRef<number | null>(null);
   // All grids are square so this is sqrt of total length
   const rowsAndCols = Math.sqrt(cellData.current.length);
-  const cellSize = canvas.width / rowsAndCols;
+  const cellSize = canvas ? canvas.width / rowsAndCols : null;
 
   const animationLoop = useCallback(() => {
     // Compute the next cell data state
@@ -19,7 +19,7 @@ const useCellAnimation = (
     for (let i = 0; i < cellData.current.length; i++) {
       if (cellData.current[i] === cellData.next[i]) {
         continue;
-      } else {
+      } else if (cellSize) {
         const row = Math.floor(i / rowsAndCols);
         const col = i % rowsAndCols;
         const x = col * cellSize;
