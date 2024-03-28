@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 
 // Hook
-function useWindowSize() {
+function useCanvasSize() {
   // Initialize state with undefined width/height so server and client renders match
   // Learn more here: https://joshwcomeau.com/react/the-perils-of-rehydration/
   const [canvasSize, setCanvasSize] = useState<{
@@ -48,4 +48,4 @@ function useWindowSize() {
   return canvasSize;
 }
 
-export default useWindowSize;
+export default useCanvasSize;
