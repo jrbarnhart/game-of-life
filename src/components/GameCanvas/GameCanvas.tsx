@@ -7,7 +7,6 @@ const GameCanvas = () => {
   const canvasSize = useCanvasSize(12);
 
   const cellData = useCellData(10);
-  cellData.initialize();
 
   const { canvasInitialized, canvasRef, contextRef } = useInitCanvas();
 
