@@ -1,18 +1,18 @@
-import { useCallback, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { CellData } from "./useCellData";
 
 const useCellAnimation = (
   canvas: HTMLCanvasElement,
+  canvasInitialized: boolean,
   ctx: CanvasRenderingContext2D,
   cellData: CellData
 ) => {
   const animationFrameRef = useRef<number | null>(null);
+  // All grids are square so this is sqrt of total length
+  const rowsAndCols = Math.sqrt(cellData.current.length);
+  const cellSize = canvas.width / rowsAndCols;
 
   const animationLoop = useCallback(() => {
-    // All grids are square so this is sqrt of total length
-    const rowsAndCols = Math.sqrt(cellData.current.length);
-    const cellSize = canvas.width / rowsAndCols;
-
     // Compute the next cell data state
     cellData.computeNext();
 
@@ -35,7 +35,21 @@ const useCellAnimation = (
     animationFrameRef.current = requestAnimationFrame(() => {
       animationLoop();
     });
-  }, [cellData, ctx, canvas]);
+  }, [cellData, rowsAndCols, cellSize, ctx]);
+
+  // Start the animation if canvas is initialized
+  useEffect(() => {
+    if (canvasInitialized) {
+      animationLoop();
+      console.log("Animation started");
+    }
+
+    return () => {
+      if (animationFrameRef.current) {
+        cancelAnimationFrame(animationFrameRef.current);
+      }
+    };
+  }, [animationLoop, canvasInitialized]);
 };
 
 export default useCellAnimation;
