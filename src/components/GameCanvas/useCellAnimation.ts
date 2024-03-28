@@ -3,7 +3,7 @@ import { CellData } from "./useCellData";
 
 const useCellAnimation = (
   canvas: HTMLCanvasElement | null,
-  ctx: CanvasRenderingContext2D,
+  ctx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
   cellData: CellData
 ) => {
@@ -19,7 +19,7 @@ const useCellAnimation = (
     for (let i = 0; i < cellData.current.length; i++) {
       if (cellData.current[i] === cellData.next[i]) {
         continue;
-      } else if (cellSize) {
+      } else if (cellSize && ctx) {
         const row = Math.floor(i / rowsAndCols);
         const col = i % rowsAndCols;
         const x = col * cellSize;
