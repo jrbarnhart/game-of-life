@@ -13,9 +13,6 @@ const useCellAnimation = (
   const cellSize = canvas ? canvas.width / rowsAndCols : null;
 
   const animationLoop = useCallback(() => {
-    // Compute the next cell data state
-    cellData.computeNext();
-
     for (let i = 0; i < cellData.current.length; i++) {
       if (cellData.current[i] === cellData.next[i]) {
         continue;
@@ -29,8 +26,12 @@ const useCellAnimation = (
         ctx.beginPath();
         ctx.rect(x, y, cellSize, cellSize);
         ctx.fill();
+        console.log("Drew cell!");
       }
     }
+
+    // Compute the next cell data state
+    cellData.computeNext();
 
     animationFrameRef.current = requestAnimationFrame(() => {
       animationLoop();
