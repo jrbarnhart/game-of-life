@@ -1,8 +1,15 @@
+import GameCanvas from "./components/GameCanvas/GameCanvas";
+import useCanvasSize from "./components/GameCanvas/useCanvasSize";
+
 function App() {
+  // Smallest canvas size possible is 300px by 300px
+  const canvasSize = useCanvasSize(12);
+
   return (
     <>
-      <main className="bg-neutral-900 text-neutral-50 h-full w-full">
-        <p className="text-red-500">Hello World</p>
+      <h1>Game of Life</h1>
+      <main className="text-neutral-50 h-full w-full">
+        <GameCanvas width={canvasSize.width} height={canvasSize.height} />
       </main>
     </>
   );
