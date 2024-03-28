@@ -22,6 +22,8 @@ const useCellData = (gridSize: number) => {
   // Method for calculating next
   const computeNext = () => {
     // Use GoL rules to determine next state
+    // For now just set to current
+    nextValues.current.set(currentValues.current);
   };
 
   const cellData: CellData = {
