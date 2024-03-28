@@ -31,7 +31,6 @@ function useCanvasSize() {
       }
 
       setCanvasSize({ width: newWidth, height: newWidth });
-      console.log("Updated canvas size");
     }
     // Add event listener
     window.addEventListener("resize", handleResize);
