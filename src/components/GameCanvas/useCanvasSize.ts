@@ -18,15 +18,15 @@ function useCanvasSize(margin: number) {
       let newWidth;
 
       if (window.innerWidth >= breakpoints.xxl - margin) {
-        newWidth = breakpoints.xxl - margin;
+        newWidth = 850 - margin;
       } else if (window.innerWidth >= breakpoints.xl + margin) {
-        newWidth = breakpoints.xl - margin;
+        newWidth = 850 - margin;
       } else if (window.innerWidth >= breakpoints.lg + margin) {
-        newWidth = breakpoints.lg - margin;
+        newWidth = 750 - margin;
       } else if (window.innerWidth >= breakpoints.md + margin) {
-        newWidth = breakpoints.md - margin;
+        newWidth = 600 - margin;
       } else if (window.innerWidth >= breakpoints.sm + margin) {
-        newWidth = breakpoints.sm - margin;
+        newWidth = 500 - margin;
       } else {
         newWidth = 300;
       }
