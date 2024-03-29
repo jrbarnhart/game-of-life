@@ -1,4 +1,4 @@
-import { renderHook } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import useCanvasSize, {
   CANVAS_SIZES,
@@ -96,14 +96,48 @@ describe("useCanvasSize", () => {
     expect(canvasSize.height).toBe(CANVAS_SIZES.xs - margin);
   });
 
-  it("returns proper values when window is resized", () => {
-    window.innerWidth = XXL_SCREEN.width;
-    window.innerHeight = XXL_SCREEN.height;
+  it("returns correct values when window is resized", () => {
     const margin = 10;
-    const { result, rerender } = renderHook(() => useCanvasSize(margin));
-    const canvasSize = result.current;
-    rerender();
-    expect(canvasSize.width).toBe(CANVAS_SIZES.xxl - margin);
-    expect(canvasSize.height).toBe(CANVAS_SIZES.xxl - margin);
+    const { result } = renderHook(() => useCanvasSize(margin));
+
+    act(() => {
+      window.innerWidth = SM_SCREEN.width;
+      window.innerHeight = SM_SCREEN.height;
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(result.current.width).toBe(CANVAS_SIZES.sm - margin);
+    expect(result.current.height).toBe(CANVAS_SIZES.sm - margin);
+
+    act(() => {
+      window.innerWidth = MD_SCREEN.width;
+      window.innerHeight = MD_SCREEN.height;
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(result.current.width).toBe(CANVAS_SIZES.md - margin);
+    expect(result.current.height).toBe(CANVAS_SIZES.md - margin);
+
+    act(() => {
+      window.innerWidth = LG_SCREEN.width;
+      window.innerHeight = LG_SCREEN.height;
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(result.current.width).toBe(CANVAS_SIZES.lg - margin);
+    expect(result.current.height).toBe(CANVAS_SIZES.lg - margin);
+
+    act(() => {
+      window.innerWidth = XL_SCREEN.width;
+      window.innerHeight = XL_SCREEN.height;
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(result.current.width).toBe(CANVAS_SIZES.xl - margin);
+    expect(result.current.height).toBe(CANVAS_SIZES.xl - margin);
+
+    act(() => {
+      window.innerWidth = XXL_SCREEN.width;
+      window.innerHeight = XXL_SCREEN.height;
+      window.dispatchEvent(new Event("resize"));
+    });
+    expect(result.current.width).toBe(CANVAS_SIZES.xxl - margin);
+    expect(result.current.height).toBe(CANVAS_SIZES.xxl - margin);
   });
 });
