@@ -23,7 +23,9 @@ const useCellData = (
         currentValues.current[i] = Math.random() >= 0.5 ? 1 : 0;
       }
     } else {
-      // Initialize cells based on passed data
+      for (let i = 0; i < currentValues.current.length; i++) {
+        currentValues.current[i] = initialData[i];
+      }
     }
   }, [initialData]);
 
