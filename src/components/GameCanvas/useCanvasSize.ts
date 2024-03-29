@@ -43,7 +43,7 @@ function useCanvasSize(margin: number) {
       } else if (window.innerWidth >= TW_BREAKPOINTS.sm + margin) {
         newWidth = CANVAS_SIZES.sm - margin;
       } else if (window.innerWidth < TW_BREAKPOINTS.sm + margin) {
-        newWidth = CANVAS_SIZES.xs;
+        newWidth = CANVAS_SIZES.xs - margin;
       }
 
       if (newWidth !== canvasSize.width) {
