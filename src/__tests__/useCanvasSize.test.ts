@@ -4,6 +4,13 @@ import useCanvasSize, {
   CANVAS_SIZES,
 } from "../components/GameCanvas/useCanvasSize";
 
+const XXL_SCREEN = { width: 3840, height: 2160 };
+const XL_SCREEN = { width: 1920, height: 1080 };
+const LG_SCREEN = { width: 1280, height: 720 };
+const MD_SCREEN = { width: 1024, height: 768 };
+const SM_SCREEN = { width: 768, height: 1024 };
+const XS_SCREEN = { width: 640, height: 480 };
+
 describe("useCanvasSize", () => {
   it("returns an object with width and height numbers >= 0", () => {
     const { result, rerender } = renderHook(() => useCanvasSize(0));
@@ -24,8 +31,8 @@ describe("useCanvasSize", () => {
   });
 
   it("returns xxl values when screen is wider than xxl breakpoint + margin", () => {
-    window.innerWidth = 3840;
-    window.innerHeight = 2160;
+    window.innerWidth = XXL_SCREEN.width;
+    window.innerHeight = XXL_SCREEN.height;
     const margin = 10;
     const { result, rerender } = renderHook(() => useCanvasSize(margin));
     const canvasSize = result.current;
@@ -35,8 +42,8 @@ describe("useCanvasSize", () => {
   });
 
   it("returns xl values when screen is wider than xl breakpoint + margin but smaller than xxl", () => {
-    window.innerWidth = 1920;
-    window.innerHeight = 1080;
+    window.innerWidth = XL_SCREEN.width;
+    window.innerHeight = XL_SCREEN.height;
     const margin = 10;
     const { result, rerender } = renderHook(() => useCanvasSize(margin));
     const canvasSize = result.current;
@@ -46,8 +53,8 @@ describe("useCanvasSize", () => {
   });
 
   it("returns lg values when screen is wider than lg breakpoint + margin but smaller than xl", () => {
-    window.innerWidth = 1280;
-    window.innerHeight = 720;
+    window.innerWidth = LG_SCREEN.width;
+    window.innerHeight = LG_SCREEN.height;
     const margin = 10;
     const { result, rerender } = renderHook(() => useCanvasSize(margin));
     const canvasSize = result.current;
@@ -57,8 +64,8 @@ describe("useCanvasSize", () => {
   });
 
   it("returns md values when screen is wider than md breakpoint + margin but smaller than lg", () => {
-    window.innerWidth = 1024;
-    window.innerHeight = 768;
+    window.innerWidth = MD_SCREEN.width;
+    window.innerHeight = MD_SCREEN.height;
     const margin = 10;
     const { result, rerender } = renderHook(() => useCanvasSize(margin));
     const canvasSize = result.current;
@@ -68,8 +75,8 @@ describe("useCanvasSize", () => {
   });
 
   it("returns sm values when screen is wider than sm breakpoint + margin but smaller than md", () => {
-    window.innerWidth = 768;
-    window.innerHeight = 1024;
+    window.innerWidth = SM_SCREEN.width;
+    window.innerHeight = SM_SCREEN.height;
     const margin = 10;
     const { result, rerender } = renderHook(() => useCanvasSize(margin));
     const canvasSize = result.current;
@@ -79,13 +86,24 @@ describe("useCanvasSize", () => {
   });
 
   it("returns xs values when screen is smaller than sm breakpoint + margin", () => {
-    window.innerWidth = 640;
-    window.innerHeight = 480;
+    window.innerWidth = XS_SCREEN.width;
+    window.innerHeight = XS_SCREEN.height;
     const margin = 10;
     const { result, rerender } = renderHook(() => useCanvasSize(margin));
     const canvasSize = result.current;
     rerender();
     expect(canvasSize.width).toBe(CANVAS_SIZES.xs - margin);
     expect(canvasSize.height).toBe(CANVAS_SIZES.xs - margin);
+  });
+
+  it("returns proper values when window is resized", () => {
+    window.innerWidth = XXL_SCREEN.width;
+    window.innerHeight = XXL_SCREEN.height;
+    const margin = 10;
+    const { result, rerender } = renderHook(() => useCanvasSize(margin));
+    const canvasSize = result.current;
+    rerender();
+    expect(canvasSize.width).toBe(CANVAS_SIZES.xxl - margin);
+    expect(canvasSize.height).toBe(CANVAS_SIZES.xxl - margin);
   });
 });
