@@ -10,13 +10,16 @@ const useCellAnimation = (
   const animationFrameRef = useRef<number | null>(null);
 
   const animationLoop = useCallback(
-    (options?: { restart: boolean }) => {
+    (options?: { initialDraw: boolean }) => {
       // All grids are square so this is sqrt of total length
       const rowsAndCols = Math.sqrt(cellData.current.length);
       const cellSize = canvas ? canvas.width / rowsAndCols : null;
 
+      // Compute the next cell data state
+      cellData.computeNext();
+
       // If restarting animation clear it and redraw current cell state
-      if (options?.restart && ctx && canvas) {
+      if (options?.initialDraw && ctx && canvas) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         for (let i = 0; i < cellData.current.length; i++) {
           if (cellSize) {
@@ -25,11 +28,10 @@ const useCellAnimation = (
             const x = col * cellSize;
             const y = row * cellSize;
 
-            ctx.strokeStyle = cellData.next[i] === 0 ? "transparent" : "white";
+            ctx.fillStyle = cellData.next[i] === 0 ? "black" : "white";
             ctx.beginPath();
             ctx.rect(x, y, cellSize, cellSize);
             ctx.fill();
-            console.log("Drew cell!", canvas.width);
           }
         }
       } else {
@@ -42,17 +44,13 @@ const useCellAnimation = (
             const x = col * cellSize;
             const y = row * cellSize;
 
-            ctx.strokeStyle = cellData.next[i] === 0 ? "transparent" : "white";
+            ctx.fillStyle = cellData.next[i] === 0 ? "black" : "white";
             ctx.beginPath();
             ctx.rect(x, y, cellSize, cellSize);
             ctx.fill();
-            console.log("Drew cell!", canvas?.width);
           }
         }
       }
-
-      // Compute the next cell data state
-      cellData.computeNext();
 
       animationFrameRef.current = requestAnimationFrame(() => {
         animationLoop();
@@ -64,7 +62,7 @@ const useCellAnimation = (
   // Start the animation if canvas is initialized
   useEffect(() => {
     if (canvasInitialized) {
-      animationLoop();
+      animationLoop({ initialDraw: true });
       console.log("Animation started");
     }
 
