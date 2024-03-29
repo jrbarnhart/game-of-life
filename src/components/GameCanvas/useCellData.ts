@@ -10,8 +10,11 @@ const useCellData = (
   gridSize: number,
   initialData?: ArrayLike<number> | undefined
 ) => {
-  const currentValues = useRef(new Int8Array(gridSize * gridSize));
-  const nextValues = useRef(new Int8Array(gridSize * gridSize));
+  // Two arrays used to skip redudant cell draws
+  const valuesA = useRef(new Int8Array(gridSize * gridSize));
+  const valuesB = useRef(new Int8Array(gridSize * gridSize));
+  const currentValues = useRef(valuesA.current);
+  const nextValues = useRef(valuesB.current);
 
   // Initialize data randomly, or based on passed data
   useEffect(() => {
@@ -19,7 +22,6 @@ const useCellData = (
       for (let i = 0; i < currentValues.current.length; i++) {
         currentValues.current[i] = Math.random() >= 0.5 ? 1 : 0;
       }
-      console.log("Initialized cells randomly");
     } else {
       // Initialize cells based on passed data
     }
@@ -28,8 +30,16 @@ const useCellData = (
   // Method for calculating next
   const computeNext = () => {
     // Use GoL rules to determine next state
-    // For now just set to current
-    nextValues.current.set(currentValues.current);
+
+    // For now just set the next values to current values
+    const current = currentValues.current;
+    const next = nextValues.current;
+    next.set(current);
+
+    // Swap current and next references
+    const temp = currentValues.current;
+    currentValues.current = nextValues.current;
+    nextValues.current = temp;
   };
 
   const cellData: CellData = {
