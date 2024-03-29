@@ -47,7 +47,6 @@ function useCanvasSize(margin: number) {
       }
 
       if (newWidth !== canvasSize.width) {
-        console.log("Canvas changed");
         setCanvasSize({ width: newWidth, height: newWidth });
       }
     }
