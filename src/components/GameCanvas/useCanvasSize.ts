@@ -2,33 +2,48 @@
 
 import { useState, useEffect } from "react";
 
+export const CANVAS_SIZES = {
+  xs: 300,
+  sm: 500,
+  md: 600,
+  lg: 750,
+  xl: 850,
+  xxl: 850,
+};
+
+// TailwindCSS breakpoints
+export const TW_BREAKPOINTS = {
+  sm: 640,
+  md: 768,
+  lg: 1024,
+  xl: 1280,
+  xxl: 1536,
+};
+
 // Hook
 function useCanvasSize(margin: number) {
   const [canvasSize, setCanvasSize] = useState({
-    width: 300,
-    height: 300,
+    width: CANVAS_SIZES.xs,
+    height: CANVAS_SIZES.xs,
   });
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
-      // TailwindCSS default breakpoints
-      const breakpoints = { sm: 640, md: 768, lg: 1024, xl: 1280, xxl: 1536 };
-
       // Set canvas size based on window size and breakpoints
       let newWidth = canvasSize.width;
 
-      if (window.innerWidth >= breakpoints.xxl + margin) {
-        newWidth = 850 - margin;
-      } else if (window.innerWidth >= breakpoints.xl + margin) {
-        newWidth = 850 - margin;
-      } else if (window.innerWidth >= breakpoints.lg + margin) {
-        newWidth = 750 - margin;
-      } else if (window.innerWidth >= breakpoints.md + margin) {
-        newWidth = 600 - margin;
-      } else if (window.innerWidth >= breakpoints.sm + margin) {
-        newWidth = 500 - margin;
-      } else if (window.innerWidth < breakpoints.sm + margin) {
-        newWidth = 300;
+      if (window.innerWidth >= TW_BREAKPOINTS.xxl + margin) {
+        newWidth = CANVAS_SIZES.xxl - margin;
+      } else if (window.innerWidth >= TW_BREAKPOINTS.xl + margin) {
+        newWidth = CANVAS_SIZES.xl - margin;
+      } else if (window.innerWidth >= TW_BREAKPOINTS.lg + margin) {
+        newWidth = CANVAS_SIZES.lg - margin;
+      } else if (window.innerWidth >= TW_BREAKPOINTS.md + margin) {
+        newWidth = CANVAS_SIZES.md - margin;
+      } else if (window.innerWidth >= TW_BREAKPOINTS.sm + margin) {
+        newWidth = CANVAS_SIZES.sm - margin;
+      } else if (window.innerWidth < TW_BREAKPOINTS.sm + margin) {
+        newWidth = CANVAS_SIZES.xs;
       }
 
       if (newWidth !== canvasSize.width) {
