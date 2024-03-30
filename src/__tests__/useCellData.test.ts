@@ -26,4 +26,13 @@ describe("useCellData", () => {
       129, 2, 2, 3, 128, 3, 2, 3, 128, 2, 2, 3, 129, 2, 2,
     ]);
   });
+
+  it("changedCells initially contains all cells for first render", () => {
+    const { result } = renderHook(() =>
+      useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
+    );
+    expect(Array.from(result.current.changedCells)).toEqual([
+      1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16,
+    ]);
+  });
 });
