@@ -123,6 +123,9 @@ const useCellData = (
 
   // Method for calculating next
   const computeNext = () => {
+    // Can probably alternate which array is used instead of clearing both for more time optimization
+    changedCells.current.fill(0);
+    livingCells.current.fill(0);
     // Logic NYI. Ignore for now and just focus on data initialization logic.
   };
 
