@@ -31,12 +31,19 @@ const useCellData = (
 
   // Method for calculating next
   const computeNext = () => {
-    // Use GoL rules to determine next state
-
     // For now just set the next values to current values
     const current = currentValues.current;
     const next = nextValues.current;
     next.set(current);
+
+    // Use GoL rules to determine next state
+    /*
+    Modify the initialization logic to iterate through the provided initial data and record the index of living cells + 1 (starting with 1) as an integer in the currentValues typed array. If no initial data is provided, generate random data based on the grid size.
+
+    In the computeNext function, iterate over the currentValues array to determine the state of each cell based on the rules of the Game of Life. If a cell is living, record its location (index + 1 so 0 can be used for "empty values") in the nextValues array. If an index value of zero is reached, stop reading currentValues.
+
+    Ensure that all values after the last living cell insertion in nextValues are set to zero to prevent "false positive reads" in future calculations. (can be optimized further?)
+    */
 
     // Swap current and next references
     const temp = currentValues.current;
