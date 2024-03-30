@@ -87,6 +87,7 @@ const useCellData = (
 
     // Initialize gameState and livingCells while ignoring padding cells
     let livingCellsIndex = 0;
+    let changedCellsIndex = 0;
     for (let i = 0; i < gridSize; i++) {
       for (let j = 0; j < gridSize; j++) {
         const index = (i + 1) * paddedSize + (j + 1);
@@ -99,6 +100,9 @@ const useCellData = (
           gameState.current[index] = Math.random() >= 0.5 ? 128 : 0;
         }
 
+        // Add cell to changed cells for initial render
+        changedCells.current[changedCellsIndex++] = index + 1;
+
         // If the cell is alive store it in the next livingCellsIndex
         if (gameState.current[index] >= 128) {
           livingCells.current[livingCellsIndex++] = index + 1;
@@ -108,13 +112,14 @@ const useCellData = (
 
     copyToPaddingCells();
 
-    // Initialize neighbor counts and recopy padding cells
+    // Initialize neighbor counts
     for (let i = 1; i <= gridSize; i++) {
       for (let j = 1; j <= gridSize; j++) {
         const index = i * paddedSize + j;
         initializeNeighborCount(index);
       }
     }
+    // Copy updated padding cell values
     copyToPaddingCells();
   }, [gridSize, initialData, paddedSize]);
 
