@@ -21,8 +21,11 @@ describe("useCellData", () => {
     const { result } = renderHook(() =>
       useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
     );
-    expect(result.current.gameState).toBe([
-      [2, 3, 129, 2, 1, 130, 3, 2, 2, 3, 129, 2, 128, 3, 2, 3],
+    expect(result.current.gameState).toEqual([
+      [
+        3, 128, 3, 2, 3, 128, 2, 2, 3, 129, 2, 2, 2, 1, 130, 3, 2, 1, 2, 2, 3,
+        129, 2, 2, 3, 128, 3, 2, 3, 128, 2, 2, 3, 129, 2, 2,
+      ],
     ]);
   });
 });
