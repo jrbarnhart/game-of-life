@@ -15,12 +15,10 @@ const useCellData = (
   // Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
   const gameState = useRef<Uint8Array>(new Uint8Array(paddedSize * paddedSize));
   // Each Uint32 represents the location of a living cell (its index in gameState + 1)
-  const livingCells = useRef<Uint32Array>(
-    new Uint32Array(paddedSize * paddedSize)
-  );
+  const livingCells = useRef<Uint32Array>(new Uint32Array(gridSize * gridSize));
   // Each Uint32 represents the location of a changed cell (its index in gameState + 1)
   const changedCells = useRef<Uint32Array>(
-    new Uint32Array(paddedSize * paddedSize)
+    new Uint32Array(gridSize * gridSize)
   );
 
   // Initialize data randomly, or based on passed initialData
