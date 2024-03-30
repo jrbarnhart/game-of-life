@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
 
 export interface CellData {
-  current: Int8Array;
-  next: Int8Array;
+  gameState: Uint8Array;
+  changedCells: Uint32Array;
   computeNext: () => void;
 }
 
@@ -10,50 +10,91 @@ const useCellData = (
   gridSize: number,
   initialData?: ArrayLike<number> | undefined
 ) => {
-  // Two arrays used to skip redudant cell draws
-  const valuesA = useRef(new Int8Array(gridSize * gridSize));
-  const valuesB = useRef(new Int8Array(gridSize * gridSize));
-  const currentValues = useRef(valuesA.current);
-  const nextValues = useRef(valuesB.current);
+  // For now grids are always square
+  // Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
+  const gameState = useRef<Uint8Array>(new Uint8Array(gridSize * gridSize));
+  // Each Uint32 represents the location of a living cell (its index in gameState + 1)
+  const livingCells = useRef<Uint32Array>(new Uint32Array(gridSize * gridSize));
+  // Each Uint32 represents the location of a changed cell (its index in gameState + 1)
+  const changedCells = useRef<Uint32Array>(
+    new Uint32Array(gridSize * gridSize)
+  );
 
-  // Initialize data randomly, or based on passed data
+  // Initialize data randomly, or based on passed initialData
   useEffect(() => {
+    // Used for counting neighbors during initialization
+    const countNeighbors = () => {
+      // Iterate over every cell and add its neighbor count to its gameState data
+      for (let i = 0; i < gameState.current.length; i++) {
+        let livingNeighborCount = 0;
+        // Check if cell to right is alive
+        if (gameState.current[i + 1] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check bottom right
+        if (gameState.current[i + gridSize + 1] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check bottom
+        if (gameState.current[i + gridSize] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check bottom left
+        if (gameState.current[i + gridSize - 1] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check left
+        if (gameState.current[i - 1] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check top left
+        if (gameState.current[i - gridSize - 1] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check top
+        if (gameState.current[i - gridSize] >= 128) {
+          livingNeighborCount++;
+        }
+        // Check top right
+        if (gameState.current[i - gridSize] >= 128) {
+          livingNeighborCount++;
+        }
+        // Add neighbor count to gameState
+        gameState.current[i] += livingNeighborCount;
+      }
+    };
+
     if (!initialData) {
-      for (let i = 0; i < currentValues.current.length; i++) {
-        currentValues.current[i] = Math.random() >= 0.5 ? 1 : 0;
+      // Randomize the gameState
+      const livingCellsValues = livingCells.current.values();
+      for (let i = 0; i < gameState.current.length; i++) {
+        gameState.current[i] = Math.random() >= 0.5 ? 128 : 0;
+        if (gameState.current[i] >= 128) {
+          livingCellsValues.next().value = i + 1;
+        }
       }
+      countNeighbors();
     } else {
-      for (let i = 0; i < currentValues.current.length; i++) {
-        currentValues.current[i] = initialData[i];
+      // Set game state based on initialData
+      const livingCellsValues = livingCells.current.values();
+      for (let i = 0; i < gameState.current.length; i++) {
+        gameState.current[i] = initialData[i] === 1 ? 128 : 0;
+        if (gameState.current[i] >= 128) {
+          livingCellsValues.next().value = i + 1;
+        }
       }
+      countNeighbors();
     }
-  }, [initialData]);
+  }, [gridSize, initialData]);
 
   // Method for calculating next
   const computeNext = () => {
-    // For now just set the next values to current values
-    const current = currentValues.current;
-    const next = nextValues.current;
-    next.set(current);
-
-    // Use GoL rules to determine next state
-    /*
-    Modify the initialization logic to iterate through the provided initial data and record the index of living cells + 1 (starting with 1) as an integer in the currentValues typed array. If no initial data is provided, generate random data based on the grid size.
-
-    In the computeNext function, iterate over the currentValues array to determine the state of each cell based on the rules of the Game of Life. If a cell is living, record its location (index + 1 so 0 can be used for "empty values") in the nextValues array. If an index value of zero is reached, stop reading currentValues.
-
-    Ensure that all values after the last living cell insertion in nextValues are set to zero to prevent "false positive reads" in future calculations. (can be optimized further?)
-    */
-
-    // Swap current and next references
-    const temp = currentValues.current;
-    currentValues.current = nextValues.current;
-    nextValues.current = temp;
+    // Logic NYI. Ignore for now and just focus on data initialization logic.
   };
 
   const cellData: CellData = {
-    current: currentValues.current,
-    next: nextValues.current,
+    gameState: gameState.current,
+    changedCells: changedCells.current,
     computeNext,
   };
   return cellData;
