@@ -11,43 +11,48 @@ const useCellAnimation = (
 
   const animationLoop = useCallback(
     (options?: { initialDraw: boolean }) => {
-      // All grids are square so this is sqrt of total length
-      const rowsAndCols = Math.sqrt(cellData.current.length);
-      const cellSize = canvas ? canvas.width / rowsAndCols : 0;
-
-      // Compute the next cell data state
-      cellData.computeNext();
+      // Sqrt of total length of changedCells (instead of gameState), since padded cells won't be drawn
+      const gridSize = Math.sqrt(cellData.changedCells.length);
+      const cellSize = canvas ? canvas.width / gridSize : 0;
 
       // Helper fn for drawing cells
       const drawCell = (ctx: CanvasRenderingContext2D, i: number) => {
-        const row = Math.floor(i / rowsAndCols);
-        const col = i % rowsAndCols;
+        const row = Math.floor(i / gridSize);
+        const col = i % gridSize;
         const x = col * cellSize;
         const y = row * cellSize;
 
-        ctx.fillStyle = cellData.next[i] === 0 ? "black" : "white";
+        ctx.fillStyle = cellData.gameState[i] > 128 ? "black" : "white";
         ctx.beginPath();
         ctx.rect(x, y, cellSize, cellSize);
         ctx.fill();
+        console.log("Drew a cell!");
       };
 
       // If restarting animation clear it and redraw current cell state
       if (options?.initialDraw && ctx && canvas) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (let i = 0; i < cellData.current.length; i++) {
-          if (cellSize) {
-            drawCell(ctx, i);
+        for (const cellLocation of cellData.changedCells) {
+          if (cellSize && cellLocation > 0) {
+            // Subtract 1 for 0 based index
+            drawCell(ctx, cellLocation - 1);
+          } else {
+            break;
           }
         }
-      } else {
-        for (let i = 0; i < cellData.current.length; i++) {
-          if (cellData.current[i] === cellData.next[i]) {
-            continue;
-          } else if (cellSize && ctx) {
-            drawCell(ctx, i);
+      } else if (ctx) {
+        for (const cellLocation of cellData.changedCells) {
+          if (cellSize && cellLocation > 0) {
+            // Subtract 1 for 0 based index
+            drawCell(ctx, cellLocation - 1);
+          } else {
+            break;
           }
         }
       }
+
+      // Compute the next cell data state
+      cellData.computeNext();
 
       animationFrameRef.current = requestAnimationFrame(() => {
         animationLoop();
