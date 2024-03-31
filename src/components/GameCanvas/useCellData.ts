@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 
 export interface CellData {
   gameState: Uint8Array;
@@ -10,7 +10,7 @@ const useCellData = (
   gridSize: number,
   initialData?: ArrayLike<number> | undefined
 ) => {
-  // For now grids are always square with one row of padding cell surroudning the edges
+  // Grids are always square with one row of padding cells around the edges
   const paddedSize = gridSize + 2;
   // Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
   const gameState = useRef<Uint8Array>(new Uint8Array(paddedSize * paddedSize));
@@ -23,68 +23,66 @@ const useCellData = (
     new Uint32Array(gridSize * gridSize)
   );
 
-  // Initialize data randomly, or based on passed initialData
-  useEffect(() => {
-    // Used for counting neighbors during initialization
-    const initializeNeighborCount = (index: number) => {
-      // Iterate over every neighbor to check for living cells
-      let livingNeighborCount = 0;
-      // Check if cell to right is alive
-      if (gameState.current[index + 1] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check bottom right
-      if (gameState.current[index + paddedSize + 1] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check bottom
-      if (gameState.current[index + paddedSize] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check bottom left
-      if (gameState.current[index + paddedSize - 1] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check left
-      if (gameState.current[index - 1] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check top left
-      if (gameState.current[index - paddedSize - 1] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check top
-      if (gameState.current[index - paddedSize] >= 128) {
-        livingNeighborCount++;
-      }
-      // Check top right
-      if (gameState.current[index - paddedSize + 1] >= 128) {
-        livingNeighborCount++;
-      }
-      // Add neighbor count to gameState
-      gameState.current[index] += livingNeighborCount;
-    };
-
-    const copyToPaddingCells = () => {
-      // Copy data to padding cells
+  const copyToPaddingCells = useCallback(
+    (gameState: Uint8Array, paddedSize: number) => {
       for (let i = 0; i < paddedSize; i++) {
-        // Copy left edge to right edge
-        gameState.current[i * paddedSize + paddedSize - 1] =
-          gameState.current[i * paddedSize + 1];
-        // Copy right edge to left edge
-        gameState.current[i * paddedSize] =
-          gameState.current[i * paddedSize + paddedSize - 2];
+        // Copy left edge to right padding cells
+        gameState[i * paddedSize + paddedSize - 1] =
+          gameState[i * paddedSize + 1];
+        // Copy right edge to left padding cells
+        gameState[i * paddedSize] = gameState[i * paddedSize + paddedSize - 2];
       }
       for (let j = 0; j < paddedSize; j++) {
-        // Copy top edge to bottom edge
-        gameState.current[j] =
-          gameState.current[(paddedSize - 2) * paddedSize + j];
-        // Copy bottom edge to top edge
-        gameState.current[(paddedSize - 1) * paddedSize + j] =
-          gameState.current[paddedSize + j];
+        // Copy top edge to bottom padding cells
+        gameState[j] = gameState[(paddedSize - 2) * paddedSize + j];
+        // Copy bottom edge to top padding cells
+        gameState[(paddedSize - 1) * paddedSize + j] =
+          gameState[paddedSize + j];
       }
-    };
+    },
+    []
+  );
 
+  const initializeNeighborCount = useCallback(
+    (gameState: Uint8Array, index: number, paddedSize: number) => {
+      const neighborOffsets = [
+        -1,
+        1,
+        -paddedSize,
+        paddedSize,
+        -paddedSize - 1,
+        -paddedSize + 1,
+        paddedSize - 1,
+        paddedSize + 1,
+      ];
+
+      let livingNeighborCount = 0;
+      neighborOffsets.forEach((offset) => {
+        if (gameState[index + offset] >= 128) {
+          livingNeighborCount++;
+        }
+      });
+      gameState[index] += livingNeighborCount;
+    },
+    []
+  );
+
+  // Helper fn for adjusting living neighbors for all of a cell's neighbors
+  const adjustLivingNeighbors = (amount: number, cellLocation: number) => {
+    // Check 3x3 around cell omitting cell itself
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        // Don't update query cell as it is not its own neighbor
+        if (!(i === 0 && j === 0)) {
+          // Adjust the cell by the passed amount
+          gameState.current[cellLocation - 1 + i * paddedSize + j] += amount;
+        }
+      }
+    }
+  };
+
+  // Initialize data randomly, or based on passed initialData
+  useEffect(() => {
     // Initialize gameState and livingCells while ignoring padding cells
     let livingCellsIndex = 0;
     let changedCellsIndex = 0;
@@ -110,32 +108,25 @@ const useCellData = (
       }
     }
 
-    copyToPaddingCells();
+    copyToPaddingCells(gameState.current, paddedSize);
 
     // Initialize neighbor counts
     for (let i = 1; i <= gridSize; i++) {
       for (let j = 1; j <= gridSize; j++) {
         const index = i * paddedSize + j;
-        initializeNeighborCount(index);
+        initializeNeighborCount(gameState.current, index, paddedSize);
       }
     }
-    // Copy updated padding cell values
-    copyToPaddingCells();
-  }, [gridSize, initialData, paddedSize]);
 
-  // Helper fn for adjusting living neighbors for all of a cell's neighbors
-  const adjustLivingNeighbors = (amount: number, cellLocation: number) => {
-    // Check 3x3 around cell omitting cell itself
-    for (let i = -1; i <= 1; i++) {
-      for (let j = -1; j <= 1; j++) {
-        // Don't update query cell as it is not its own neighbor
-        if (!(i === 0 && j === 0)) {
-          // Adjust the cell by the passed amount
-          gameState.current[cellLocation - 1 + i * paddedSize + j] += amount;
-        }
-      }
-    }
-  };
+    // Copy updated padding cell values
+    copyToPaddingCells(gameState.current, paddedSize);
+  }, [
+    copyToPaddingCells,
+    gridSize,
+    initialData,
+    initializeNeighborCount,
+    paddedSize,
+  ]);
 
   // Method for calculating next using Game of Life rules
   const computeNext = () => {
@@ -185,23 +176,7 @@ const useCellData = (
     }
 
     // Copy the padding cells
-    // Copy data to padding cells
-    for (let i = 0; i < paddedSize; i++) {
-      // Copy left edge to right edge
-      gameState.current[i * paddedSize + paddedSize - 1] =
-        gameState.current[i * paddedSize + 1];
-      // Copy right edge to left edge
-      gameState.current[i * paddedSize] =
-        gameState.current[i * paddedSize + paddedSize - 2];
-    }
-    for (let j = 0; j < paddedSize; j++) {
-      // Copy top edge to bottom edge
-      gameState.current[j] =
-        gameState.current[(paddedSize - 2) * paddedSize + j];
-      // Copy bottom edge to top edge
-      gameState.current[(paddedSize - 1) * paddedSize + j] =
-        gameState.current[paddedSize + j];
-    }
+    copyToPaddingCells(gameState.current, paddedSize);
 
     // Set living cells to new living cells
     livingCells.current.set(newLivingCells.current);
