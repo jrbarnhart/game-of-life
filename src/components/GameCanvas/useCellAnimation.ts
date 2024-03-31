@@ -13,20 +13,24 @@ const useCellAnimation = (
     (options?: { initialDraw: boolean }) => {
       // Sqrt of total length of changedCells (instead of gameState), since padded cells won't be drawn
       const gridSize = Math.sqrt(cellData.changedCells.length);
+      const paddedSize = gridSize + 2;
       const cellSize = canvas ? canvas.width / gridSize : 0;
 
       // Helper fn for drawing cells
-      const drawCell = (ctx: CanvasRenderingContext2D, i: number) => {
-        const row = Math.floor(i / gridSize);
-        const col = i % gridSize;
+      const drawCell = (
+        ctx: CanvasRenderingContext2D,
+        cellLocation: number
+      ) => {
+        const row = Math.floor(cellLocation / paddedSize) - 1;
+        const col = (cellLocation % paddedSize) - 2;
         const x = col * cellSize;
         const y = row * cellSize;
 
-        ctx.fillStyle = cellData.gameState[i] > 128 ? "black" : "white";
+        ctx.fillStyle =
+          cellData.gameState[cellLocation - 1] < 128 ? "black" : "white";
         ctx.beginPath();
         ctx.rect(x, y, cellSize, cellSize);
         ctx.fill();
-        console.log("Drew a cell!");
       };
 
       // If restarting animation clear it and redraw current cell state
@@ -35,7 +39,7 @@ const useCellAnimation = (
         for (const cellLocation of cellData.changedCells) {
           if (cellSize && cellLocation > 0) {
             // Subtract 1 for 0 based index
-            drawCell(ctx, cellLocation - 1);
+            drawCell(ctx, cellLocation);
           } else {
             break;
           }
@@ -44,7 +48,7 @@ const useCellAnimation = (
         for (const cellLocation of cellData.changedCells) {
           if (cellSize && cellLocation > 0) {
             // Subtract 1 for 0 based index
-            drawCell(ctx, cellLocation - 1);
+            drawCell(ctx, cellLocation);
           } else {
             break;
           }
