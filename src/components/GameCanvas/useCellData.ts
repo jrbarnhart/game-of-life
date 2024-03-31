@@ -16,7 +16,9 @@ const useCellData = (
   const gameState = useRef<Uint8Array>(new Uint8Array(paddedSize * paddedSize));
   // Each Uint32 represents the location of a living cell (its index in gameState + 1)
   const livingCells = useRef<Uint32Array>(new Uint32Array(gridSize * gridSize));
-  // Each Uint32 represents the location of a changed cell (its index in gameState + 1)
+  const newLivingCells = useRef<Uint32Array>(
+    new Uint32Array(gridSize * gridSize)
+  );
   const changedCells = useRef<Uint32Array>(
     new Uint32Array(gridSize * gridSize)
   );
@@ -121,12 +123,86 @@ const useCellData = (
     copyToPaddingCells();
   }, [gridSize, initialData, paddedSize]);
 
-  // Method for calculating next
+  // Helper fn for adjusting living neighbors for all of a cell's neighbors
+  const adjustLivingNeighbors = (amount: number, cellLocation: number) => {
+    // Check 3x3 around cell omitting cell itself
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        // Don't update query cell as it is not its own neighbor
+        if (!(i === 0 && j === 0)) {
+          // Adjust the cell by the passed amount
+          gameState.current[cellLocation - 1 + i * paddedSize + j] += amount;
+        }
+      }
+    }
+  };
+
+  // Method for calculating next using Game of Life rules
   const computeNext = () => {
-    // Can probably alternate which array is used instead of clearing both for more time optimization
+    // Set changedCells and newLivingCells to 0's
     changedCells.current.fill(0);
-    livingCells.current.fill(0);
-    // Logic NYI. Ignore for now and just focus on data initialization logic.
+    newLivingCells.current.fill(0);
+    // Init indexes for cell lists
+    let newLivingCellsIndex = 0;
+    let changedCellsIndex = 0;
+    // Iterate through living cells
+    for (const cellLocation of livingCells.current) {
+      const cell = gameState.current[cellLocation - 1];
+      // If 128+ (alive) but without correct neighbor count (128 + 2 or 3) it dies
+      if (cell >= 128 && (cell < 130 || cell > 131)) {
+        // Cell died (-128) so add its location to changedCells
+        gameState.current[cellLocation - 1] -= 128;
+        changedCells.current[changedCellsIndex++] -= cellLocation;
+        // Update neighbor cells living neighbors by subtracting one
+        adjustLivingNeighbors(-1, cellLocation);
+      } else {
+        // It didn't die so add to new living cells
+        newLivingCells.current[newLivingCellsIndex++] = cellLocation;
+      }
+    }
+
+    //Check if changedCells cause cell births in neighbors
+    for (const cellLocation of changedCells.current) {
+      // Break when encountering 0 indicating end of list
+      if (cellLocation === 0) break;
+      // Check 3x3 around cell omitting cell itself
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          // If it is 3 (dead with 3 living neighbors)
+          if (
+            !(i === 0 && j === 0) &&
+            gameState.current[cellLocation - 1 + i * paddedSize + j] === 3
+          ) {
+            // Cell comes alive (+128) so add it to new living cells and changed cells
+            gameState.current[cellLocation - 1 + i * paddedSize + j] += 128;
+            newLivingCells.current[newLivingCellsIndex++] = cellLocation;
+            changedCells.current[changedCellsIndex++] = cellLocation;
+          }
+        }
+      }
+    }
+
+    // Copy the padding cells
+    // Copy data to padding cells
+    for (let i = 0; i < paddedSize; i++) {
+      // Copy left edge to right edge
+      gameState.current[i * paddedSize + paddedSize - 1] =
+        gameState.current[i * paddedSize + 1];
+      // Copy right edge to left edge
+      gameState.current[i * paddedSize] =
+        gameState.current[i * paddedSize + paddedSize - 2];
+    }
+    for (let j = 0; j < paddedSize; j++) {
+      // Copy top edge to bottom edge
+      gameState.current[j] =
+        gameState.current[(paddedSize - 2) * paddedSize + j];
+      // Copy bottom edge to top edge
+      gameState.current[(paddedSize - 1) * paddedSize + j] =
+        gameState.current[paddedSize + j];
+    }
+
+    // Set living cells to new living cells
+    livingCells.current.set(newLivingCells.current);
   };
 
   const cellData: CellData = {
