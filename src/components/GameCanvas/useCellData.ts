@@ -148,6 +148,8 @@ const useCellData = (
     // Iterate through living cells
     for (const cellLocation of livingCells.current) {
       const cell = gameState.current[cellLocation - 1];
+      // Break on 0 meaning end of list
+      if (cell === 0) break;
       // If 128+ (alive) but without correct neighbor count (128 + 2 or 3) it dies
       if (cell >= 128 && (cell < 130 || cell > 131)) {
         // Cell died (-128) so add its location to changedCells
