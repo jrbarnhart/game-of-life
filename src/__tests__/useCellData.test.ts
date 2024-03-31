@@ -35,4 +35,26 @@ describe("useCellData", () => {
       8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 26, 27, 28, 29,
     ]);
   });
+
+  /*
+    Grid representation:
+    0 0 1 0                 0 1 0 0
+    0 1 0 0  computeNext => 0 0 1 0
+    0 0 1 0                 0 1 0 0
+    1 0 0 0                 0 0 0 1
+  */
+  describe("computeNext", () => {
+    it("it returns proper gameState based on initialData after one iteration", () => {
+      const { result } = renderHook(() =>
+        useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
+      );
+
+      result.current.computeNext();
+
+      expect(Array.from(result.current.gameState)).toEqual([
+        128, 3, 2, 3, 128, 3, 2, 2, 129, 3, 2, 2, 1, 2, 3, 130, 1, 2, 2, 2, 129,
+        3, 2, 2, 128, 3, 2, 3, 128, 3, 2, 2, 129, 3, 2, 2,
+      ]);
+    });
+  });
 });
