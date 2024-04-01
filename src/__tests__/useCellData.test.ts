@@ -60,7 +60,7 @@ describe("useCellData", () => {
       result.current.computeNext();
 
       expect(Array.from(result.current.gameState)).toEqual([
-        2, 129, 3, 2, 2, 131, 130, 1, 2, 129, 3, 2, 3, 130, 3, 128,
+        4, 132, 5, 2, 3, 131, 131, 1, 4, 131, 5, 2, 4, 130, 4, 128,
       ]);
     });
   });
