@@ -27,7 +27,12 @@ const GameCanvas = () => {
 
   return (
     <div className="relative">
-      <canvas className="absolute top-0 bg-transparent" ref={overlayRef} />
+      <canvas
+        className="absolute top-0 bg-transparent z-10"
+        height={canvasSize.height}
+        width={canvasSize.width}
+        ref={overlayRef}
+      />
       <canvas
         className="bg-black absolute top-0"
         height={canvasSize.height}
