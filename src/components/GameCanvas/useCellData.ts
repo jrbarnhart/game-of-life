@@ -44,7 +44,7 @@ const useCellData = (
     []
   );
 
-  const initializeNeighborCount = useCallback(
+  const countLivingNeighbors = useCallback(
     (gameState: Uint8Array, index: number, paddedSize: number) => {
       const neighborOffsets = [
         -1,
@@ -63,7 +63,7 @@ const useCellData = (
           livingNeighborCount++;
         }
       });
-      gameState[index] += livingNeighborCount;
+      return livingNeighborCount;
     },
     []
   );
@@ -90,11 +90,15 @@ const useCellData = (
 
     copyToPaddingCells(currentState.current, paddedSize);
 
-    // Initialize neighbor counts (padding cells will have incorrect neighbor values after this)
+    // Initialize neighbor counts
     for (let i = 1; i <= gridSize; i++) {
       for (let j = 1; j <= gridSize; j++) {
-        const index = i * paddedSize + j;
-        initializeNeighborCount(currentState.current, index, paddedSize);
+        const index = i * (gridSize + 2) + j;
+        currentState.current[index] += countLivingNeighbors(
+          currentState.current,
+          index,
+          paddedSize
+        );
       }
     }
 
@@ -104,7 +108,7 @@ const useCellData = (
     copyToPaddingCells,
     gridSize,
     initialData,
-    initializeNeighborCount,
+    countLivingNeighbors,
     paddedSize,
   ]);
 
