@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
+  gridSize: GridSize;
   computeNext: () => void;
 }
 
@@ -90,7 +91,7 @@ const useCellData = (
             currentState[neighborIndex] === 3 &&
             nextState[neighborIndex] < 128
           ) {
-            // console.log("Cell born!", neighborIndex);
+            //console.log("Cell born!", neighborIndex);
             nextState[neighborIndex] += 128;
             birthIndexes.push(neighborIndex);
             changedCells.current.add(neighborIndex);
@@ -99,6 +100,7 @@ const useCellData = (
         }
       }
     }
+    //console.log("Returning BI:", birthIndexes);
     return birthIndexes;
   };
 
@@ -147,7 +149,7 @@ const useCellData = (
     changedCells.current.clear();
 
     // For all the living cells
-    // console.log(livingCells);
+    //console.log(livingCells);
     let birthIndexes: number[] = [];
     for (const index of livingCells.current) {
       // Check for births around living cells
@@ -170,10 +172,10 @@ const useCellData = (
         livingCells.current.delete(index);
         incrementLivingNeighbors(nextState.current, index, gridSize, -1);
       }
-    }
-
-    for (const index of birthIndexes) {
-      livingCells.current.add(index);
+      // console.log("Adding BI:", birthIndexes);
+      for (const index of birthIndexes) {
+        livingCells.current.add(index);
+      }
     }
 
     currentState.current.set(nextState.current);
@@ -183,6 +185,7 @@ const useCellData = (
   const cellData: CellData = {
     gameState: currentState.current,
     changedCells: changedCells.current,
+    gridSize,
     computeNext,
   };
   return cellData;
