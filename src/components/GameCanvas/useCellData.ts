@@ -7,7 +7,7 @@ export interface CellData {
   computeNext: () => void;
 }
 
-interface GridSize {
+export interface GridSize {
   width: number;
   height: number;
 }
