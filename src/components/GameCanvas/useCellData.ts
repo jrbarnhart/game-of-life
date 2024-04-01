@@ -63,7 +63,7 @@ const useCellData = (
           const neighborCol = (col + j + gridSize.width) % gridSize.width;
           const neighborIndex = neighborRow * gridSize.width + neighborCol;
 
-          console.log("Increment living neighbors in:", neighborIndex);
+          // console.log("Increment living neighbors in:", neighborIndex);
           gameState[neighborIndex] += amount;
         }
       }
@@ -90,7 +90,7 @@ const useCellData = (
             currentState[neighborIndex] === 3 &&
             nextState[neighborIndex] < 128
           ) {
-            console.log("Cell born!", neighborIndex);
+            // console.log("Cell born!", neighborIndex);
             nextState[neighborIndex] += 128;
             birthIndexes.push(neighborIndex);
             changedCells.current.add(neighborIndex);
@@ -147,7 +147,7 @@ const useCellData = (
     changedCells.current.clear();
 
     // For all the living cells
-    console.log(livingCells);
+    // console.log(livingCells);
     let birthIndexes: number[] = [];
     for (const index of livingCells.current) {
       // Check for births around living cells
@@ -164,7 +164,7 @@ const useCellData = (
         currentState.current[index] !== 130 &&
         currentState.current[index] !== 131
       ) {
-        console.log("Cell died!", index);
+        // console.log("Cell died!", index);
         nextState.current[index] -= 128;
         changedCells.current.add(index);
         livingCells.current.delete(index);
@@ -177,7 +177,7 @@ const useCellData = (
     }
 
     currentState.current.set(nextState.current);
-    console.log(currentState.current);
+    // console.log(currentState.current);
   };
 
   const cellData: CellData = {
