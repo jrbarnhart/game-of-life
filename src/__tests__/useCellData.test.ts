@@ -44,9 +44,9 @@ describe("useCellData", () => {
   /*
     Grid representation:
     0 0 1 0                 0 1 0 0
-    0 1 0 0  computeNext => 0 0 1 0
+    0 1 0 0  computeNext => 0 1 1 0
     0 0 1 0                 0 1 0 0
-    1 0 0 0                 0 0 0 1
+    1 0 0 0                 0 1 0 1
   */
   describe("computeNext", () => {
     it("it returns proper gameState based on initialData after one iteration", () => {
