@@ -7,57 +7,39 @@ export interface CellData {
 }
 
 const useCellData = (
-  gridSize: number,
+  gridSize: { width: number; height: number },
   initialData?: ArrayLike<number> | undefined
 ) => {
-  // Grids are always square with one row of padding cells around the edges
-  const paddedSize = gridSize + 2;
   // Game State: Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
   const currentState = useRef<Uint8Array>(
-    new Uint8Array(paddedSize * paddedSize)
+    new Uint8Array(gridSize.width * gridSize.height)
   );
-  const nextState = useRef<Uint8Array>(new Uint8Array(paddedSize * paddedSize));
+  const nextState = useRef<Uint8Array>(
+    new Uint8Array(gridSize.width * gridSize.height)
+  );
   // Sets for keeping track of living cells and cells that have changed
   const livingCells = useRef<Set<number>>(new Set());
   const changedCells = useRef<Set<number>>(new Set());
 
-  const copyToPaddingCells = useCallback(
-    (gameState: Uint8Array, paddedSize: number) => {
-      for (let i = 0; i < paddedSize; i++) {
-        // Copy left edge to right padding cells
-        gameState[i * paddedSize + paddedSize - 1] =
-          gameState[i * paddedSize + 1];
-        // Copy right edge to left padding cells
-        gameState[i * paddedSize] = gameState[i * paddedSize + paddedSize - 2];
-      }
-      for (let j = 0; j < paddedSize; j++) {
-        // Copy top edge to bottom padding cells
-        gameState[j] = gameState[(paddedSize - 2) * paddedSize + j];
-        // Copy bottom edge to top padding cells
-        gameState[(paddedSize - 1) * paddedSize + j] =
-          gameState[paddedSize + j];
-      }
-    },
-    []
-  );
-
   const countLivingNeighbors = useCallback(
-    (gameState: Uint8Array, index: number, paddedSize: number) => {
-      const neighborOffsets = [
-        -1,
-        1,
-        -paddedSize,
-        paddedSize,
-        -paddedSize - 1,
-        -paddedSize + 1,
-        paddedSize - 1,
-        paddedSize + 1,
-      ];
-
+    (
+      gameState: Uint8Array,
+      row: number,
+      col: number,
+      gridSize: { width: number; height: number }
+    ) => {
       let livingNeighborCount = 0;
-      for (const offset of neighborOffsets) {
-        if (gameState[index + offset] >= 128) {
-          livingNeighborCount++;
+      for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+          if (!(i === 0 && j === 0)) {
+            const neighborRow = (row + i + gridSize.height) % gridSize.height;
+            const neighborCol = (col + j + gridSize.width) % gridSize.width;
+            const neighborIndex = neighborRow * gridSize.width + neighborCol;
+
+            if (gameState[neighborIndex] >= 128) {
+              livingNeighborCount++;
+            }
+          }
         }
       }
       return livingNeighborCount;
@@ -106,6 +88,7 @@ const useCellData = (
     ];
 
     // If the neighbor itself has 3 living neighbors it comes to life
+    // ### Need to figure out how to avoid padding cells ###
     for (const offset of neighborOffsets) {
       if (
         currentState[index + offset] === 3 &&
@@ -121,54 +104,43 @@ const useCellData = (
 
   // Initialize data randomly, or based on passed initialData
   useEffect(() => {
-    // Initialize gameState and livingCells while ignoring padding cells
-    for (let i = 0; i < gridSize; i++) {
-      for (let j = 0; j < gridSize; j++) {
-        const index = (i + 1) * paddedSize + (j + 1);
-        if (initialData) {
-          // Initialize using provided data
-          const val = initialData[i * gridSize + j];
-          currentState.current[index] = val === 1 ? 128 : 0;
-          if (val === 1) {
-            livingCells.current.add(index);
-          }
-        } else {
-          // Initialize randomly
-          const val = Math.random() >= 0.5 ? 128 : 0;
-          currentState.current[index] = val;
-          if (val === 128) {
-            livingCells.current.add(index);
-          }
+    // Initialize currentState, changedCells, and livingCells with provided or random data
+    if (initialData) {
+      for (let i = 0; i < currentState.current.length; i++) {
+        const val = initialData[i];
+        currentState.current[i] = val === 1 ? 128 : 0;
+        if (val === 1) {
+          livingCells.current.add(i);
         }
-
-        // Add cell to changed cells for initial render
-        changedCells.current.add(index);
+        changedCells.current.add(i);
+      }
+    } else {
+      for (let i = 0; i < currentState.current.length; i++) {
+        const val = Math.random() >= 0.5 ? 128 : 0;
+        currentState.current[i] = val;
+        if (val === 128) {
+          livingCells.current.add(i);
+        }
+        changedCells.current.add(i);
       }
     }
 
-    copyToPaddingCells(currentState.current, paddedSize);
-
     // Initialize neighbor counts
-    for (let i = 1; i <= gridSize; i++) {
-      for (let j = 1; j <= gridSize; j++) {
-        const index = i * (gridSize + 2) + j;
+    for (let row = 0; row < gridSize.height; row++) {
+      for (let col = 0; col < gridSize.width; col++) {
+        const index = row * gridSize.width + col;
         currentState.current[index] += countLivingNeighbors(
           currentState.current,
-          index,
-          paddedSize
+          row,
+          col,
+          gridSize
         );
       }
     }
 
-    // Copy updated padding cell values
-    copyToPaddingCells(currentState.current, paddedSize);
-  }, [
-    copyToPaddingCells,
-    gridSize,
-    initialData,
-    countLivingNeighbors,
-    paddedSize,
-  ]);
+    // Copy current state to next state for first calculations
+    nextState.current.set(currentState.current);
+  }, [gridSize, initialData, countLivingNeighbors]);
 
   // Method for calculating next state using Game of Life rules
   const computeNext = () => {
@@ -177,8 +149,8 @@ const useCellData = (
     // For all the living cells
     console.log(livingCells);
     for (const index of livingCells.current) {
-      console.log(index);
       // Check for births around living cells
+      //### This is not working because of how padding cell values are not really synced to the cells they mirror ###
       checkBirths(currentState.current, nextState.current, index, paddedSize);
 
       // >= 128 && not 130 && not 131 it dies (-128) and is added to changedCells and removed from living cells
@@ -198,6 +170,7 @@ const useCellData = (
     copyToPaddingCells(nextState.current, paddedSize);
 
     currentState.current.set(nextState.current);
+    console.log(currentState.current);
   };
 
   const cellData: CellData = {
