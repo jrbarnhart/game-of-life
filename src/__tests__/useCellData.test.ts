@@ -63,5 +63,21 @@ describe("useCellData", () => {
         4, 131, 5, 2, 3, 131, 131, 1, 4, 131, 5, 2, 4, 130, 4, 128,
       ]);
     });
+
+    it("it returns proper gameState based on initialData after two iterations", () => {
+      const { result } = renderHook(() =>
+        useCellData(
+          { width: 4, height: 4 },
+          [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0]
+        )
+      );
+
+      result.current.computeNext();
+      result.current.computeNext();
+
+      expect(Array.from(result.current.gameState)).toEqual([
+        4, 132, 4, 2, 131, 132, 131, 2, 4, 132, 4, 2, 3, 130, 3, 0,
+      ]);
+    });
   });
 });
