@@ -6,7 +6,7 @@ import useInitCanvas from "./useInitCanvas";
 const GameCanvas = () => {
   const canvasSize = useCanvasSize(12);
 
-  const cellData = useCellData({ width: 4, height: 4 });
+  const cellData = useCellData({ width: 20, height: 20 });
 
   const { canvasInitialized, canvasRef, contextRef } = useInitCanvas();
 
