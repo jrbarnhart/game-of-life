@@ -6,8 +6,13 @@ export interface CellData {
   computeNext: () => void;
 }
 
+interface GridSize {
+  width: number;
+  height: number;
+}
+
 const useCellData = (
-  gridSize: { width: number; height: number },
+  gridSize: GridSize,
   initialData?: ArrayLike<number> | undefined
 ) => {
   // Game State: Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
@@ -22,12 +27,7 @@ const useCellData = (
   const changedCells = useRef<Set<number>>(new Set());
 
   const countLivingNeighbors = useCallback(
-    (
-      gameState: Uint8Array,
-      row: number,
-      col: number,
-      gridSize: { width: number; height: number }
-    ) => {
+    (gameState: Uint8Array, row: number, col: number, gridSize: GridSize) => {
       let livingNeighborCount = 0;
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
@@ -47,59 +47,59 @@ const useCellData = (
     []
   );
 
-  const updateBirthNeighbors = (
+  const incrementLivingNeighbors = (
     gameState: Uint8Array,
     index: number,
-    paddedSize: number
+    gridSize: GridSize,
+    amount: number
   ) => {
-    const neighborOffsets = [
-      -1,
-      1,
-      -paddedSize,
-      paddedSize,
-      -paddedSize - 1,
-      -paddedSize + 1,
-      paddedSize - 1,
-      paddedSize + 1,
-    ];
+    const row = Math.floor(index / gridSize.width);
+    const col = index % gridSize.width;
 
-    // Increment by one since one new living neighbor
-    for (const offset of neighborOffsets) {
-      gameState[index + offset]++;
-      console.log("Incremented neighbor count", index + offset);
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (!(i === 0 && j === 0)) {
+          const neighborRow = (row + i + gridSize.height) % gridSize.height;
+          const neighborCol = (col + j + gridSize.width) % gridSize.width;
+          const neighborIndex = neighborRow * gridSize.width + neighborCol;
+
+          console.log("Increment living neighbors in:", neighborIndex);
+          gameState[neighborIndex] += amount;
+        }
+      }
     }
   };
 
-  const checkBirths = (
+  const computeBirths = (
     currentState: Uint8Array,
     nextState: Uint8Array,
     index: number,
-    paddedSize: number
+    gridSize: GridSize
   ) => {
-    const neighborOffsets = [
-      -1,
-      1,
-      -paddedSize,
-      paddedSize,
-      -paddedSize - 1,
-      -paddedSize + 1,
-      paddedSize - 1,
-      paddedSize + 1,
-    ];
+    const row = Math.floor(index / gridSize.width);
+    const col = index % gridSize.width;
+    const birthIndexes = [];
+    for (let i = -1; i <= 1; i++) {
+      for (let j = -1; j <= 1; j++) {
+        if (!(i === 0 && j === 0)) {
+          const neighborRow = (row + i + gridSize.height) % gridSize.height;
+          const neighborCol = (col + j + gridSize.width) % gridSize.width;
+          const neighborIndex = neighborRow * gridSize.width + neighborCol;
 
-    // If the neighbor itself has 3 living neighbors it comes to life
-    // ### Need to figure out how to avoid padding cells ###
-    for (const offset of neighborOffsets) {
-      if (
-        currentState[index + offset] === 3 &&
-        nextState[index + offset] < 128
-      ) {
-        console.log("Cell birthed!", index + offset);
-        nextState[index + offset] += 128;
-        updateBirthNeighbors(nextState, index + offset, paddedSize);
-        livingCells.current.add(index + offset);
+          if (
+            currentState[neighborIndex] === 3 &&
+            nextState[neighborIndex] < 128
+          ) {
+            console.log("Cell born!", neighborIndex);
+            nextState[neighborIndex] += 128;
+            birthIndexes.push(neighborIndex);
+            changedCells.current.add(neighborIndex);
+            incrementLivingNeighbors(nextState, neighborIndex, gridSize, 1);
+          }
+        }
       }
     }
+    return birthIndexes;
   };
 
   // Initialize data randomly, or based on passed initialData
@@ -148,10 +148,15 @@ const useCellData = (
 
     // For all the living cells
     console.log(livingCells);
+    let birthIndexes: number[] = [];
     for (const index of livingCells.current) {
       // Check for births around living cells
-      //### This is not working because of how padding cell values are not really synced to the cells they mirror ###
-      checkBirths(currentState.current, nextState.current, index, paddedSize);
+      birthIndexes = computeBirths(
+        currentState.current,
+        nextState.current,
+        index,
+        gridSize
+      );
 
       // >= 128 && not 130 && not 131 it dies (-128) and is added to changedCells and removed from living cells
       if (
@@ -159,15 +164,17 @@ const useCellData = (
         currentState.current[index] !== 130 &&
         currentState.current[index] !== 131
       ) {
+        console.log("Cell died!", index);
         nextState.current[index] -= 128;
         changedCells.current.add(index);
         livingCells.current.delete(index);
-        console.log("Cell died!", index);
+        incrementLivingNeighbors(nextState.current, index, gridSize, -1);
       }
     }
 
-    // Update padding cells in nextState
-    copyToPaddingCells(nextState.current, paddedSize);
+    for (const index of birthIndexes) {
+      livingCells.current.add(index);
+    }
 
     currentState.current.set(nextState.current);
     console.log(currentState.current);
