@@ -4,7 +4,7 @@ import useCellData from "../components/GameCanvas/useCellData";
 
 describe("useCellData", () => {
   it("returns object with correct properties", () => {
-    const { result } = renderHook(() => useCellData(0));
+    const { result } = renderHook(() => useCellData({ width: 4, height: 4 }));
     expect(result.current.gameState).toBeInstanceOf(Uint8Array);
     expect(result.current.changedCells).toBeInstanceOf(Set);
     expect(result.current.computeNext).toBeTypeOf("function");
@@ -19,17 +19,22 @@ describe("useCellData", () => {
   */
   it("returns proper gameState based on initialData", () => {
     const { result } = renderHook(() =>
-      useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
+      useCellData(
+        { width: 4, height: 4 },
+        [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0]
+      )
     );
     expect(Array.from(result.current.gameState)).toEqual([
-      3, 128, 3, 2, 3, 128, 2, 2, 3, 129, 2, 2, 2, 1, 130, 3, 2, 1, 2, 2, 3,
-      129, 2, 2, 3, 128, 3, 2, 3, 128, 2, 2, 3, 129, 2, 2,
+      2, 3, 129, 2, 1, 130, 3, 2, 2, 3, 129, 2, 128, 3, 2, 3,
     ]);
   });
 
   it("changedCells initially contains all cells for first render", () => {
     const { result } = renderHook(() =>
-      useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
+      useCellData(
+        { width: 4, height: 4 },
+        [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0]
+      )
     );
     expect([...result.current.changedCells]).toEqual([
       7, 8, 9, 10, 13, 14, 15, 16, 19, 20, 21, 22, 25, 26, 27, 28,
@@ -46,14 +51,16 @@ describe("useCellData", () => {
   describe("computeNext", () => {
     it("it returns proper gameState based on initialData after one iteration", () => {
       const { result } = renderHook(() =>
-        useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
+        useCellData(
+          { width: 4, height: 4 },
+          [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0]
+        )
       );
 
       result.current.computeNext();
 
       expect(Array.from(result.current.gameState)).toEqual([
-        128, 3, 2, 3, 128, 3, 2, 2, 129, 3, 2, 2, 1, 2, 3, 130, 1, 2, 2, 2, 129,
-        3, 2, 2, 128, 3, 2, 3, 128, 3, 2, 2, 129, 3, 2, 2,
+        2, 129, 3, 2, 2, 3, 130, 1, 2, 129, 3, 2, 3, 2, 3, 128,
       ]);
     });
   });
