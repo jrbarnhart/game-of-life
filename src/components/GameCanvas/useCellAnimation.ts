@@ -10,42 +10,57 @@ const useCellAnimation = (
   cellData: CellData
 ) => {
   const animationFrameRef = useRef<number | null>(null);
+  const lastFrameTimeRef = useRef<number>(0);
 
   const animationLoop = useCallback(
     (options?: { initialDraw: boolean }) => {
-      const cellSize = canvas ? canvas.width / cellData.gridSize.width : 0;
+      // Limit FPS
+      const now = window.performance.now(); // Current timestamp
+      const elapsed = now - lastFrameTimeRef.current; // Time elapsed since last frame
+      const targetFrameRate = 1000 / 10;
 
-      // Helper fn for drawing cells
-      const drawCell = (ctx: CanvasRenderingContext2D, cellIndex: number) => {
-        const row = Math.floor(cellIndex / cellData.gridSize.height);
-        const col = cellIndex % cellData.gridSize.width;
-        const x = col * cellSize;
-        const y = row * cellSize;
+      if (elapsed > targetFrameRate) {
+        lastFrameTimeRef.current = now;
 
-        ctx.fillStyle = cellData.gameState[cellIndex] < 128 ? "black" : "white";
-        ctx.beginPath();
-        ctx.rect(x, y, cellSize, cellSize);
-        ctx.fill();
-      };
+        const cellSize = canvas ? canvas.width / cellData.gridSize.width : 0;
 
-      // If restarting animation clear canvas
-      if (options?.initialDraw && ctx && canvas) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-      }
+        // Helper fn for drawing cells
+        const drawCell = (ctx: CanvasRenderingContext2D, cellIndex: number) => {
+          const row = Math.floor(cellIndex / cellData.gridSize.height);
+          const col = cellIndex % cellData.gridSize.width;
+          const x = col * cellSize;
+          const y = row * cellSize;
 
-      // Draw cells in changedCells set
-      for (const cellIndex of cellData.changedCells) {
-        if (cellSize && ctx) {
-          drawCell(ctx, cellIndex);
+          ctx.fillStyle =
+            cellData.gameState[cellIndex] < 128 ? "black" : "white";
+          ctx.beginPath();
+          ctx.rect(x, y, cellSize, cellSize);
+          ctx.fill();
+        };
+
+        // If restarting animation clear canvas
+        if (options?.initialDraw && ctx && canvas) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
+
+        // Draw cells in changedCells set
+        for (const cellIndex of cellData.changedCells) {
+          if (cellSize && ctx) {
+            drawCell(ctx, cellIndex);
+          }
+        }
+
+        // Compute the next cell data state
+        cellData.computeNext();
+
+        animationFrameRef.current = requestAnimationFrame(() => {
+          animationLoop();
+        });
+      } else {
+        animationFrameRef.current = requestAnimationFrame(() => {
+          animationLoop();
+        });
       }
-
-      // Compute the next cell data state
-      cellData.computeNext();
-
-      animationFrameRef.current = requestAnimationFrame(() => {
-        animationLoop();
-      });
     },
     [ctx, canvas, cellData]
   );
@@ -61,7 +76,7 @@ const useCellAnimation = (
     const cellWidth = overlay.width / gridSize.width;
     const cellHeight = overlay.height / gridSize.height;
 
-    overlayCtx.strokeStyle = "white";
+    overlayCtx.strokeStyle = "grey";
 
     for (let x = 0; x <= overlay.width; x += cellWidth) {
       overlayCtx.beginPath();
