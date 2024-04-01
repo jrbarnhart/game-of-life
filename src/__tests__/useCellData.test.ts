@@ -6,7 +6,7 @@ describe("useCellData", () => {
   it("returns object with correct properties", () => {
     const { result } = renderHook(() => useCellData(0));
     expect(result.current.gameState).toBeInstanceOf(Uint8Array);
-    expect(result.current.changedCells).toBeInstanceOf(Uint32Array);
+    expect(result.current.changedCells).toBeInstanceOf(Set);
     expect(result.current.computeNext).toBeTypeOf("function");
   });
 
@@ -31,8 +31,8 @@ describe("useCellData", () => {
     const { result } = renderHook(() =>
       useCellData(4, [0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0])
     );
-    expect(Array.from(result.current.changedCells)).toEqual([
-      8, 9, 10, 11, 14, 15, 16, 17, 20, 21, 22, 23, 26, 27, 28, 29,
+    expect([...result.current.changedCells]).toEqual([
+      7, 8, 9, 10, 13, 14, 15, 16, 19, 20, 21, 22, 25, 26, 27, 28,
     ]);
   });
 
