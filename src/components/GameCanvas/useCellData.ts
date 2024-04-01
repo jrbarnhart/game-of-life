@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 
 export interface CellData {
   gameState: Uint8Array;
-  changedCells: Uint32Array;
+  changedCells: Set<number>;
   computeNext: () => void;
 }
 
@@ -12,7 +12,7 @@ const useCellData = (
 ) => {
   // Grids are always square with one row of padding cells around the edges
   const paddedSize = gridSize + 2;
-  // Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
+  // Game State: Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
   const gameStateA = useRef<Uint8Array>(
     new Uint8Array(paddedSize * paddedSize)
   );
@@ -20,11 +20,9 @@ const useCellData = (
     new Uint8Array(paddedSize * paddedSize)
   );
   const currentState = useRef(gameStateA.current);
-  // Each Uint32 represents the location of a living cell (its index in gameState + 1)
-  const changedCells = useRef<Uint32Array>(
-    new Uint32Array(gridSize * gridSize)
-  );
-  const changedCellsIndex = useRef(0);
+  const nextState = useRef(gameStateB.current);
+  // Sets for keeping track of living cells and cells that have changed
+  const changedCells = useRef<Set<number>>(new Set());
 
   const copyToPaddingCells = useCallback(
     (gameState: Uint8Array, paddedSize: number) => {
@@ -86,7 +84,7 @@ const useCellData = (
         }
 
         // Add cell to changed cells for initial render
-        changedCells.current[changedCellsIndex.current++] = index + 1;
+        changedCells.current.add(index);
       }
     }
 
@@ -112,7 +110,23 @@ const useCellData = (
 
   // Method for calculating next state using Game of Life rules
   const computeNext = () => {
-    // Logic
+    changedCells.current.clear();
+
+    // Set next to current values
+    nextState.current.set(currentState.current);
+
+    // For all the living cells
+    //    Count living neighbors in currentState and add to nextState values (+1 per neighbor)
+    //    Iterate over non-padding cells in currentState and apply GoL rules updates to nextState
+    //      3 = comes to life (+128) and is added to changedCells
+    //      >= 128 && not 130 && not 131 it dies (-128) and is added to changedCells
+
+    // Update padding cells in nextState
+
+    // Swap current and next array refs rather than writing next to current
+    const temp = currentState.current;
+    currentState.current = nextState.current;
+    nextState.current = temp;
   };
 
   const cellData: CellData = {
