@@ -12,46 +12,32 @@ const useCellAnimation = (
   const animationLoop = useCallback(
     (options?: { initialDraw: boolean }) => {
       // Sqrt of total length of changedCells (instead of gameState), since padded cells won't be drawn
-      const gridSize = Math.sqrt(cellData.changedCells.length);
+      const gridSize = Math.sqrt(cellData.changedCells.size);
       const paddedSize = gridSize + 2;
       const cellSize = canvas ? canvas.width / gridSize : 0;
 
       // Helper fn for drawing cells
-      const drawCell = (
-        ctx: CanvasRenderingContext2D,
-        cellLocation: number
-      ) => {
-        const row = Math.floor(cellLocation / paddedSize) - 1;
-        const col = (cellLocation % paddedSize) - 2;
+      const drawCell = (ctx: CanvasRenderingContext2D, cellIndex: number) => {
+        const row = Math.floor(cellIndex / paddedSize) - 1;
+        const col = (cellIndex % paddedSize) - 1;
         const x = col * cellSize;
         const y = row * cellSize;
 
-        ctx.fillStyle =
-          cellData.gameState[cellLocation - 1] < 128 ? "black" : "white";
+        ctx.fillStyle = cellData.gameState[cellIndex] < 128 ? "black" : "white";
         ctx.beginPath();
         ctx.rect(x, y, cellSize, cellSize);
         ctx.fill();
       };
 
-      // If restarting animation clear it and redraw current cell state
+      // If restarting animation clear canvas
       if (options?.initialDraw && ctx && canvas) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        for (const cellLocation of cellData.changedCells) {
-          if (cellSize && cellLocation > 0) {
-            // Subtract 1 for 0 based index
-            drawCell(ctx, cellLocation);
-          } else {
-            break;
-          }
-        }
-      } else if (ctx) {
-        for (const cellLocation of cellData.changedCells) {
-          if (cellSize && cellLocation > 0) {
-            // Subtract 1 for 0 based index
-            drawCell(ctx, cellLocation);
-          } else {
-            break;
-          }
+      }
+
+      // Draw cells in changedCells set
+      for (const cellIndex of cellData.changedCells) {
+        if (cellSize && ctx) {
+          drawCell(ctx, cellIndex);
         }
       }
 
