@@ -8,22 +8,33 @@ const GameCanvas = () => {
 
   const cellData = useCellData({ width: 20, height: 20 });
 
-  const { canvasInitialized, canvasRef, contextRef } = useInitCanvas();
+  const {
+    canvasInitialized,
+    canvasRef,
+    contextRef,
+    overlayRef,
+    overlayContextRef,
+  } = useInitCanvas();
 
   useCellAnimation(
     canvasRef.current,
     contextRef.current,
+    overlayRef.current,
+    overlayContextRef.current,
     canvasInitialized,
     cellData
   );
 
   return (
-    <canvas
-      className="bg-white"
-      height={canvasSize.height}
-      width={canvasSize.width}
-      ref={canvasRef}
-    />
+    <div className="relative">
+      <canvas className="absolute top-0 bg-transparent" ref={overlayRef} />
+      <canvas
+        className="bg-black absolute top-0"
+        height={canvasSize.height}
+        width={canvasSize.width}
+        ref={canvasRef}
+      />
+    </div>
   );
 };
 
