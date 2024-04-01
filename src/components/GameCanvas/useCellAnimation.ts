@@ -11,15 +11,12 @@ const useCellAnimation = (
 
   const animationLoop = useCallback(
     (options?: { initialDraw: boolean }) => {
-      // Sqrt of total length of changedCells (instead of gameState), since padded cells won't be drawn
-      const gridSize = Math.sqrt(cellData.changedCells.size);
-      const paddedSize = gridSize + 2;
-      const cellSize = canvas ? canvas.width / gridSize : 0;
+      const cellSize = canvas ? canvas.width / cellData.gridSize.width : 0;
 
       // Helper fn for drawing cells
       const drawCell = (ctx: CanvasRenderingContext2D, cellIndex: number) => {
-        const row = Math.floor(cellIndex / paddedSize) - 1;
-        const col = (cellIndex % paddedSize) - 1;
+        const row = Math.floor(cellIndex / cellData.gridSize.height);
+        const col = cellIndex % cellData.gridSize.width;
         const x = col * cellSize;
         const y = row * cellSize;
 
