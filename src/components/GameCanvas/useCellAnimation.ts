@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useRef } from "react";
-import { CellData } from "./useCellData";
+import { CellData, GridSize } from "./useCellData";
 
 const useCellAnimation = (
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
+  overlay: HTMLCanvasElement | null,
+  overlayCtx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
   cellData: CellData
 ) => {
@@ -48,10 +50,39 @@ const useCellAnimation = (
     [ctx, canvas, cellData]
   );
 
+  const drawGridLines = (
+    overlay: HTMLCanvasElement | null,
+    overlayCtx: CanvasRenderingContext2D | null,
+    gridSize: GridSize
+  ) => {
+    if (!overlay || !overlayCtx) return;
+    console.log("Lines!");
+
+    const cellWidth = overlay.width / gridSize.width;
+    const cellHeight = overlay.height / gridSize.height;
+
+    overlayCtx.strokeStyle = "white";
+
+    for (let x = 0; x <= overlay.width; x += cellWidth) {
+      overlayCtx.beginPath();
+      overlayCtx.moveTo(x, 0);
+      overlayCtx.lineTo(x, overlay.height);
+      overlayCtx.stroke();
+    }
+
+    for (let y = 0; y <= overlay.height; y += cellHeight) {
+      overlayCtx.beginPath();
+      overlayCtx.moveTo(0, y);
+      overlayCtx.lineTo(overlay.width, y);
+      overlayCtx.stroke();
+    }
+  };
+
   // Start the animation if canvas is initialized
   useEffect(() => {
     if (canvasInitialized) {
       animationLoop({ initialDraw: true });
+      drawGridLines(overlay, overlayCtx, cellData.gridSize);
       console.log("Animation started");
     }
 
@@ -60,7 +91,13 @@ const useCellAnimation = (
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [animationLoop, canvasInitialized]);
+  }, [
+    animationLoop,
+    canvasInitialized,
+    cellData.gridSize,
+    overlay,
+    overlayCtx,
+  ]);
 };
 
 export default useCellAnimation;
