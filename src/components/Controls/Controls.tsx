@@ -1,6 +1,6 @@
 const Controls = () => {
   return (
-    <>
+    <div>
       <div className="w-96 p-1 grid grid-flow-col gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 border-black">
         <button
           aria-label="play"
@@ -89,7 +89,7 @@ const Controls = () => {
           Vertical
         </button>
       </div>
-    </>
+    </div>
   );
 };
 
