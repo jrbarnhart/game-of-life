@@ -26,7 +26,7 @@ const GameCanvas = () => {
   );
 
   return (
-    <div className="relative">
+    <div className={`relative w-[${canvasSize.width.toString()}px]`}>
       <canvas
         className="absolute top-0 bg-transparent z-10"
         height={canvasSize.height}
