@@ -142,6 +142,7 @@ const useCellData = (
 
     // Copy current state to next state for first calculations
     nextState.current.set(currentState.current);
+    console.log("Initialized data");
   }, [gridSize, initialData, countLivingNeighbors]);
 
   // Method for calculating next state using Game of Life rules
