@@ -13,7 +13,12 @@ const useCellAnimation = (
   const lastFrameTimeRef = useRef<number>(0);
 
   const animationLoop = useCallback(
-    (options?: { initialDraw: boolean }) => {
+    (
+      ctx: CanvasRenderingContext2D | null,
+      canvas: HTMLCanvasElement | null,
+      cellData: CellData,
+      options?: { initialDraw: boolean }
+    ) => {
       // Limit FPS
       const now = window.performance.now(); // Current timestamp
       const elapsed = now - lastFrameTimeRef.current; // Time elapsed since last frame
@@ -57,15 +62,15 @@ const useCellAnimation = (
         cellData.computeNext();
 
         animationFrameRef.current = requestAnimationFrame(() => {
-          animationLoop();
+          animationLoop(ctx, canvas, cellData);
         });
       } else {
         animationFrameRef.current = requestAnimationFrame(() => {
-          animationLoop();
+          animationLoop(ctx, canvas, cellData);
         });
       }
     },
-    [ctx, canvas, cellData]
+    []
   );
 
   const drawGridLines = (
@@ -99,7 +104,7 @@ const useCellAnimation = (
   // Start the animation if canvas is initialized
   useEffect(() => {
     if (canvasInitialized) {
-      animationLoop({ initialDraw: true });
+      animationLoop(ctx, canvas, cellData, { initialDraw: true });
       drawGridLines(overlay, overlayCtx, cellData.gridSize);
       console.log("Animation started");
     }
@@ -111,8 +116,10 @@ const useCellAnimation = (
     };
   }, [
     animationLoop,
+    canvas,
     canvasInitialized,
-    cellData.gridSize,
+    cellData,
+    ctx,
     overlay,
     overlayCtx,
   ]);
