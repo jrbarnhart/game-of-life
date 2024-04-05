@@ -1,5 +1,5 @@
 import { useRef } from "react";
-import Controls from "../Controls/Controls";
+import Controls from "./Controls/Controls";
 import GameCanvas from "./GameCanvas/GameCanvas";
 import useCellData from "./GameCanvas/useCellData";
 
