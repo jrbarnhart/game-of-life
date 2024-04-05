@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef } from "react";
 export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
+  livingCells: Set<number>;
   gridSize: GridSize;
   computeNext: () => void;
 }
@@ -186,6 +187,7 @@ const useCellData = (
   const cellData: CellData = {
     gameState: currentState.current,
     changedCells: changedCells.current,
+    livingCells: livingCells.current,
     gridSize,
     computeNext,
   };
