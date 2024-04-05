@@ -14,6 +14,7 @@ const GameCanvas = () => {
     contextRef,
     overlayRef,
     overlayContextRef,
+    containerRef,
   } = useInitCanvas();
 
   useCellAnimation(
@@ -26,9 +27,7 @@ const GameCanvas = () => {
   );
 
   return (
-    <div
-      className={`relative w-[${canvasSize.width.toString()}px] h-[${canvasSize.height.toString()}px]`}
-    >
+    <div ref={containerRef} className="relative">
       <canvas
         className="absolute top-0 bg-transparent z-10"
         height={canvasSize.height}
