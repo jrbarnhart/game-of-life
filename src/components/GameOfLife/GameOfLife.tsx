@@ -1,3 +1,4 @@
+import Controls from "../Controls/Controls";
 import GameCanvas from "./GameCanvas/GameCanvas";
 import useCellData from "./GameCanvas/useCellData";
 
@@ -10,7 +11,12 @@ const GameOfLife = ({
 }) => {
   const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
-  return <GameCanvas cellData={cellData} />;
+  return (
+    <div className="grid justify-items-center gap-y-5">
+      <GameCanvas cellData={cellData} />
+      <Controls />
+    </div>
+  );
 };
 
 export default GameOfLife;
