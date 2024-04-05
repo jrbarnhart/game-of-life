@@ -23,7 +23,7 @@ const useInitCanvas = (width: number, height: number) => {
       setCanvasInitialized(true);
       console.log("Canvas intialized.");
     }
-  }, [height, width]);
+  }, [width, height]);
 
   return {
     canvasInitialized,
