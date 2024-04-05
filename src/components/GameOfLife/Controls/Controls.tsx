@@ -11,6 +11,9 @@ const Controls = ({
     if (!isPlaying.current) {
       isPlaying.current = true;
     }
+    if (isPaused.current) {
+      isPaused.current = false;
+    }
   };
 
   const handlePauseClick = () => {
