@@ -3,21 +3,21 @@
 import { useState, useEffect } from "react";
 
 export const CANVAS_WIDTHS = {
-  xs: 320,
-  sm: 500,
+  xs: 300,
+  sm: 498,
   md: 600,
-  lg: 750,
-  xl: 850,
-  xxl: 850,
+  lg: 798,
+  xl: 996,
+  xxl: 996,
 };
 
 export const CANVAS_HEIGHTS = {
-  xs: 180,
-  sm: 281,
-  md: 338,
-  lg: 422,
-  xl: 478,
-  xxl: 478,
+  xs: 200,
+  sm: 332,
+  md: 400,
+  lg: 532,
+  xl: 664,
+  xxl: 664,
 };
 
 // TailwindCSS breakpoints
