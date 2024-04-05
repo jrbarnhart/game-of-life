@@ -1,9 +1,28 @@
-const Controls = () => {
+import React from "react";
+
+const Controls = ({
+  isPlaying,
+  isPaused,
+}: {
+  isPlaying: React.MutableRefObject<boolean>;
+  isPaused: React.MutableRefObject<boolean>;
+}) => {
+  const handlePlayClick = () => {
+    if (!isPlaying.current) {
+      isPlaying.current = true;
+    }
+  };
+
+  const handlePauseClick = () => {
+    isPaused.current = !isPaused.current;
+  };
+
   return (
     <div>
       <div className="w-96 p-1 grid grid-flow-col gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 border-black">
         <button
           aria-label="play"
+          onClick={handlePlayClick}
           className="h-10 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
@@ -22,6 +41,7 @@ const Controls = () => {
         </button>
         <button
           aria-label="pause"
+          onClick={handlePauseClick}
           className="h-10 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
