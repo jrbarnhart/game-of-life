@@ -1,12 +1,12 @@
 import Controls from "./components/Controls/Controls";
-import GameCanvas from "./components/GameOfLife/GameCanvas/GameCanvas";
+import GameOfLife from "./components/GameOfLife/GameOfLife";
 
 function App() {
   return (
     <>
       <main className="text-neutral-50 h-full w-full grid grid-rows-[repeat(3,_min-content)] justify-items-center gap-y-5">
         <h1 className="font-bold text-4xl pt-4">Game of Life</h1>
-        <GameCanvas gridWidth={30} gridHeight={20} />
+        <GameOfLife gridWidth={30} gridHeight={20} />
         <Controls />
       </main>
     </>
