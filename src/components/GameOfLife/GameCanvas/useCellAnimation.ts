@@ -8,7 +8,9 @@ const useCellAnimation = (
   overlay: HTMLCanvasElement | null,
   overlayCtx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
-  cellData: CellData
+  cellData: CellData,
+  isPlaying: React.MutableRefObject<boolean>,
+  isPaused: React.MutableRefObject<boolean>
 ) => {
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
@@ -18,6 +20,8 @@ const useCellAnimation = (
       ctx: CanvasRenderingContext2D | null,
       canvas: HTMLCanvasElement | null,
       cellData: CellData,
+      isPlaying: React.MutableRefObject<boolean>,
+      isPaused: React.MutableRefObject<boolean>,
       options?: { initialDraw: boolean }
     ) => {
       // Limit FPS
@@ -49,7 +53,7 @@ const useCellAnimation = (
         }
       }
 
-      if (elapsed > targetFrameRate) {
+      if (elapsed > targetFrameRate && isPlaying.current && !isPaused.current) {
         lastFrameTimeRef.current = now;
 
         // Draw cells in changedCells set
@@ -63,11 +67,11 @@ const useCellAnimation = (
         cellData.computeNext();
 
         animationFrameRef.current = requestAnimationFrame(() => {
-          animationLoop(ctx, canvas, cellData);
+          animationLoop(ctx, canvas, cellData, isPlaying, isPaused);
         });
       } else {
         animationFrameRef.current = requestAnimationFrame(() => {
-          animationLoop(ctx, canvas, cellData);
+          animationLoop(ctx, canvas, cellData, isPlaying, isPaused);
         });
       }
     },
@@ -107,7 +111,9 @@ const useCellAnimation = (
     if (canvasInitialized && ctx && canvas) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawGridLines(overlay, overlayCtx, cellData.gridSize);
-      animationLoop(ctx, canvas, cellData, { initialDraw: true });
+      animationLoop(ctx, canvas, cellData, isPlaying, isPaused, {
+        initialDraw: true,
+      });
       console.log("Animation started");
     }
 
@@ -125,6 +131,8 @@ const useCellAnimation = (
     overlay,
     overlayCtx,
     canvasSize,
+    isPlaying,
+    isPaused,
   ]);
 };
 
