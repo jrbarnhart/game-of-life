@@ -16,6 +16,7 @@ const GameCanvas = ({ cellData }: { cellData: CellData }) => {
   } = useInitCanvas(canvasSize.width, canvasSize.height);
 
   useCellAnimation(
+    canvasSize,
     canvasRef.current,
     contextRef.current,
     overlayRef.current,
