@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 const Controls = ({
   isPlaying,
@@ -7,6 +7,9 @@ const Controls = ({
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
 }) => {
+  const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
+  const [highlightPause, setHighlightPause] = useState<boolean>(false);
+
   const handlePlayClick = () => {
     if (!isPlaying.current) {
       isPlaying.current = true;
@@ -14,10 +17,16 @@ const Controls = ({
     if (isPaused.current) {
       isPaused.current = false;
     }
+    setHighlightPlay(true);
+    setHighlightPause(false);
   };
 
   const handlePauseClick = () => {
     isPaused.current = !isPaused.current;
+    if (isPaused.current) {
+      setHighlightPause(true);
+      setHighlightPlay(false);
+    }
   };
 
   return (
@@ -26,7 +35,11 @@ const Controls = ({
         <button
           aria-label="play"
           onClick={handlePlayClick}
-          className="h-10 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
+          className={`${
+            highlightPlay
+              ? "border-orange-400 text-neutral-50"
+              : "border-black text-neutral-950"
+          } h-10 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           <svg
             aria-hidden
@@ -45,7 +58,11 @@ const Controls = ({
         <button
           aria-label="pause"
           onClick={handlePauseClick}
-          className="h-10 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
+          className={`${
+            highlightPause
+              ? "border-orange-400 text-neutral-50"
+              : "border-black text-neutral-950"
+          } h-10 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           <svg
             aria-hidden
