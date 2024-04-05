@@ -22,10 +22,14 @@ const Controls = ({
   };
 
   const handlePauseClick = () => {
-    isPaused.current = !isPaused.current;
-    if (isPaused.current) {
+    if (!isPaused.current && isPlaying.current) {
+      isPaused.current = true;
       setHighlightPause(true);
       setHighlightPlay(false);
+    } else if (isPaused.current && isPlaying.current) {
+      isPaused.current = false;
+      setHighlightPause(false);
+      setHighlightPlay(true);
     }
   };
 
