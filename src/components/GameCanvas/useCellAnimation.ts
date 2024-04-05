@@ -22,19 +22,22 @@ const useCellAnimation = (
       if (elapsed > targetFrameRate) {
         lastFrameTimeRef.current = now;
 
-        const cellSize = canvas ? canvas.width / cellData.gridSize.width : 0;
+        const cellWidth = canvas ? canvas.width / cellData.gridSize.width : 0;
+        const cellHeight = canvas
+          ? canvas.height / cellData.gridSize.height
+          : 0;
 
         // Helper fn for drawing cells
         const drawCell = (ctx: CanvasRenderingContext2D, cellIndex: number) => {
-          const row = Math.floor(cellIndex / cellData.gridSize.height);
+          const row = Math.floor(cellIndex / cellData.gridSize.width);
           const col = cellIndex % cellData.gridSize.width;
-          const x = col * cellSize;
-          const y = row * cellSize;
+          const x = col * cellWidth;
+          const y = row * cellHeight;
 
           ctx.fillStyle =
             cellData.gameState[cellIndex] < 128 ? "black" : "white";
           ctx.beginPath();
-          ctx.rect(x, y, cellSize, cellSize);
+          ctx.rect(x, y, cellWidth, cellHeight);
           ctx.fill();
         };
 
@@ -45,7 +48,7 @@ const useCellAnimation = (
 
         // Draw cells in changedCells set
         for (const cellIndex of cellData.changedCells) {
-          if (cellSize && ctx) {
+          if (ctx) {
             drawCell(ctx, cellIndex);
           }
         }
