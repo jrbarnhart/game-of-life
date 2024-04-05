@@ -24,7 +24,7 @@ export const TW_BREAKPOINTS = {
 function useCanvasSize(margin: number, gridWidth: number, gridHeight: number) {
   const [canvasSize, setCanvasSize] = useState({
     width: CANVAS_WIDTHS.xs,
-    height: (gridHeight * CANVAS_WIDTHS.xs) / gridWidth,
+    height: (gridHeight * CANVAS_WIDTHS.xs) / gridWidth > 1 ? gridWidth : 1,
   });
   useEffect(() => {
     // Handler to call on window resize
@@ -49,7 +49,7 @@ function useCanvasSize(margin: number, gridWidth: number, gridHeight: number) {
       if (newWidth !== canvasSize.width) {
         setCanvasSize({
           width: newWidth,
-          height: (gridHeight * newWidth) / gridWidth,
+          height: (gridHeight * newWidth) / gridWidth > 0 ? gridWidth : 1,
         });
       }
     }
