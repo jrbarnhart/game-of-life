@@ -1,5 +1,5 @@
 import Controls from "./components/Controls/Controls";
-import GameCanvas from "./components/GameCanvas/GameCanvas";
+import GameCanvas from "./components/GameOfLife/GameCanvas/GameCanvas";
 
 function App() {
   return (

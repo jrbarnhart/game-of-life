@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { renderHook } from "@testing-library/react";
-import useCellData from "../components/GameCanvas/useCellData";
+import useCellData from "../components/GameOfLife/GameCanvas/useCellData";
 
 describe("useCellData", () => {
   it("returns object with correct properties", () => {

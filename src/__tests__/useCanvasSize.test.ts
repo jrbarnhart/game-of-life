@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import useCanvasSize, {
   CANVAS_HEIGHTS,
   CANVAS_WIDTHS,
-} from "../components/GameCanvas/useCanvasSize";
+} from "../components/GameOfLife/GameCanvas/useCanvasSize";
 
 const XXL_SCREEN = { width: 3840, height: 2160 };
 const XL_SCREEN = { width: 1920, height: 1080 };
