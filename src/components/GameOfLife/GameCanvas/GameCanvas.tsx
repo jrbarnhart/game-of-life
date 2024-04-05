@@ -1,18 +1,10 @@
 import useCanvasSize from "./useCanvasSize";
 import useCellAnimation from "./useCellAnimation";
-import useCellData from "./useCellData";
+import { CellData } from "./useCellData";
 import useInitCanvas from "./useInitCanvas";
 
-const GameCanvas = ({
-  gridWidth,
-  gridHeight,
-}: {
-  gridWidth: number;
-  gridHeight: number;
-}) => {
+const GameCanvas = ({ cellData }: { cellData: CellData }) => {
   const canvasSize = useCanvasSize(12);
-
-  const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
   const {
     canvasInitialized,
