@@ -16,7 +16,11 @@ const GameOfLife = ({
 
   return (
     <div className="grid justify-items-center gap-y-5">
-      <GameCanvas cellData={cellData} />
+      <GameCanvas
+        cellData={cellData}
+        isPlaying={isPlaying}
+        isPaused={isPaused}
+      />
       <Controls isPlaying={isPlaying} isPaused={isPaused} />
     </div>
   );
