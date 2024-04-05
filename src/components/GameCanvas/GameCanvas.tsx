@@ -10,7 +10,7 @@ const GameCanvas = ({
   gridWidth: number;
   gridHeight: number;
 }) => {
-  const canvasSize = useCanvasSize(12, gridWidth, gridHeight);
+  const canvasSize = useCanvasSize(12);
 
   const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
