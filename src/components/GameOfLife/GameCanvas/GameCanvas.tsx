@@ -3,7 +3,15 @@ import useCellAnimation from "./useCellAnimation";
 import { CellData } from "./useCellData";
 import useInitCanvas from "./useInitCanvas";
 
-const GameCanvas = ({ cellData }: { cellData: CellData }) => {
+const GameCanvas = ({
+  cellData,
+  isPlaying,
+  isPaused,
+}: {
+  cellData: CellData;
+  isPlaying: React.MutableRefObject<boolean>;
+  isPaused: React.MutableRefObject<boolean>;
+}) => {
   const canvasSize = useCanvasSize(12);
 
   const {
@@ -22,7 +30,9 @@ const GameCanvas = ({ cellData }: { cellData: CellData }) => {
     overlayRef.current,
     overlayContextRef.current,
     canvasInitialized,
-    cellData
+    cellData,
+    isPlaying,
+    isPaused
   );
 
   return (
