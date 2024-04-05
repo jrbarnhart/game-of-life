@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { CellData, GridSize } from "./useCellData";
 
 const useCellAnimation = (
+  canvasSize: { width: number; height: number },
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
   overlay: HTMLCanvasElement | null,
@@ -46,7 +47,7 @@ const useCellAnimation = (
           ctx.fill();
         };
 
-        // If restarting animation clear canvas
+        // If restarting animation
         if (options?.initialDraw && ctx && canvas) {
           ctx.clearRect(0, 0, canvas.width, canvas.height);
         }
@@ -122,6 +123,7 @@ const useCellAnimation = (
     ctx,
     overlay,
     overlayCtx,
+    canvasSize,
   ]);
 };
 
