@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-export const CANVAS_SIZES = {
+export const CANVAS_WIDTHS = {
   xs: 300,
   sm: 500,
   md: 600,
@@ -21,10 +21,10 @@ export const TW_BREAKPOINTS = {
 };
 
 // Hook
-function useCanvasSize(margin: number) {
+function useCanvasSize(margin: number, gridWidth: number, gridHeight: number) {
   const [canvasSize, setCanvasSize] = useState({
-    width: CANVAS_SIZES.xs,
-    height: CANVAS_SIZES.xs,
+    width: CANVAS_WIDTHS.xs,
+    height: (gridHeight * CANVAS_WIDTHS.xs) / gridWidth,
   });
   useEffect(() => {
     // Handler to call on window resize
@@ -33,21 +33,24 @@ function useCanvasSize(margin: number) {
       let newWidth = canvasSize.width;
 
       if (window.innerWidth >= TW_BREAKPOINTS.xxl + margin) {
-        newWidth = CANVAS_SIZES.xxl - margin;
+        newWidth = CANVAS_WIDTHS.xxl - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.xl + margin) {
-        newWidth = CANVAS_SIZES.xl - margin;
+        newWidth = CANVAS_WIDTHS.xl - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.lg + margin) {
-        newWidth = CANVAS_SIZES.lg - margin;
+        newWidth = CANVAS_WIDTHS.lg - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.md + margin) {
-        newWidth = CANVAS_SIZES.md - margin;
+        newWidth = CANVAS_WIDTHS.md - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.sm + margin) {
-        newWidth = CANVAS_SIZES.sm - margin;
+        newWidth = CANVAS_WIDTHS.sm - margin;
       } else if (window.innerWidth < TW_BREAKPOINTS.sm + margin) {
-        newWidth = CANVAS_SIZES.xs - margin;
+        newWidth = CANVAS_WIDTHS.xs - margin;
       }
 
       if (newWidth !== canvasSize.width) {
-        setCanvasSize({ width: newWidth, height: newWidth });
+        setCanvasSize({
+          width: newWidth,
+          height: (gridHeight * newWidth) / gridWidth,
+        });
       }
     }
     // Add event listener
@@ -58,7 +61,7 @@ function useCanvasSize(margin: number) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [canvasSize.width, margin]); // Empty array ensures that effect is only run on mount
+  }, [canvasSize.width, gridHeight, gridWidth, margin]); // Empty array ensures that effect is only run on mount
   return canvasSize;
 }
 
