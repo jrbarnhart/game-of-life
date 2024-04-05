@@ -66,6 +66,7 @@ function useCanvasSize(margin: number) {
           width: newWidth,
           height: newHeight,
         });
+        console.log("Resized window");
       }
     }
     // Add event listener
