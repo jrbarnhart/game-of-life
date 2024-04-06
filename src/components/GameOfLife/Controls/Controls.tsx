@@ -8,6 +8,7 @@ const Controls = ({
   cellData,
   clearCanvas,
   drawNext,
+  initialData,
 }: {
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
@@ -15,6 +16,7 @@ const Controls = ({
   cellData: CellData;
   clearCanvas: () => void;
   drawNext: () => void;
+  initialData: Set<number>;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -23,8 +25,9 @@ const Controls = ({
   const handlePlayClick = () => {
     if (!isPlaying.current) {
       isPlaying.current = true;
-      if (cellData.gameState.every((value) => value === 0)) {
-        console.log("All cellData state values empty. Init randomly.");
+      if (initialData.size > 0) {
+        cellData.initData(initialData);
+      } else {
         cellData.initData();
       }
     }
