@@ -6,11 +6,13 @@ const Controls = ({
   isPaused,
   cellData,
   clearCanvas,
+  drawNext,
 }: {
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
   cellData: CellData;
   clearCanvas: () => void;
+  drawNext: () => void;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -52,8 +54,10 @@ const Controls = ({
   };
 
   const handleNextClick = () => {
-    // just compute next???
-    // drawNext method???
+    isPaused.current = true;
+    setHighlightPlay(false);
+    setHighlightPause(true);
+    drawNext();
   };
 
   return (
