@@ -6,6 +6,7 @@ export interface CellData {
   livingCells: Set<number>;
   gridSize: GridSize;
   initData: () => void;
+  clear: () => void;
   computeNext: () => void;
 }
 
@@ -133,6 +134,11 @@ const useCellData = (gridSize: GridSize) => {
     console.log("Initialized data");
   }, [countLivingNeighbors, gridSize]);
 
+  // Method for clearing state data by setting values to 0
+  const clear = () => {
+    currentState.current.fill(0);
+  };
+
   // Method for calculating next state using Game of Life rules
   const computeNext = () => {
     changedCells.current.clear();
@@ -177,6 +183,7 @@ const useCellData = (gridSize: GridSize) => {
     livingCells: livingCells.current,
     gridSize,
     initData,
+    clear,
     computeNext,
   };
   return cellData;
