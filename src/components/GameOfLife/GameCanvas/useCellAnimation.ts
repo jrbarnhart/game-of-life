@@ -38,6 +38,25 @@ const useCellAnimation = (
     []
   );
 
+  const drawOverlayCell = (
+    cellIndex: number,
+    cellWidth: number,
+    cellHeight: number
+  ) => {
+    if (!overlayCtx) return;
+
+    const row = Math.floor(cellIndex / cellData.gridSize.width);
+    const col = cellIndex % cellData.gridSize.width;
+    const x = col * cellWidth;
+    const y = row * cellHeight;
+
+    overlayCtx.fillStyle =
+      cellData.gameState[cellIndex] < 128 ? "black" : "white";
+    overlayCtx.beginPath();
+    overlayCtx.rect(x, y, cellWidth, cellHeight);
+    overlayCtx.fill();
+  };
+
   const animationLoop = useCallback(
     (
       ctx: CanvasRenderingContext2D | null,
@@ -55,7 +74,7 @@ const useCellAnimation = (
       const cellWidth = canvas ? canvas.width / cellData.gridSize.width : 0;
       const cellHeight = canvas ? canvas.height / cellData.gridSize.height : 0;
 
-      // If restarting animation
+      // If initial draw
       if (options?.initialDraw && ctx) {
         console.log("initial draw");
         for (const cellIndex of cellData.livingCells) {
@@ -190,7 +209,7 @@ const useCellAnimation = (
     clearCanvas,
   ]);
 
-  const cellAnimation = { clearCanvas, drawNext };
+  const cellAnimation = { clearCanvas, drawNext, drawOverlayCell };
 
   return cellAnimation;
 };
