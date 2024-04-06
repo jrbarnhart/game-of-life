@@ -54,10 +54,12 @@ const Controls = ({
   };
 
   const handleNextClick = () => {
-    isPaused.current = true;
-    setHighlightPlay(false);
-    setHighlightPause(true);
-    drawNext();
+    if (isPlaying.current) {
+      isPaused.current = true;
+      setHighlightPlay(false);
+      setHighlightPause(true);
+      drawNext();
+    }
   };
 
   return (
