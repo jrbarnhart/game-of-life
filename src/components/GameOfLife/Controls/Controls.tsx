@@ -51,6 +51,11 @@ const Controls = ({
     clearCanvas();
   };
 
+  const handleNextClick = () => {
+    // just compute next???
+    // drawNext method???
+  };
+
   return (
     <div>
       <div className="w-96 p-1 grid grid-flow-col gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 border-black">
@@ -102,6 +107,7 @@ const Controls = ({
         </button>
         <button
           aria-label="next frame"
+          onClick={handleNextClick}
           className="h-10 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
