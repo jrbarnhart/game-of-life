@@ -5,15 +5,19 @@ const GameCanvas = ({
   overlayRef,
   containerRef,
   initialData,
+  isDrawing,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
+  isDrawing: React.MutableRefObject<boolean>;
 }) => {
   const addInitialData = () => {
-    // On click add the cell at the mouse location's index to initial data
-    console.log(initialData);
+    if (isDrawing.current) {
+      // On click add the cell at the mouse location's index to initial data
+      console.log(initialData);
+    }
   };
 
   return (
