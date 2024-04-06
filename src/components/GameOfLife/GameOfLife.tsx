@@ -19,6 +19,8 @@ const GameOfLife = ({
 
   const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
+  const initialData = new Set<number>();
+
   const canvasSize = useCanvasSize(12);
 
   const {
@@ -49,6 +51,7 @@ const GameOfLife = ({
         canvasRef={canvasRef}
         overlayRef={overlayRef}
         containerRef={containerRef}
+        initialData={initialData}
       />
       <Controls
         isPlaying={isPlaying}
