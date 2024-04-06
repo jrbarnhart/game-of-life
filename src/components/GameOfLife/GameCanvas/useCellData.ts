@@ -112,9 +112,6 @@ const useCellData = (gridSize: GridSize) => {
         currentState.current[index] = 128;
         livingCells.current.add(index);
       }
-      for (let i = 0; i < currentState.current.length; i++) {
-        changedCells.current.add(i);
-      }
     } else {
       // Initialize cells to living or dead at 1:1 ratio
       for (let i = 0; i < currentState.current.length; i++) {
