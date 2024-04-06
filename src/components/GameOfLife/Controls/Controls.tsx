@@ -30,6 +30,7 @@ const Controls = ({
       } else {
         cellData.initData();
       }
+      initialData.clear();
     }
     if (isPaused.current) {
       isPaused.current = false;
@@ -61,6 +62,7 @@ const Controls = ({
     setHighlightDrawing(false);
     cellData.clear();
     clearCanvas();
+    initialData.clear();
   };
 
   const handleNextClick = () => {
