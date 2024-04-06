@@ -13,9 +13,11 @@ const GameOfLife = ({
   gridWidth: number;
   gridHeight: number;
 }) => {
-  const cellData = useCellData({ width: gridWidth, height: gridHeight });
   const isPlaying = useRef<boolean>(false);
   const isPaused = useRef<boolean>(false);
+  const isDrawing = useRef<boolean>(false);
+
+  const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
   const canvasSize = useCanvasSize(12);
 
@@ -50,6 +52,7 @@ const GameOfLife = ({
       <Controls
         isPlaying={isPlaying}
         isPaused={isPaused}
+        isDrawing={isDrawing}
         cellData={cellData}
         clearCanvas={clearCanvas}
         drawNext={drawNext}
