@@ -5,7 +5,7 @@ export interface CellData {
   changedCells: Set<number>;
   livingCells: Set<number>;
   gridSize: GridSize;
-  initData: (initialData?: number[] | undefined) => void;
+  initData: (initialData?: Set<number> | undefined) => void;
   clear: () => void;
   computeNext: () => void;
 }
@@ -105,14 +105,14 @@ const useCellData = (gridSize: GridSize) => {
   };
 
   // Method to initialize data randomly
-  const initData = (initialData?: number[] | undefined) => {
+  const initData = (initialData?: Set<number> | undefined) => {
     if (initialData) {
-      // Initialize cells based on passed array of numbers
+      // Initialize cells based on passed array of indexes
+      for (const index of initialData) {
+        currentState.current[index] = 128;
+        livingCells.current.add(index);
+      }
       for (let i = 0; i < currentState.current.length; i++) {
-        if (initialData[i] > 0) {
-          currentState.current[i] = 128;
-          livingCells.current.add(i);
-        }
         changedCells.current.add(i);
       }
     } else {
