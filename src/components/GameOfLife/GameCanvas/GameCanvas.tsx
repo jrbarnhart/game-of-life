@@ -1,4 +1,5 @@
 import React from "react";
+import { useRef } from "react";
 import { CellData } from "./useCellData";
 
 const GameCanvas = ({
@@ -22,8 +23,35 @@ const GameCanvas = ({
     cellHeight: number
   ) => void;
 }) => {
-  const addInitialData = (event: React.MouseEvent) => {
-    if (isDrawing.current && canvasRef.current) {
+  const previousIndex = useRef<number | null>(null);
+
+  const handleMouseMove = (event: React.MouseEvent) => {
+    if (isDrawing.current && canvasRef.current && event.buttons === 1) {
+      // On click add the cell at the mouse location's index to initial data
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+      const cellWidth = canvasRef.current.width / cellData.gridSize.width;
+      const cellHeight = canvasRef.current.height / cellData.gridSize.height;
+      const boundingRect = canvasRef.current.getBoundingClientRect();
+      const canvasX = mouseX - boundingRect.left;
+      const canvasY = mouseY - boundingRect.top;
+      const gridX = Math.floor(canvasX / cellWidth);
+      const gridY = Math.floor(canvasY / cellHeight);
+      const index = gridY * cellData.gridSize.width + gridX;
+
+      if (index !== previousIndex.current) {
+        initialData.add(index);
+        drawOverlayCell(index, cellWidth, cellHeight);
+      }
+    }
+  };
+
+  const handleMouseUp = () => {
+    previousIndex.current = null;
+  };
+
+  const handleMouseDown = (event: React.MouseEvent) => {
+    if (isDrawing.current && canvasRef.current && event.buttons === 1) {
       // On click add the cell at the mouse location's index to initial data
       const mouseX = event.clientX;
       const mouseY = event.clientY;
@@ -37,14 +65,15 @@ const GameCanvas = ({
       const index = gridY * cellData.gridSize.width + gridX;
       initialData.add(index);
       drawOverlayCell(index, cellWidth, cellHeight);
-      console.log(initialData);
     }
   };
 
   return (
     <div ref={containerRef} className="relative">
       <canvas
-        onClick={addInitialData}
+        onMouseMove={handleMouseMove}
+        onMouseUp={handleMouseUp}
+        onMouseDown={handleMouseDown}
         className="absolute top-0 bg-transparent z-10"
         ref={overlayRef}
       />
