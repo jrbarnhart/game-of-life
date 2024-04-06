@@ -39,7 +39,8 @@ const GameOfLife = ({
     canvasInitialized,
     cellData,
     isPlaying,
-    isPaused
+    isPaused,
+    isDrawing
   );
 
   return (
