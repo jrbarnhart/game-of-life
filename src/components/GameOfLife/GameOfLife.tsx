@@ -21,7 +21,7 @@ const GameOfLife = ({
         isPlaying={isPlaying}
         isPaused={isPaused}
       />
-      <Controls isPlaying={isPlaying} isPaused={isPaused} />
+      <Controls isPlaying={isPlaying} isPaused={isPaused} cellData={cellData} />
     </div>
   );
 };
