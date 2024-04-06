@@ -4,18 +4,21 @@ import { CellData } from "../GameCanvas/useCellData";
 const Controls = ({
   isPlaying,
   isPaused,
+  isDrawing,
   cellData,
   clearCanvas,
   drawNext,
 }: {
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
+  isDrawing: React.MutableRefObject<boolean>;
   cellData: CellData;
   clearCanvas: () => void;
   drawNext: () => void;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
+  const [highlightDrawing, setHighlightDrawing] = useState<boolean>(false);
 
   const handlePlayClick = () => {
     if (!isPlaying.current) {
@@ -28,8 +31,10 @@ const Controls = ({
     if (isPaused.current) {
       isPaused.current = false;
     }
+    isDrawing.current = false;
     setHighlightPlay(true);
     setHighlightPause(false);
+    setHighlightDrawing(false);
   };
 
   const handlePauseClick = () => {
@@ -47,8 +52,10 @@ const Controls = ({
   const handleStopClick = () => {
     isPlaying.current = false;
     isPaused.current = false;
+    isDrawing.current = false;
     setHighlightPlay(false);
     setHighlightPause(false);
+    setHighlightDrawing(false);
     cellData.clear();
     clearCanvas();
   };
@@ -59,6 +66,22 @@ const Controls = ({
       setHighlightPlay(false);
       setHighlightPause(true);
       drawNext();
+    }
+  };
+
+  const handleDrawClicked = () => {
+    if (isPlaying.current) {
+      isPlaying.current = false;
+      isPaused.current = false;
+      setHighlightPlay(false);
+      setHighlightPause(false);
+      clearCanvas();
+    }
+    isDrawing.current = !isDrawing.current;
+    if (isDrawing.current) {
+      setHighlightDrawing(true);
+    } else {
+      setHighlightDrawing(false);
     }
   };
 
@@ -151,7 +174,14 @@ const Controls = ({
         </button>
       </div>
       <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black">
-        <button className="h-10 text-white hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center">
+        <button
+          onClick={handleDrawClicked}
+          className={`${
+            highlightDrawing
+              ? "text-orange-400 border-orange-400"
+              : "text-white border-black"
+          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+        >
           Draw
         </button>
         <p className="h-10 text-lg font-bold text-black text-center grid items-center">
