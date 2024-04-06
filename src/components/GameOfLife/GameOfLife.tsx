@@ -53,6 +53,7 @@ const GameOfLife = ({
         containerRef={containerRef}
         initialData={initialData}
         isDrawing={isDrawing}
+        cellData={cellData}
       />
       <Controls
         isPlaying={isPlaying}
