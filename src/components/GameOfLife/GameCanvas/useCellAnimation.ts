@@ -106,10 +106,16 @@ const useCellAnimation = (
     }
   };
 
+  const clearCanvas = useCallback(() => {
+    if (canvas && ctx) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }, [canvas, ctx]);
+
   // Start the animation if canvas is initialized
   useEffect(() => {
     if (canvasInitialized && ctx && canvas) {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      clearCanvas();
       drawGridLines(overlay, overlayCtx, cellData.gridSize);
       animationLoop(ctx, canvas, cellData, isPlaying, isPaused, {
         initialDraw: true,
@@ -133,7 +139,10 @@ const useCellAnimation = (
     canvasSize,
     isPlaying,
     isPaused,
+    clearCanvas,
   ]);
+
+  return { clearCanvas };
 };
 
 export default useCellAnimation;
