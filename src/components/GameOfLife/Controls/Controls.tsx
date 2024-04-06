@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { CellData } from "../GameCanvas/useCellData";
 
 const Controls = ({
   isPlaying,
   isPaused,
+  cellData,
 }: {
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
+  cellData: CellData;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -13,6 +16,10 @@ const Controls = ({
   const handlePlayClick = () => {
     if (!isPlaying.current) {
       isPlaying.current = true;
+      if (cellData.gameState.every((value) => value === 0)) {
+        console.log("All cellData state values empty. Init randomly.");
+        cellData.initData();
+      }
     }
     if (isPaused.current) {
       isPaused.current = false;
