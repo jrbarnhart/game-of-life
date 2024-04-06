@@ -15,6 +15,29 @@ const useCellAnimation = (
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
 
+  // Helper fn for drawing cells
+  const drawCell = useCallback(
+    (
+      ctx: CanvasRenderingContext2D,
+      cellIndex: number,
+      cellWidth: number,
+      cellHeight: number,
+      gameState: Uint8Array,
+      gridWidth: number
+    ) => {
+      const row = Math.floor(cellIndex / gridWidth);
+      const col = cellIndex % gridWidth;
+      const x = col * cellWidth;
+      const y = row * cellHeight;
+
+      ctx.fillStyle = gameState[cellIndex] < 128 ? "black" : "white";
+      ctx.beginPath();
+      ctx.rect(x, y, cellWidth, cellHeight);
+      ctx.fill();
+    },
+    []
+  );
+
   const animationLoop = useCallback(
     (
       ctx: CanvasRenderingContext2D | null,
@@ -32,24 +55,18 @@ const useCellAnimation = (
       const cellWidth = canvas ? canvas.width / cellData.gridSize.width : 0;
       const cellHeight = canvas ? canvas.height / cellData.gridSize.height : 0;
 
-      // Helper fn for drawing cells
-      const drawCell = (ctx: CanvasRenderingContext2D, cellIndex: number) => {
-        const row = Math.floor(cellIndex / cellData.gridSize.width);
-        const col = cellIndex % cellData.gridSize.width;
-        const x = col * cellWidth;
-        const y = row * cellHeight;
-
-        ctx.fillStyle = cellData.gameState[cellIndex] < 128 ? "black" : "white";
-        ctx.beginPath();
-        ctx.rect(x, y, cellWidth, cellHeight);
-        ctx.fill();
-      };
-
       // If restarting animation
       if (options?.initialDraw && ctx) {
         console.log("initial draw");
         for (const cellIndex of cellData.livingCells) {
-          drawCell(ctx, cellIndex);
+          drawCell(
+            ctx,
+            cellIndex,
+            cellWidth,
+            cellHeight,
+            cellData.gameState,
+            cellData.gridSize.width
+          );
         }
       }
 
@@ -59,7 +76,14 @@ const useCellAnimation = (
         // Draw cells in changedCells set
         for (const cellIndex of cellData.changedCells) {
           if (ctx) {
-            drawCell(ctx, cellIndex);
+            drawCell(
+              ctx,
+              cellIndex,
+              cellWidth,
+              cellHeight,
+              cellData.gameState,
+              cellData.gridSize.width
+            );
           }
         }
 
@@ -75,7 +99,7 @@ const useCellAnimation = (
         });
       }
     },
-    []
+    [drawCell]
   );
 
   const drawGridLines = (
@@ -112,6 +136,30 @@ const useCellAnimation = (
     }
   }, [canvas, ctx]);
 
+  const drawNext = () => {
+    // Draw cells in changedCells set
+    for (const cellIndex of cellData.changedCells) {
+      if (ctx) {
+        const cellWidth = canvas ? canvas.width / cellData.gridSize.width : 0;
+        const cellHeight = canvas
+          ? canvas.height / cellData.gridSize.height
+          : 0;
+        drawCell(
+          ctx,
+          cellIndex,
+          cellWidth,
+          cellHeight,
+          cellData.gameState,
+          cellData.gridSize.width
+        );
+        cellData.computeNext;
+      }
+    }
+
+    // Compute the next cell data state
+    cellData.computeNext();
+  };
+
   // Start the animation if canvas is initialized
   useEffect(() => {
     if (canvasInitialized && ctx && canvas) {
@@ -142,7 +190,9 @@ const useCellAnimation = (
     clearCanvas,
   ]);
 
-  return { clearCanvas };
+  const cellAnimation = { clearCanvas, drawNext };
+
+  return cellAnimation;
 };
 
 export default useCellAnimation;
