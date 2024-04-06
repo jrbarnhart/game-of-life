@@ -80,6 +80,7 @@ const Controls = ({
       isPaused.current = false;
       setHighlightPlay(false);
       setHighlightPause(false);
+      cellData.clear();
       clearCanvas();
     }
     isDrawing.current = !isDrawing.current;
