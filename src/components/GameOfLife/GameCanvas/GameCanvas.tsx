@@ -1,4 +1,5 @@
 import React from "react";
+import { CellData } from "./useCellData";
 
 const GameCanvas = ({
   canvasRef,
@@ -6,16 +7,29 @@ const GameCanvas = ({
   containerRef,
   initialData,
   isDrawing,
+  cellData,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
   isDrawing: React.MutableRefObject<boolean>;
+  cellData: CellData;
 }) => {
-  const addInitialData = () => {
-    if (isDrawing.current) {
+  const addInitialData = (event: React.MouseEvent) => {
+    if (isDrawing.current && canvasRef.current) {
       // On click add the cell at the mouse location's index to initial data
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+      const cellWidth = canvasRef.current.width / cellData.gridSize.width;
+      const cellHeight = canvasRef.current.height / cellData.gridSize.height;
+      const boundingRect = canvasRef.current.getBoundingClientRect();
+      const canvasX = mouseX - boundingRect.left;
+      const canvasY = mouseY - boundingRect.top;
+      const gridX = Math.floor(canvasX / cellWidth);
+      const gridY = Math.floor(canvasY / cellHeight);
+      const index = gridY * cellData.gridSize.width + gridX;
+      initialData.add(index);
       console.log(initialData);
     }
   };
