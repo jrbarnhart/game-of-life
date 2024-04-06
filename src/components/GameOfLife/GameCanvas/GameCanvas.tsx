@@ -1,40 +1,14 @@
-import useCanvasSize from "./useCanvasSize";
-import useCellAnimation from "./useCellAnimation";
-import { CellData } from "./useCellData";
-import useInitCanvas from "./useInitCanvas";
+import React from "react";
 
 const GameCanvas = ({
-  cellData,
-  isPlaying,
-  isPaused,
+  canvasRef,
+  overlayRef,
+  containerRef,
 }: {
-  cellData: CellData;
-  isPlaying: React.MutableRefObject<boolean>;
-  isPaused: React.MutableRefObject<boolean>;
+  canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
+  overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
+  containerRef: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
-  const canvasSize = useCanvasSize(12);
-
-  const {
-    canvasInitialized,
-    canvasRef,
-    contextRef,
-    overlayRef,
-    overlayContextRef,
-    containerRef,
-  } = useInitCanvas(canvasSize.width, canvasSize.height);
-
-  useCellAnimation(
-    canvasSize,
-    canvasRef.current,
-    contextRef.current,
-    overlayRef.current,
-    overlayContextRef.current,
-    canvasInitialized,
-    cellData,
-    isPlaying,
-    isPaused
-  );
-
   return (
     <div ref={containerRef} className="relative">
       <canvas className="absolute top-0 bg-transparent z-10" ref={overlayRef} />
