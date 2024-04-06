@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 
 export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
   livingCells: Set<number>;
   gridSize: GridSize;
+  initData: (initialData: number[] | undefined) => void;
   computeNext: () => void;
 }
 
@@ -13,10 +14,7 @@ export interface GridSize {
   height: number;
 }
 
-const useCellData = (
-  gridSize: GridSize,
-  initialData?: ArrayLike<number> | undefined
-) => {
+const useCellData = (gridSize: GridSize) => {
   // Game State: Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
   const currentState = useRef<Uint8Array>(
     new Uint8Array(gridSize.width * gridSize.height)
@@ -106,8 +104,8 @@ const useCellData = (
   };
 
   // Initialize data randomly, or based on passed initialData
-  const initializeData = useCallback(
-    (initialData: ArrayLike<number> | undefined) => {
+  const initData = useCallback(
+    (initialData: number[] | undefined) => {
       if (initialData) {
         for (let i = 0; i < currentState.current.length; i++) {
           const val = initialData[i];
@@ -147,10 +145,6 @@ const useCellData = (
     },
     [countLivingNeighbors, gridSize]
   );
-
-  useEffect(() => {
-    initializeData(initialData);
-  }, [gridSize, initialData, countLivingNeighbors, initializeData]);
 
   // Method for calculating next state using Game of Life rules
   const computeNext = () => {
@@ -195,6 +189,7 @@ const useCellData = (
     changedCells: changedCells.current,
     livingCells: livingCells.current,
     gridSize,
+    initData,
     computeNext,
   };
   return cellData;
