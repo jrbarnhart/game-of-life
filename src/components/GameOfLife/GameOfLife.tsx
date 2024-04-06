@@ -32,7 +32,7 @@ const GameOfLife = ({
     containerRef,
   } = useInitCanvas(canvasSize.width, canvasSize.height);
 
-  const { clearCanvas, drawNext } = useCellAnimation(
+  const { clearCanvas, drawNext, drawOverlayCell } = useCellAnimation(
     canvasSize,
     canvasRef.current,
     contextRef.current,
@@ -41,8 +41,7 @@ const GameOfLife = ({
     canvasInitialized,
     cellData,
     isPlaying,
-    isPaused,
-    isDrawing
+    isPaused
   );
 
   return (
@@ -54,6 +53,7 @@ const GameOfLife = ({
         initialData={initialData}
         isDrawing={isDrawing}
         cellData={cellData}
+        drawOverlayCell={drawOverlayCell}
       />
       <Controls
         isPlaying={isPlaying}
