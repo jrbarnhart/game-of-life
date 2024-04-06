@@ -8,6 +8,7 @@ const GameCanvas = ({
   initialData,
   isDrawing,
   cellData,
+  drawOverlayCell,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -15,6 +16,11 @@ const GameCanvas = ({
   initialData: Set<number>;
   isDrawing: React.MutableRefObject<boolean>;
   cellData: CellData;
+  drawOverlayCell: (
+    cellIndex: number,
+    cellWidth: number,
+    cellHeight: number
+  ) => void;
 }) => {
   const addInitialData = (event: React.MouseEvent) => {
     if (isDrawing.current && canvasRef.current) {
@@ -30,6 +36,7 @@ const GameCanvas = ({
       const gridY = Math.floor(canvasY / cellHeight);
       const index = gridY * cellData.gridSize.width + gridX;
       initialData.add(index);
+      drawOverlayCell(index, cellWidth, cellHeight);
       console.log(initialData);
     }
   };
