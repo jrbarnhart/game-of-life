@@ -52,6 +52,7 @@ const GameOfLife = ({
         overlayRef={overlayRef}
         containerRef={containerRef}
         initialData={initialData}
+        isDrawing={isDrawing}
       />
       <Controls
         isPlaying={isPlaying}
