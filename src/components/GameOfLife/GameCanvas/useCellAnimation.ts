@@ -38,23 +38,22 @@ const useCellAnimation = (
     []
   );
 
-  const drawOverlayCell = (
+  const drawInitialCell = (
     cellIndex: number,
     cellWidth: number,
     cellHeight: number
   ) => {
-    if (!overlayCtx) return;
+    if (!ctx) return;
 
     const row = Math.floor(cellIndex / cellData.gridSize.width);
     const col = cellIndex % cellData.gridSize.width;
     const x = col * cellWidth;
     const y = row * cellHeight;
 
-    overlayCtx.fillStyle =
-      cellData.gameState[cellIndex] < 128 ? "black" : "white";
-    overlayCtx.beginPath();
-    overlayCtx.rect(x, y, cellWidth, cellHeight);
-    overlayCtx.fill();
+    ctx.fillStyle = "white";
+    ctx.beginPath();
+    ctx.rect(x, y, cellWidth, cellHeight);
+    ctx.fill();
   };
 
   const animationLoop = useCallback(
@@ -209,7 +208,11 @@ const useCellAnimation = (
     clearCanvas,
   ]);
 
-  const cellAnimation = { clearCanvas, drawNext, drawOverlayCell };
+  const cellAnimation = {
+    clearCanvas,
+    drawNext,
+    drawInitialCell,
+  };
 
   return cellAnimation;
 };
