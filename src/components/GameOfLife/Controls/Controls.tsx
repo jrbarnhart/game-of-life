@@ -5,10 +5,12 @@ const Controls = ({
   isPlaying,
   isPaused,
   cellData,
+  clearCanvas,
 }: {
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
   cellData: CellData;
+  clearCanvas: () => void;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -41,8 +43,12 @@ const Controls = ({
   };
 
   const handleStopClick = () => {
-    // Re-init data
-    // Set refs
+    isPlaying.current = false;
+    isPaused.current = false;
+    setHighlightPlay(false);
+    setHighlightPause(false);
+    cellData.clear();
+    clearCanvas();
   };
 
   return (
