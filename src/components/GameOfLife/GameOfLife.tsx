@@ -62,6 +62,7 @@ const GameOfLife = ({
         cellData={cellData}
         clearCanvas={clearCanvas}
         drawNext={drawNext}
+        initialData={initialData}
       />
     </div>
   );
