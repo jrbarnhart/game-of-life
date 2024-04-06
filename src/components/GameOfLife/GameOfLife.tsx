@@ -28,7 +28,7 @@ const GameOfLife = ({
     containerRef,
   } = useInitCanvas(canvasSize.width, canvasSize.height);
 
-  const { clearCanvas } = useCellAnimation(
+  const { clearCanvas, drawNext } = useCellAnimation(
     canvasSize,
     canvasRef.current,
     contextRef.current,
@@ -52,6 +52,7 @@ const GameOfLife = ({
         isPaused={isPaused}
         cellData={cellData}
         clearCanvas={clearCanvas}
+        drawNext={drawNext}
       />
     </div>
   );
