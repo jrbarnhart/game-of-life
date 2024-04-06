@@ -5,7 +5,7 @@ export interface CellData {
   changedCells: Set<number>;
   livingCells: Set<number>;
   gridSize: GridSize;
-  initData: (initialData: number[] | undefined) => void;
+  initData: () => void;
   computeNext: () => void;
 }
 
@@ -103,48 +103,35 @@ const useCellData = (gridSize: GridSize) => {
     return birthIndexes;
   };
 
-  // Initialize data randomly, or based on passed initialData
-  const initData = useCallback(
-    (initialData: number[] | undefined) => {
-      if (initialData) {
-        for (let i = 0; i < currentState.current.length; i++) {
-          const val = initialData[i];
-          currentState.current[i] = val === 1 ? 128 : 0;
-          if (val === 1) {
-            livingCells.current.add(i);
-          }
-          changedCells.current.add(i);
-        }
-      } else {
-        for (let i = 0; i < currentState.current.length; i++) {
-          const val = Math.random() >= 0.5 ? 128 : 0;
-          currentState.current[i] = val;
-          if (val === 128) {
-            livingCells.current.add(i);
-          }
-          changedCells.current.add(i);
-        }
+  // Method to initialize data randomly
+  const initData = useCallback(() => {
+    // Initialize cells to living or dead at 1:1 ratio
+    for (let i = 0; i < currentState.current.length; i++) {
+      const val = Math.random() >= 0.5 ? 128 : 0;
+      currentState.current[i] = val;
+      if (val === 128) {
+        livingCells.current.add(i);
       }
+      changedCells.current.add(i);
+    }
 
-      // Initialize neighbor counts
-      for (let row = 0; row < gridSize.height; row++) {
-        for (let col = 0; col < gridSize.width; col++) {
-          const index = row * gridSize.width + col;
-          currentState.current[index] += countLivingNeighbors(
-            currentState.current,
-            row,
-            col,
-            gridSize
-          );
-        }
+    // Initialize neighbor counts
+    for (let row = 0; row < gridSize.height; row++) {
+      for (let col = 0; col < gridSize.width; col++) {
+        const index = row * gridSize.width + col;
+        currentState.current[index] += countLivingNeighbors(
+          currentState.current,
+          row,
+          col,
+          gridSize
+        );
       }
+    }
 
-      // Copy current state to next state for first calculations
-      nextState.current.set(currentState.current);
-      console.log("Initialized data");
-    },
-    [countLivingNeighbors, gridSize]
-  );
+    // Copy current state to next state for first calculations
+    nextState.current.set(currentState.current);
+    console.log("Initialized data");
+  }, [countLivingNeighbors, gridSize]);
 
   // Method for calculating next state using Game of Life rules
   const computeNext = () => {
