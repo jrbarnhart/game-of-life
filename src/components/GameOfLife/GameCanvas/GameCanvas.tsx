@@ -24,12 +24,23 @@ const GameCanvas = ({
   ) => void;
 }) => {
   const previousIndex = useRef<number | null>(null);
+  const isMouseOrTouchDown = useRef<boolean>(false);
 
-  const handleMouseMove = (event: React.MouseEvent) => {
-    if (isDrawing.current && canvasRef.current && event.buttons === 1) {
+  const handleMouseOrTouch = (event: React.MouseEvent | React.TouchEvent) => {
+    if (isDrawing.current && canvasRef.current && isMouseOrTouchDown.current) {
       // On click add the cell at the mouse location's index to initial data
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
+      let mouseX = 0;
+      let mouseY = 0;
+      if (event.nativeEvent instanceof MouseEvent && `clientX` in event) {
+        mouseX = event.clientX;
+        mouseY = event.clientY;
+      } else if (
+        event.nativeEvent instanceof TouchEvent &&
+        `touches` in event
+      ) {
+        mouseX = event.touches[0].clientX;
+        mouseY = event.touches[0].clientY;
+      }
       const cellWidth = canvasRef.current.width / cellData.gridSize.width;
       const cellHeight = canvasRef.current.height / cellData.gridSize.height;
       const boundingRect = canvasRef.current.getBoundingClientRect();
@@ -46,34 +57,27 @@ const GameCanvas = ({
     }
   };
 
-  const handleMouseUp = () => {
-    previousIndex.current = null;
+  const handleMouseOrTouchStart = (
+    event: React.MouseEvent | React.TouchEvent
+  ) => {
+    isMouseOrTouchDown.current = true;
+    handleMouseOrTouch(event);
   };
 
-  const handleMouseDown = (event: React.MouseEvent) => {
-    if (isDrawing.current && canvasRef.current && event.buttons === 1) {
-      // On click add the cell at the mouse location's index to initial data
-      const mouseX = event.clientX;
-      const mouseY = event.clientY;
-      const cellWidth = canvasRef.current.width / cellData.gridSize.width;
-      const cellHeight = canvasRef.current.height / cellData.gridSize.height;
-      const boundingRect = canvasRef.current.getBoundingClientRect();
-      const canvasX = mouseX - boundingRect.left;
-      const canvasY = mouseY - boundingRect.top;
-      const gridX = Math.floor(canvasX / cellWidth);
-      const gridY = Math.floor(canvasY / cellHeight);
-      const index = gridY * cellData.gridSize.width + gridX;
-      initialData.add(index);
-      drawOverlayCell(index, cellWidth, cellHeight);
-    }
+  const handleMouseUpOrTouchEnd = () => {
+    previousIndex.current = null;
+    isMouseOrTouchDown.current = false;
   };
 
   return (
     <div ref={containerRef} className="relative">
       <canvas
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUpOrTouchEnd}
+        onMouseDown={handleMouseOrTouchStart}
+        onMouseMove={handleMouseOrTouch}
+        onTouchStart={handleMouseOrTouchStart}
+        onTouchEnd={handleMouseUpOrTouchEnd}
+        onTouchMove={handleMouseOrTouch}
         className="absolute top-0 bg-transparent z-10"
         ref={overlayRef}
       />
