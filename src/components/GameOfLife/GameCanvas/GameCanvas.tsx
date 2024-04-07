@@ -78,10 +78,10 @@ const GameCanvas = ({
         onTouchStart={handleMouseOrTouchStart}
         onTouchEnd={handleMouseUpOrTouchEnd}
         onTouchMove={handleMouseOrTouch}
-        className="absolute top-0 bg-transparent z-10"
+        className="absolute top-0 bg-transparent z-10 touch-none"
         ref={overlayRef}
       />
-      <canvas className="bg-black absolute top-0" ref={canvasRef} />
+      <canvas className="bg-black absolute top-0 touch-none" ref={canvasRef} />
     </div>
   );
 };
