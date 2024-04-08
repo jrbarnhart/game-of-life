@@ -16,6 +16,8 @@ const GameOfLife = ({
   const isPlaying = useRef<boolean>(false);
   const isPaused = useRef<boolean>(false);
   const isDrawing = useRef<boolean>(false);
+  const mirrorX = useRef<boolean>(false);
+  const mirrorY = useRef<boolean>(false);
 
   const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
@@ -52,6 +54,8 @@ const GameOfLife = ({
         containerRef={containerRef}
         initialData={initialData}
         isDrawing={isDrawing}
+        mirrorX={mirrorX}
+        mirrorY={mirrorY}
         cellData={cellData}
         drawOverlayCell={drawInitialCell}
       />
@@ -59,6 +63,8 @@ const GameOfLife = ({
         isPlaying={isPlaying}
         isPaused={isPaused}
         isDrawing={isDrawing}
+        mirrorX={mirrorX}
+        mirrorY={mirrorY}
         cellData={cellData}
         clearCanvas={clearCanvas}
         drawNext={drawNext}
