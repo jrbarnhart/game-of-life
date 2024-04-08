@@ -35,6 +35,8 @@ const GameCanvas = ({
       // On click add the cell at the mouse location's index to initial data
       let mouseX = 0;
       let mouseY = 0;
+      const boundingRect = canvasRef.current.getBoundingClientRect();
+
       if (event.nativeEvent instanceof MouseEvent && `clientX` in event) {
         mouseX = event.clientX;
         mouseY = event.clientY;
@@ -44,10 +46,18 @@ const GameCanvas = ({
       ) {
         mouseX = event.touches[0].clientX;
         mouseY = event.touches[0].clientY;
+        if (
+          mouseX < boundingRect.left ||
+          mouseX > boundingRect.right ||
+          mouseY < boundingRect.top ||
+          mouseY > boundingRect.bottom
+        ) {
+          return;
+        }
       }
+
       const cellWidth = canvasRef.current.width / cellData.gridSize.width;
       const cellHeight = canvasRef.current.height / cellData.gridSize.height;
-      const boundingRect = canvasRef.current.getBoundingClientRect();
       const canvasX = mouseX - boundingRect.left;
       const canvasY = mouseY - boundingRect.top;
       const gridX = Math.floor(canvasX / cellWidth);
