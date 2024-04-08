@@ -8,6 +8,8 @@ const GameCanvas = ({
   containerRef,
   initialData,
   isDrawing,
+  mirrorX,
+  mirrorY,
   cellData,
   drawOverlayCell,
 }: {
@@ -16,6 +18,8 @@ const GameCanvas = ({
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
   isDrawing: React.MutableRefObject<boolean>;
+  mirrorX: React.MutableRefObject<boolean>;
+  mirrorY: React.MutableRefObject<boolean>;
   cellData: CellData;
   drawOverlayCell: (
     cellIndex: number,
@@ -53,6 +57,36 @@ const GameCanvas = ({
       if (index !== previousIndex.current) {
         initialData.add(index);
         drawOverlayCell(index, cellWidth, cellHeight);
+        if (mirrorX.current || mirrorY.current) {
+          const rowIndex = Math.floor(index / cellData.gridSize.width);
+          const colIndex = index % cellData.gridSize.width;
+          const mirroredRowIndex = cellData.gridSize.height - 1 - rowIndex;
+          const mirroredColIndex = cellData.gridSize.width - 1 - colIndex;
+          if (mirrorX.current && mirrorY.current) {
+            const mirroredIndexX =
+              rowIndex * cellData.gridSize.width + mirroredColIndex;
+            const mirroredIndexY =
+              mirroredRowIndex * cellData.gridSize.width + colIndex;
+            const mirroredIndexXY =
+              mirroredRowIndex * cellData.gridSize.width + mirroredColIndex;
+            initialData.add(mirroredIndexX);
+            initialData.add(mirroredIndexY);
+            initialData.add(mirroredIndexXY);
+            drawOverlayCell(mirroredIndexX, cellWidth, cellHeight);
+            drawOverlayCell(mirroredIndexY, cellWidth, cellHeight);
+            drawOverlayCell(mirroredIndexXY, cellWidth, cellHeight);
+          } else if (mirrorX.current) {
+            const mirroredIndex =
+              rowIndex * cellData.gridSize.width + mirroredColIndex;
+            initialData.add(mirroredIndex);
+            drawOverlayCell(mirroredIndex, cellWidth, cellHeight);
+          } else if (mirrorY.current) {
+            const mirroredIndex =
+              mirroredRowIndex * cellData.gridSize.width + colIndex;
+            initialData.add(mirroredIndex);
+            drawOverlayCell(mirroredIndex, cellWidth, cellHeight);
+          }
+        }
       }
     }
   };
@@ -62,6 +96,12 @@ const GameCanvas = ({
   ) => {
     isMouseOrTouchDown.current = true;
     handleMouseOrTouch(event);
+
+    if (event.nativeEvent instanceof MouseEvent && `clientX` in event) {
+      window.addEventListener("mouseup", handleMouseUpOrTouchEnd);
+    } else if (event.nativeEvent instanceof TouchEvent && `touches` in event) {
+      window.addEventListener("touchend", handleMouseUpOrTouchEnd);
+    }
   };
 
   const handleMouseUpOrTouchEnd = () => {
@@ -72,11 +112,9 @@ const GameCanvas = ({
   return (
     <div ref={containerRef} className="relative">
       <canvas
-        onMouseUp={handleMouseUpOrTouchEnd}
         onMouseDown={handleMouseOrTouchStart}
         onMouseMove={handleMouseOrTouch}
         onTouchStart={handleMouseOrTouchStart}
-        onTouchEnd={handleMouseUpOrTouchEnd}
         onTouchMove={handleMouseOrTouch}
         className="absolute top-0 bg-transparent z-10 touch-none"
         ref={overlayRef}
