@@ -42,9 +42,13 @@ const Controls = ({
       isPaused.current = false;
     }
     isDrawing.current = false;
+    mirrorX.current = false;
+    mirrorY.current = false;
+    setHighlightDrawing(false);
+    setHighlightMirrorX(false);
+    setHighlightMirrorY(false);
     setHighlightPlay(true);
     setHighlightPause(false);
-    setHighlightDrawing(false);
   };
 
   const handlePauseClick = () => {
@@ -63,9 +67,13 @@ const Controls = ({
     isPlaying.current = false;
     isPaused.current = false;
     isDrawing.current = false;
+    mirrorX.current = false;
+    mirrorY.current = false;
     setHighlightPlay(false);
     setHighlightPause(false);
     setHighlightDrawing(false);
+    setHighlightMirrorX(false);
+    setHighlightMirrorY(false);
     cellData.clear();
     clearCanvas();
     initialData.clear();
@@ -90,10 +98,12 @@ const Controls = ({
       clearCanvas();
     }
     isDrawing.current = !isDrawing.current;
-    if (isDrawing.current) {
-      setHighlightDrawing(true);
-    } else {
-      setHighlightDrawing(false);
+    setHighlightDrawing(isDrawing.current);
+    if (!isDrawing.current) {
+      mirrorX.current = false;
+      mirrorY.current = false;
+      setHighlightMirrorX(false);
+      setHighlightMirrorY(false);
     }
   };
 
