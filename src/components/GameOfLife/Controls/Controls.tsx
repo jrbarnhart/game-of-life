@@ -5,6 +5,8 @@ const Controls = ({
   isPlaying,
   isPaused,
   isDrawing,
+  mirrorX,
+  mirrorY,
   cellData,
   clearCanvas,
   drawNext,
@@ -13,6 +15,8 @@ const Controls = ({
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
   isDrawing: React.MutableRefObject<boolean>;
+  mirrorX: React.MutableRefObject<boolean>;
+  mirrorY: React.MutableRefObject<boolean>;
   cellData: CellData;
   clearCanvas: () => void;
   drawNext: () => void;
@@ -21,6 +25,8 @@ const Controls = ({
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
   const [highlightDrawing, setHighlightDrawing] = useState<boolean>(false);
+  const [highlightMirrorX, setHighlightMirrorX] = useState<boolean>(false);
+  const [highlightMirrorY, setHighlightMirrorY] = useState<boolean>(false);
 
   const handlePlayClick = () => {
     if (!isPlaying.current) {
@@ -74,7 +80,7 @@ const Controls = ({
     }
   };
 
-  const handleDrawClicked = () => {
+  const handleDrawClick = () => {
     if (isPlaying.current) {
       isPlaying.current = false;
       isPaused.current = false;
@@ -88,6 +94,21 @@ const Controls = ({
       setHighlightDrawing(true);
     } else {
       setHighlightDrawing(false);
+    }
+  };
+
+  const handleMirrorClick = (allignment: "x" | "y") => {
+    if (!isDrawing.current) {
+      handleDrawClick();
+    }
+
+    if (allignment === "x") {
+      mirrorX.current = !mirrorX.current;
+      setHighlightMirrorX(mirrorX.current);
+    }
+    if (allignment === "y") {
+      mirrorY.current = !mirrorY.current;
+      setHighlightMirrorY(mirrorY.current);
     }
   };
 
@@ -181,7 +202,7 @@ const Controls = ({
       </div>
       <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black">
         <button
-          onClick={handleDrawClicked}
+          onClick={handleDrawClick}
           className={`${
             highlightDrawing
               ? "text-orange-400 border-orange-400"
@@ -193,10 +214,28 @@ const Controls = ({
         <p className="h-10 text-lg font-bold text-black text-center grid items-center">
           Mirror:{" "}
         </p>
-        <button className="h-10 text-white hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center">
+        <button
+          onClick={() => {
+            handleMirrorClick("x");
+          }}
+          className={`${
+            highlightMirrorX
+              ? "text-orange-400 border-orange-400"
+              : "text-white border-black"
+          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+        >
           Horizontal
         </button>
-        <button className="h-10 text-white hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center">
+        <button
+          onClick={() => {
+            handleMirrorClick("y");
+          }}
+          className={`${
+            highlightMirrorY
+              ? "text-orange-400 border-orange-400"
+              : "text-white border-black"
+          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+        >
           Vertical
         </button>
       </div>
