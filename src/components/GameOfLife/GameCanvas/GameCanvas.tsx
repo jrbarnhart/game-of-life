@@ -48,7 +48,7 @@ const GameCanvas = ({
         mouseY = event.touches[0].clientY;
         if (
           mouseX < boundingRect.left ||
-          mouseX > boundingRect.right ||
+          mouseX >= boundingRect.right ||
           mouseY < boundingRect.top ||
           mouseY > boundingRect.bottom
         ) {
