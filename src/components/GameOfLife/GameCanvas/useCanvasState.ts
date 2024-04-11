@@ -20,15 +20,6 @@ export const CANVAS_WIDTHS = {
   xxl: 996,
 };
 
-export const CANVAS_HEIGHTS = {
-  xs: 200,
-  sm: 332,
-  md: 400,
-  lg: 532,
-  xl: 664,
-  xxl: 664,
-};
-
 // TailwindCSS breakpoints
 export const TW_BREAKPOINTS = {
   sm: 640,
@@ -40,9 +31,12 @@ export const TW_BREAKPOINTS = {
 
 // Hook
 function useCanvasState(margin: number, controlRefs: ControlRefs) {
+  const heightRatio =
+    controlRefs.aspect.current.height / controlRefs.aspect.current.width;
+
   const [canvasSize, setCanvasSize] = useState({
     width: CANVAS_WIDTHS.xs,
-    height: CANVAS_HEIGHTS.xs,
+    height: CANVAS_WIDTHS.xs * heightRatio,
   });
 
   const initGridWidth = Math.sqrt(
@@ -52,6 +46,7 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
   const initGridHeight =
     (initGridWidth * controlRefs.aspect.current.height) /
     controlRefs.aspect.current.width;
+
   const [gridSize, setGridSize] = useState<{ width: number; height: number }>({
     width: initGridWidth,
     height: initGridHeight,
@@ -61,34 +56,36 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
     // Handler to call on window resize
     function handleResize() {
       // Set canvas size based on window size and breakpoints
+      const heightRatio =
+        controlRefs.aspect.current.height / controlRefs.aspect.current.width;
       let newWidth = canvasSize.width;
       let newHeight = canvasSize.height;
       if (window.innerWidth >= TW_BREAKPOINTS.xxl + margin) {
         newWidth = CANVAS_WIDTHS.xxl - margin;
-        newHeight = CANVAS_HEIGHTS.xxl - margin;
+        newHeight = CANVAS_WIDTHS.xxl * heightRatio - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.xl + margin) {
         newWidth = CANVAS_WIDTHS.xl - margin;
-        newHeight = CANVAS_HEIGHTS.xl - margin;
+        newHeight = CANVAS_WIDTHS.xl * heightRatio - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.lg + margin) {
         newWidth = CANVAS_WIDTHS.lg - margin;
-        newHeight = CANVAS_HEIGHTS.lg - margin;
+        newHeight = CANVAS_WIDTHS.lg * heightRatio - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.md + margin) {
         newWidth = CANVAS_WIDTHS.md - margin;
-        newHeight = CANVAS_HEIGHTS.md - margin;
+        newHeight = CANVAS_WIDTHS.md * heightRatio - margin;
       } else if (window.innerWidth >= TW_BREAKPOINTS.sm + margin) {
         newWidth = CANVAS_WIDTHS.sm - margin;
-        newHeight = CANVAS_HEIGHTS.sm - margin;
+        newHeight = CANVAS_WIDTHS.sm * heightRatio - margin;
       } else if (window.innerWidth < TW_BREAKPOINTS.sm + margin) {
         newWidth = CANVAS_WIDTHS.xs - margin;
-        newHeight = CANVAS_HEIGHTS.xs - margin;
+        newHeight = CANVAS_WIDTHS.xs * heightRatio - margin;
       }
 
-      if (newWidth !== canvasSize.width) {
+      if (newWidth !== canvasSize.width || newHeight !== canvasSize.height) {
         setCanvasSize({
           width: newWidth,
           height: newHeight,
         });
-        console.log("Resized window");
+        console.log("Resized canvas");
       }
     }
     // Add event listener
@@ -99,7 +96,7 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [canvasSize.height, canvasSize.width, margin]);
+  }, [canvasSize.height, canvasSize.width, controlRefs.aspect, margin]);
 
   const canvasState: CanvasStateInterface = {
     canvasSize,
