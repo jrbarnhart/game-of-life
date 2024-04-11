@@ -6,16 +6,13 @@ import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
 
-const GameOfLife = ({
-  gridWidth,
-  gridHeight,
-}: {
-  gridWidth: number;
-  gridHeight: number;
-}) => {
+const GameOfLife = () => {
   const controlRefs = useControlRefs();
 
-  const cellData = useCellData({ width: gridWidth, height: gridHeight });
+  const cellData = useCellData({
+    width: controlRefs.resolution.current.x,
+    height: controlRefs.resolution.current.y,
+  });
 
   const initialData = new Set<number>();
 
