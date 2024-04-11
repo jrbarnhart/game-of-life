@@ -37,11 +37,13 @@ const Controls = ({
       controlRefs.isPaused.current = false;
     }
     controlRefs.isDrawing.current = false;
+    controlRefs.isErasing.current = false;
     controlRefs.mirrorX.current = false;
     controlRefs.mirrorY.current = false;
     setHighlightDraw(false);
-    setHighlightMirrorX(0);
-    setHighlightMirrorY(0);
+    setHighlightErase(-1);
+    setHighlightMirrorX(-1);
+    setHighlightMirrorY(-1);
     setHighlightPlay(true);
     setHighlightPause(false);
   };
