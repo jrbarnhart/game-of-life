@@ -18,9 +18,10 @@ const Controls = ({
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
   const [highlightDraw, setHighlightDraw] = useState<boolean>(false);
-  const [highlightErase, setHighlightErase] = useState<boolean>(false);
-  const [highlightMirrorX, setHighlightMirrorX] = useState<boolean>(false);
-  const [highlightMirrorY, setHighlightMirrorY] = useState<boolean>(false);
+  // Number state: -1 dim, 0 normal, 1 highlight
+  const [highlightErase, setHighlightErase] = useState<number>(0);
+  const [highlightMirrorX, setHighlightMirrorX] = useState<number>(0);
+  const [highlightMirrorY, setHighlightMirrorY] = useState<number>(0);
 
   const handlePlayClick = () => {
     if (!controlRefs.isPlaying.current) {
@@ -39,8 +40,8 @@ const Controls = ({
     controlRefs.mirrorX.current = false;
     controlRefs.mirrorY.current = false;
     setHighlightDraw(false);
-    setHighlightMirrorX(false);
-    setHighlightMirrorY(false);
+    setHighlightMirrorX(0);
+    setHighlightMirrorY(0);
     setHighlightPlay(true);
     setHighlightPause(false);
   };
@@ -66,8 +67,8 @@ const Controls = ({
     setHighlightPlay(false);
     setHighlightPause(false);
     setHighlightDraw(false);
-    setHighlightMirrorX(false);
-    setHighlightMirrorY(false);
+    setHighlightMirrorX(0);
+    setHighlightMirrorY(0);
     cellData.clear();
     clearCanvas();
     initialData.clear();
@@ -96,8 +97,8 @@ const Controls = ({
     if (!controlRefs.isDrawing.current) {
       controlRefs.mirrorX.current = false;
       controlRefs.mirrorY.current = false;
-      setHighlightMirrorX(false);
-      setHighlightMirrorY(false);
+      setHighlightMirrorX(0);
+      setHighlightMirrorY(0);
     }
   };
 
@@ -112,11 +113,11 @@ const Controls = ({
 
     if (allignment === "x") {
       controlRefs.mirrorX.current = !controlRefs.mirrorX.current;
-      setHighlightMirrorX(controlRefs.mirrorX.current);
+      setHighlightMirrorX(controlRefs.mirrorX.current ? 1 : 0);
     }
     if (allignment === "y") {
       controlRefs.mirrorY.current = !controlRefs.mirrorY.current;
-      setHighlightMirrorY(controlRefs.mirrorY.current);
+      setHighlightMirrorY(controlRefs.mirrorY.current ? 1 : 0);
     }
   };
 
@@ -222,7 +223,7 @@ const Controls = ({
         <button
           onClick={handleEraseClick}
           className={`${
-            highlightErase
+            highlightErase === 1
               ? "text-orange-400 border-orange-400"
               : "text-white border-black"
           } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
@@ -234,7 +235,7 @@ const Controls = ({
             handleMirrorClick("x");
           }}
           className={`${
-            highlightMirrorX
+            highlightMirrorX === 1
               ? "text-orange-400 border-orange-400"
               : "text-white border-black"
           } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
@@ -246,7 +247,7 @@ const Controls = ({
             handleMirrorClick("y");
           }}
           className={`${
-            highlightMirrorY
+            highlightMirrorY === 1
               ? "text-orange-400 border-orange-400"
               : "text-white border-black"
           } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
