@@ -8,7 +8,7 @@ export interface ControlRefs {
   mirrorX: React.MutableRefObject<boolean>;
   mirrorY: React.MutableRefObject<boolean>;
   aspect: React.MutableRefObject<{ width: number; height: number }>;
-  resolution: React.MutableRefObject<{ width: number; height: number }>;
+  totalCells: React.MutableRefObject<number>;
 }
 
 const useControlRefs = () => {
@@ -19,7 +19,7 @@ const useControlRefs = () => {
   const mirrorX = useRef(false);
   const mirrorY = useRef(false);
   const aspect = useRef({ width: 3, height: 2 });
-  const resolution = useRef({ width: 45, height: 30 });
+  const totalCells = useRef(1350); // 45 x 30 default
 
   const controlRefs: ControlRefs = {
     isPlaying,
@@ -29,7 +29,7 @@ const useControlRefs = () => {
     mirrorX,
     mirrorY,
     aspect,
-    resolution,
+    totalCells,
   };
 
   return controlRefs;
