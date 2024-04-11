@@ -39,7 +39,7 @@ export const TW_BREAKPOINTS = {
 };
 
 // Hook
-function useCanvasSize(margin: number, controlRefs: ControlRefs) {
+function useCanvasState(margin: number, controlRefs: ControlRefs) {
   const [canvasSize, setCanvasSize] = useState({
     width: CANVAS_WIDTHS.xs,
     height: CANVAS_HEIGHTS.xs,
@@ -110,4 +110,4 @@ function useCanvasSize(margin: number, controlRefs: ControlRefs) {
   return canvasState;
 }
 
-export default useCanvasSize;
+export default useCanvasState;
