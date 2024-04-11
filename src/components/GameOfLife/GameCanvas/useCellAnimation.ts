@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CellData, GridSize } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
+import { CanvasStateInterface } from "./useCanvasState";
 
 const useCellAnimation = (
-  canvasState: CanvasState,
+  canvasState: CanvasStateInterface,
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
   overlay: HTMLCanvasElement | null,
