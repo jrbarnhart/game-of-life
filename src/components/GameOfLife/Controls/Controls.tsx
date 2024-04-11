@@ -259,7 +259,7 @@ const Controls = ({
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           } h-10  rounded-md border-2  grid items-center justify-items-center`}
         >
-          Horizontal
+          Mirror X
         </button>
         <button
           onClick={() => {
@@ -273,7 +273,7 @@ const Controls = ({
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           } h-10  rounded-md border-2  grid items-center justify-items-center`}
         >
-          Vertical
+          Mirror Y
         </button>
       </div>
     </div>
