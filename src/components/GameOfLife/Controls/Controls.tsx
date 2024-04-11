@@ -228,7 +228,7 @@ const Controls = ({
           </svg>
         </button>
       </div>
-      <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black">
+      <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-b-0 border-black">
         <button
           onClick={handleDrawClick}
           className={`${
@@ -281,6 +281,11 @@ const Controls = ({
           aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Mirror Y
+        </button>
+      </div>
+      <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black">
+        <button className="h-10  rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400">
+          {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
         </button>
       </div>
     </div>
