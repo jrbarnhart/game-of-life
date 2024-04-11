@@ -95,8 +95,14 @@ const Controls = ({
     controlRefs.isDrawing.current = !controlRefs.isDrawing.current;
     setHighlightDraw(controlRefs.isDrawing.current);
     if (!controlRefs.isDrawing.current) {
+      controlRefs.isErasing.current = false;
       controlRefs.mirrorX.current = false;
       controlRefs.mirrorY.current = false;
+      setHighlightErase(-1);
+      setHighlightMirrorX(-1);
+      setHighlightMirrorY(-1);
+    } else {
+      setHighlightErase(0);
       setHighlightMirrorX(0);
       setHighlightMirrorY(0);
     }
