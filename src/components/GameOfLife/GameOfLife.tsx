@@ -50,7 +50,7 @@ const GameOfLife = ({
         initialData={initialData}
         controlRefs={controlRefs}
         cellData={cellData}
-        drawOverlayCell={drawInitialCell}
+        drawInitialCell={drawInitialCell}
       />
       <Controls
         controlRefs={controlRefs}
