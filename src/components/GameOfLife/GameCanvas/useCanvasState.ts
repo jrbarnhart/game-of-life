@@ -3,7 +3,7 @@
 import { useState, useEffect, SetStateAction } from "react";
 import { ControlRefs } from "./useControlRefs";
 
-export interface CanvasState {
+export interface CanvasStateInterface {
   canvasSize: { width: number; height: number };
   gridSize: { width: number; height: number };
   setGridSize: React.Dispatch<
@@ -101,7 +101,7 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
     };
   }, [canvasSize.height, canvasSize.width, margin]);
 
-  const canvasState: CanvasState = {
+  const canvasState: CanvasStateInterface = {
     canvasSize,
     gridSize,
     setGridSize,
