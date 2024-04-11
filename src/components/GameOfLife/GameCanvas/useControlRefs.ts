@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const useControlState = () => {
+const useControlRefs = () => {
   const isPlaying = useRef<boolean>(false);
   const isPaused = useRef<boolean>(false);
   const isDrawing = useRef<boolean>(false);
@@ -20,4 +20,4 @@ const useControlState = () => {
   return controlState;
 };
 
-export default useControlState;
+export default useControlRefs;
