@@ -9,6 +9,7 @@ import { useState } from "react";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
+
   const canvasSize = useCanvasSize(12);
 
   const initGridWidth = Math.sqrt(
