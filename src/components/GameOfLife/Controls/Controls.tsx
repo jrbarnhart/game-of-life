@@ -287,6 +287,22 @@ const Controls = ({
         <button className="h-10  rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400">
           {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
         </button>
+        <label
+          htmlFor="total-cells"
+          className="h-10 text-center grid items-center text-black"
+        >
+          Total Cells:
+        </label>
+        <select
+          name="totalCells"
+          id="total-cells"
+          className="h-10 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
+        >
+          <option value="1350">1,350</option>
+          <option value="5400">5,400</option>
+          <option value="21600">21,600</option>
+          <option value="714150">714,150</option>
+        </select>
       </div>
     </div>
   );
