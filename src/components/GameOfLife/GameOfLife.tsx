@@ -1,10 +1,10 @@
-import { useRef } from "react";
 import Controls from "./Controls/Controls";
 import GameCanvas from "./GameCanvas/GameCanvas";
 import useCellData from "./GameCanvas/useCellData";
 import useCanvasSize from "./GameCanvas/useCanvasSize";
 import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
+import useControlRefs from "./GameCanvas/useControlRefs";
 
 const GameOfLife = ({
   gridWidth,
@@ -13,11 +13,7 @@ const GameOfLife = ({
   gridWidth: number;
   gridHeight: number;
 }) => {
-  const isPlaying = useRef<boolean>(false);
-  const isPaused = useRef<boolean>(false);
-  const isDrawing = useRef<boolean>(false);
-  const mirrorX = useRef<boolean>(false);
-  const mirrorY = useRef<boolean>(false);
+  const controlRefs = useControlRefs();
 
   const cellData = useCellData({ width: gridWidth, height: gridHeight });
 
@@ -42,8 +38,7 @@ const GameOfLife = ({
     overlayContextRef.current,
     canvasInitialized,
     cellData,
-    isPlaying,
-    isPaused
+    controlRefs
   );
 
   return (
@@ -53,18 +48,12 @@ const GameOfLife = ({
         overlayRef={overlayRef}
         containerRef={containerRef}
         initialData={initialData}
-        isDrawing={isDrawing}
-        mirrorX={mirrorX}
-        mirrorY={mirrorY}
+        controlRefs={controlRefs}
         cellData={cellData}
         drawOverlayCell={drawInitialCell}
       />
       <Controls
-        isPlaying={isPlaying}
-        isPaused={isPaused}
-        isDrawing={isDrawing}
-        mirrorX={mirrorX}
-        mirrorY={mirrorY}
+        controlRefs={controlRefs}
         cellData={cellData}
         clearCanvas={clearCanvas}
         drawNext={drawNext}
