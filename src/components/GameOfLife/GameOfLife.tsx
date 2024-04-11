@@ -5,13 +5,19 @@ import useCanvasSize from "./GameCanvas/useCanvasSize";
 import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
+import { useState } from "react";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
 
+  const [gridSize, setGridSize] = useState<{ width: number; height: number }>({
+    width: controlRefs.resolution.current.width,
+    height: controlRefs.resolution.current.height,
+  });
+
   const cellData = useCellData({
-    width: controlRefs.resolution.current.x,
-    height: controlRefs.resolution.current.y,
+    width: gridSize.width,
+    height: gridSize.height,
   });
 
   const initialData = new Set<number>();
@@ -55,6 +61,7 @@ const GameOfLife = () => {
         clearCanvas={clearCanvas}
         drawNext={drawNext}
         initialData={initialData}
+        setGridSize={setGridSize}
       />
     </div>
   );
