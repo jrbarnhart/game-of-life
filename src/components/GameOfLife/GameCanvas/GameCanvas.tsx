@@ -10,7 +10,7 @@ const GameCanvas = ({
   initialData,
   controlRefs,
   cellData,
-  drawOverlayCell,
+  drawInitialCell,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -18,10 +18,11 @@ const GameCanvas = ({
   initialData: Set<number>;
   controlRefs: ControlRefs;
   cellData: CellData;
-  drawOverlayCell: (
+  drawInitialCell: (
     cellIndex: number,
     cellWidth: number,
-    cellHeight: number
+    cellHeight: number,
+    options?: { erase: boolean } | undefined
   ) => void;
 }) => {
   const previousIndex = useRef<number | null>(null);
@@ -66,8 +67,13 @@ const GameCanvas = ({
       const index = gridY * cellData.gridSize.width + gridX;
 
       if (index !== previousIndex.current) {
-        initialData.add(index);
-        drawOverlayCell(index, cellWidth, cellHeight);
+        if (controlRefs.isErasing.current) {
+          initialData.delete(index);
+          drawInitialCell(index, cellWidth, cellHeight, { erase: true });
+        } else {
+          initialData.add(index);
+          drawInitialCell(index, cellWidth, cellHeight);
+        }
         if (controlRefs.mirrorX.current || controlRefs.mirrorY.current) {
           const rowIndex = Math.floor(index / cellData.gridSize.width);
           const colIndex = index % cellData.gridSize.width;
@@ -80,22 +86,51 @@ const GameCanvas = ({
               mirroredRowIndex * cellData.gridSize.width + colIndex;
             const mirroredIndexXY =
               mirroredRowIndex * cellData.gridSize.width + mirroredColIndex;
-            initialData.add(mirroredIndexX);
-            initialData.add(mirroredIndexY);
-            initialData.add(mirroredIndexXY);
-            drawOverlayCell(mirroredIndexX, cellWidth, cellHeight);
-            drawOverlayCell(mirroredIndexY, cellWidth, cellHeight);
-            drawOverlayCell(mirroredIndexXY, cellWidth, cellHeight);
+            if (controlRefs.isErasing.current) {
+              initialData.delete(mirroredIndexX);
+              initialData.delete(mirroredIndexY);
+              initialData.delete(mirroredIndexXY);
+              drawInitialCell(mirroredIndexX, cellWidth, cellHeight, {
+                erase: true,
+              });
+              drawInitialCell(mirroredIndexY, cellWidth, cellHeight, {
+                erase: true,
+              });
+              drawInitialCell(mirroredIndexXY, cellWidth, cellHeight, {
+                erase: true,
+              });
+            } else {
+              initialData.add(mirroredIndexX);
+              initialData.add(mirroredIndexY);
+              initialData.add(mirroredIndexXY);
+              drawInitialCell(mirroredIndexX, cellWidth, cellHeight);
+              drawInitialCell(mirroredIndexY, cellWidth, cellHeight);
+              drawInitialCell(mirroredIndexXY, cellWidth, cellHeight);
+            }
           } else if (controlRefs.mirrorX.current) {
             const mirroredIndex =
               rowIndex * cellData.gridSize.width + mirroredColIndex;
-            initialData.add(mirroredIndex);
-            drawOverlayCell(mirroredIndex, cellWidth, cellHeight);
+            if (controlRefs.isErasing.current) {
+              initialData.delete(mirroredIndex);
+              drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
+                erase: true,
+              });
+            } else {
+              initialData.add(mirroredIndex);
+              drawInitialCell(mirroredIndex, cellWidth, cellHeight);
+            }
           } else if (controlRefs.mirrorY.current) {
             const mirroredIndex =
               mirroredRowIndex * cellData.gridSize.width + colIndex;
-            initialData.add(mirroredIndex);
-            drawOverlayCell(mirroredIndex, cellWidth, cellHeight);
+            if (controlRefs.isErasing.current) {
+              initialData.delete(mirroredIndex);
+              drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
+                erase: true,
+              });
+            } else {
+              initialData.add(mirroredIndex);
+              drawInitialCell(mirroredIndex, cellWidth, cellHeight);
+            }
           }
         }
       }
