@@ -1,22 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { CellData } from "../GameCanvas/useCellData";
+import { ControlRefs } from "../GameCanvas/useControlRefs";
 
 const Controls = ({
-  isPlaying,
-  isPaused,
-  isDrawing,
-  mirrorX,
-  mirrorY,
+  controlRefs,
   cellData,
   clearCanvas,
   drawNext,
   initialData,
 }: {
-  isPlaying: React.MutableRefObject<boolean>;
-  isPaused: React.MutableRefObject<boolean>;
-  isDrawing: React.MutableRefObject<boolean>;
-  mirrorX: React.MutableRefObject<boolean>;
-  mirrorY: React.MutableRefObject<boolean>;
+  controlRefs: ControlRefs;
   cellData: CellData;
   clearCanvas: () => void;
   drawNext: () => void;
@@ -29,8 +22,8 @@ const Controls = ({
   const [highlightMirrorY, setHighlightMirrorY] = useState<boolean>(false);
 
   const handlePlayClick = () => {
-    if (!isPlaying.current) {
-      isPlaying.current = true;
+    if (!controlRefs.isPlaying.current) {
+      controlRefs.isPlaying.current = true;
       if (initialData.size > 0) {
         cellData.initData(initialData);
       } else {
@@ -38,12 +31,12 @@ const Controls = ({
       }
       initialData.clear();
     }
-    if (isPaused.current) {
-      isPaused.current = false;
+    if (controlRefs.isPaused.current) {
+      controlRefs.isPaused.current = false;
     }
-    isDrawing.current = false;
-    mirrorX.current = false;
-    mirrorY.current = false;
+    controlRefs.isDrawing.current = false;
+    controlRefs.mirrorX.current = false;
+    controlRefs.mirrorY.current = false;
     setHighlightDrawing(false);
     setHighlightMirrorX(false);
     setHighlightMirrorY(false);
@@ -52,23 +45,23 @@ const Controls = ({
   };
 
   const handlePauseClick = () => {
-    if (!isPaused.current && isPlaying.current) {
-      isPaused.current = true;
+    if (!controlRefs.isPaused.current && controlRefs.isPlaying.current) {
+      controlRefs.isPaused.current = true;
       setHighlightPause(true);
       setHighlightPlay(false);
-    } else if (isPaused.current && isPlaying.current) {
-      isPaused.current = false;
+    } else if (controlRefs.isPaused.current && controlRefs.isPlaying.current) {
+      controlRefs.isPaused.current = false;
       setHighlightPause(false);
       setHighlightPlay(true);
     }
   };
 
   const handleStopClick = () => {
-    isPlaying.current = false;
-    isPaused.current = false;
-    isDrawing.current = false;
-    mirrorX.current = false;
-    mirrorY.current = false;
+    controlRefs.isPlaying.current = false;
+    controlRefs.isPaused.current = false;
+    controlRefs.isDrawing.current = false;
+    controlRefs.mirrorX.current = false;
+    controlRefs.mirrorY.current = false;
     setHighlightPlay(false);
     setHighlightPause(false);
     setHighlightDrawing(false);
@@ -80,8 +73,8 @@ const Controls = ({
   };
 
   const handleNextClick = () => {
-    if (isPlaying.current) {
-      isPaused.current = true;
+    if (controlRefs.isPlaying.current) {
+      controlRefs.isPaused.current = true;
       setHighlightPlay(false);
       setHighlightPause(true);
       drawNext();
@@ -89,36 +82,36 @@ const Controls = ({
   };
 
   const handleDrawClick = () => {
-    if (isPlaying.current) {
-      isPlaying.current = false;
-      isPaused.current = false;
+    if (controlRefs.isPlaying.current) {
+      controlRefs.isPlaying.current = false;
+      controlRefs.isPaused.current = false;
       setHighlightPlay(false);
       setHighlightPause(false);
       cellData.clear();
       clearCanvas();
     }
-    isDrawing.current = !isDrawing.current;
-    setHighlightDrawing(isDrawing.current);
-    if (!isDrawing.current) {
-      mirrorX.current = false;
-      mirrorY.current = false;
+    controlRefs.isDrawing.current = !controlRefs.isDrawing.current;
+    setHighlightDrawing(controlRefs.isDrawing.current);
+    if (!controlRefs.isDrawing.current) {
+      controlRefs.mirrorX.current = false;
+      controlRefs.mirrorY.current = false;
       setHighlightMirrorX(false);
       setHighlightMirrorY(false);
     }
   };
 
   const handleMirrorClick = (allignment: "x" | "y") => {
-    if (!isDrawing.current) {
+    if (!controlRefs.isDrawing.current) {
       handleDrawClick();
     }
 
     if (allignment === "x") {
-      mirrorX.current = !mirrorX.current;
-      setHighlightMirrorX(mirrorX.current);
+      controlRefs.mirrorX.current = !controlRefs.mirrorX.current;
+      setHighlightMirrorX(controlRefs.mirrorX.current);
     }
     if (allignment === "y") {
-      mirrorY.current = !mirrorY.current;
-      setHighlightMirrorY(mirrorY.current);
+      controlRefs.mirrorY.current = !controlRefs.mirrorY.current;
+      setHighlightMirrorY(controlRefs.mirrorY.current);
     }
   };
 
