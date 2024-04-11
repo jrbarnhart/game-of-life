@@ -244,6 +244,7 @@ const Controls = ({
               ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           } h-10  rounded-md border-2  grid items-center justify-items-center`}
+          aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Erase
         </button>
@@ -258,6 +259,7 @@ const Controls = ({
               ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           } h-10  rounded-md border-2  grid items-center justify-items-center`}
+          aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Mirror X
         </button>
@@ -272,6 +274,7 @@ const Controls = ({
               ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           } h-10  rounded-md border-2  grid items-center justify-items-center`}
+          aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Mirror Y
         </button>
