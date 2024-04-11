@@ -7,15 +7,19 @@ export interface ControlRefs {
   isErasing: React.MutableRefObject<boolean>;
   mirrorX: React.MutableRefObject<boolean>;
   mirrorY: React.MutableRefObject<boolean>;
+  aspect: React.MutableRefObject<{ x: number; y: number }>;
+  resolution: React.MutableRefObject<{ x: number; y: number }>;
 }
 
 const useControlRefs = () => {
-  const isPlaying = useRef<boolean>(false);
-  const isPaused = useRef<boolean>(false);
-  const isDrawing = useRef<boolean>(false);
-  const isErasing = useRef<boolean>(false);
-  const mirrorX = useRef<boolean>(false);
-  const mirrorY = useRef<boolean>(false);
+  const isPlaying = useRef(false);
+  const isPaused = useRef(false);
+  const isDrawing = useRef(false);
+  const isErasing = useRef(false);
+  const mirrorX = useRef(false);
+  const mirrorY = useRef(false);
+  const aspect = useRef({ x: 3, y: 2 });
+  const resolution = useRef({ x: 45, y: 30 });
 
   const controlRefs: ControlRefs = {
     isPlaying,
@@ -24,6 +28,8 @@ const useControlRefs = () => {
     isErasing,
     mirrorX,
     mirrorY,
+    aspect,
+    resolution,
   };
 
   return controlRefs;
