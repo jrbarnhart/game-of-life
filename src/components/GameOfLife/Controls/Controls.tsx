@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { SetStateAction, useState } from "react";
 import { CellData } from "../GameCanvas/useCellData";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 
@@ -8,12 +8,16 @@ const Controls = ({
   clearCanvas,
   drawNext,
   initialData,
+  setGridSize,
 }: {
   controlRefs: ControlRefs;
   cellData: CellData;
   clearCanvas: () => void;
   drawNext: () => void;
   initialData: Set<number>;
+  setGridSize: React.Dispatch<
+    SetStateAction<{ width: number; height: number }>
+  >;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
