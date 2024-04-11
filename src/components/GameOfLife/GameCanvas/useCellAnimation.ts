@@ -41,7 +41,8 @@ const useCellAnimation = (
   const drawInitialCell = (
     cellIndex: number,
     cellWidth: number,
-    cellHeight: number
+    cellHeight: number,
+    options?: { erase: boolean } | undefined
   ) => {
     if (!ctx) return;
 
@@ -50,7 +51,11 @@ const useCellAnimation = (
     const x = col * cellWidth;
     const y = row * cellHeight;
 
-    ctx.fillStyle = "white";
+    if (options?.erase) {
+      ctx.fillStyle = "black";
+    } else {
+      ctx.fillStyle = "white";
+    }
     ctx.beginPath();
     ctx.rect(x, y, cellWidth, cellHeight);
     ctx.fill();
