@@ -1,5 +1,14 @@
 import { useRef } from "react";
 
+export interface ControlRefs {
+  isPlaying: React.MutableRefObject<boolean>;
+  isPaused: React.MutableRefObject<boolean>;
+  isDrawing: React.MutableRefObject<boolean>;
+  isErasing: React.MutableRefObject<boolean>;
+  mirrorX: React.MutableRefObject<boolean>;
+  mirrorY: React.MutableRefObject<boolean>;
+}
+
 const useControlRefs = () => {
   const isPlaying = useRef<boolean>(false);
   const isPaused = useRef<boolean>(false);
@@ -8,7 +17,7 @@ const useControlRefs = () => {
   const mirrorX = useRef<boolean>(false);
   const mirrorY = useRef<boolean>(false);
 
-  const controlState = {
+  const controlRefs: ControlRefs = {
     isPlaying,
     isPaused,
     isDrawing,
@@ -17,7 +26,7 @@ const useControlRefs = () => {
     mirrorY,
   };
 
-  return controlState;
+  return controlRefs;
 };
 
 export default useControlRefs;
