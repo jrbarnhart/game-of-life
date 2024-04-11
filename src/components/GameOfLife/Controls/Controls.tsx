@@ -19,9 +19,9 @@ const Controls = ({
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
   const [highlightDraw, setHighlightDraw] = useState<boolean>(false);
   // Number state: -1 dim, 0 normal, 1 highlight
-  const [highlightErase, setHighlightErase] = useState<number>(0);
-  const [highlightMirrorX, setHighlightMirrorX] = useState<number>(0);
-  const [highlightMirrorY, setHighlightMirrorY] = useState<number>(0);
+  const [highlightErase, setHighlightErase] = useState<number>(-1);
+  const [highlightMirrorX, setHighlightMirrorX] = useState<number>(-1);
+  const [highlightMirrorY, setHighlightMirrorY] = useState<number>(-1);
 
   const handlePlayClick = () => {
     if (!controlRefs.isPlaying.current) {
@@ -224,9 +224,11 @@ const Controls = ({
           onClick={handleEraseClick}
           className={`${
             highlightErase === 1
-              ? "text-orange-400 border-orange-400"
-              : "text-white border-black"
-          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+              ? "text-orange-400 bg-neutral-700 border-orange-400"
+              : highlightErase === -1
+              ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
+              : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+          } h-10  rounded-md border-2  grid items-center justify-items-center`}
         >
           Erase
         </button>
@@ -236,9 +238,11 @@ const Controls = ({
           }}
           className={`${
             highlightMirrorX === 1
-              ? "text-orange-400 border-orange-400"
-              : "text-white border-black"
-          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+              ? "text-orange-400 bg-neutral-700 border-orange-400"
+              : highlightMirrorX === -1
+              ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
+              : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+          } h-10  rounded-md border-2  grid items-center justify-items-center`}
         >
           Horizontal
         </button>
@@ -248,9 +252,11 @@ const Controls = ({
           }}
           className={`${
             highlightMirrorY === 1
-              ? "text-orange-400 border-orange-400"
-              : "text-white border-black"
-          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+              ? "text-orange-400 bg-neutral-700 border-orange-400"
+              : highlightMirrorY === -1
+              ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
+              : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+          } h-10  rounded-md border-2  grid items-center justify-items-center`}
         >
           Vertical
         </button>
