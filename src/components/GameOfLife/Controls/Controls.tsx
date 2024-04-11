@@ -113,12 +113,17 @@ const Controls = ({
   };
 
   const handleEraseClick = () => {
-    // Handle erase
+    if (!controlRefs.isDrawing.current) {
+      return;
+    }
+
+    controlRefs.isErasing.current = !controlRefs.isErasing.current;
+    setHighlightErase(controlRefs.isErasing.current ? 1 : 0);
   };
 
   const handleMirrorClick = (allignment: "x" | "y") => {
     if (!controlRefs.isDrawing.current) {
-      handleDrawClick();
+      return;
     }
 
     if (allignment === "x") {
