@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CellData, GridSize } from "./useCellData";
+import { ControlRefs } from "./useControlRefs";
 
 const useCellAnimation = (
   canvasSize: { width: number; height: number },
@@ -9,8 +10,7 @@ const useCellAnimation = (
   overlayCtx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
   cellData: CellData,
-  isPlaying: React.MutableRefObject<boolean>,
-  isPaused: React.MutableRefObject<boolean>
+  controlRefs: ControlRefs
 ) => {
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
@@ -183,9 +183,16 @@ const useCellAnimation = (
     if (canvasInitialized && ctx && canvas) {
       clearCanvas();
       drawGridLines(overlay, overlayCtx, cellData.gridSize);
-      animationLoop(ctx, canvas, cellData, isPlaying, isPaused, {
-        initialDraw: true,
-      });
+      animationLoop(
+        ctx,
+        canvas,
+        cellData,
+        controlRefs.isPlaying,
+        controlRefs.isPaused,
+        {
+          initialDraw: true,
+        }
+      );
       console.log("Animation started");
     }
 
@@ -203,8 +210,8 @@ const useCellAnimation = (
     overlay,
     overlayCtx,
     canvasSize,
-    isPlaying,
-    isPaused,
+    controlRefs.isPlaying,
+    controlRefs.isPaused,
     clearCanvas,
   ]);
 
