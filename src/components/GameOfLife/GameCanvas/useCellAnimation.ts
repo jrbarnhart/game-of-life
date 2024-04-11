@@ -3,7 +3,7 @@ import { CellData, GridSize } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
 
 const useCellAnimation = (
-  canvasSize: { width: number; height: number },
+  canvasState: CanvasState,
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
   overlay: HTMLCanvasElement | null,
@@ -214,7 +214,7 @@ const useCellAnimation = (
     ctx,
     overlay,
     overlayCtx,
-    canvasSize,
+    canvasState,
     controlRefs.isPlaying,
     controlRefs.isPaused,
     clearCanvas,
