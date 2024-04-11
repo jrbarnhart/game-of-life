@@ -17,7 +17,7 @@ const Controls = ({
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
-  const [highlightDrawing, setHighlightDrawing] = useState<boolean>(false);
+  const [highlightDraw, setHighlightDraw] = useState<boolean>(false);
   const [highlightErase, setHighlightErase] = useState<boolean>(false);
   const [highlightMirrorX, setHighlightMirrorX] = useState<boolean>(false);
   const [highlightMirrorY, setHighlightMirrorY] = useState<boolean>(false);
@@ -38,7 +38,7 @@ const Controls = ({
     controlRefs.isDrawing.current = false;
     controlRefs.mirrorX.current = false;
     controlRefs.mirrorY.current = false;
-    setHighlightDrawing(false);
+    setHighlightDraw(false);
     setHighlightMirrorX(false);
     setHighlightMirrorY(false);
     setHighlightPlay(true);
@@ -65,7 +65,7 @@ const Controls = ({
     controlRefs.mirrorY.current = false;
     setHighlightPlay(false);
     setHighlightPause(false);
-    setHighlightDrawing(false);
+    setHighlightDraw(false);
     setHighlightMirrorX(false);
     setHighlightMirrorY(false);
     cellData.clear();
@@ -92,7 +92,7 @@ const Controls = ({
       clearCanvas();
     }
     controlRefs.isDrawing.current = !controlRefs.isDrawing.current;
-    setHighlightDrawing(controlRefs.isDrawing.current);
+    setHighlightDraw(controlRefs.isDrawing.current);
     if (!controlRefs.isDrawing.current) {
       controlRefs.mirrorX.current = false;
       controlRefs.mirrorY.current = false;
@@ -212,7 +212,7 @@ const Controls = ({
         <button
           onClick={handleDrawClick}
           className={`${
-            highlightDrawing
+            highlightDraw
               ? "text-orange-400 border-orange-400"
               : "text-white border-black"
           } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
