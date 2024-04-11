@@ -9,10 +9,18 @@ import { useState } from "react";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
+  const canvasSize = useCanvasSize(12);
 
+  const initGridWidth = Math.sqrt(
+    (controlRefs.totalCells.current * controlRefs.aspect.current.width) /
+      controlRefs.aspect.current.height
+  );
+  const initGridHeight =
+    (initGridWidth * controlRefs.aspect.current.height) /
+    controlRefs.aspect.current.width;
   const [gridSize, setGridSize] = useState<{ width: number; height: number }>({
-    width: controlRefs.resolution.current.width,
-    height: controlRefs.resolution.current.height,
+    width: initGridWidth,
+    height: initGridHeight,
   });
 
   const cellData = useCellData({
@@ -21,8 +29,6 @@ const GameOfLife = () => {
   });
 
   const initialData = new Set<number>();
-
-  const canvasSize = useCanvasSize(12);
 
   const {
     canvasInitialized,
