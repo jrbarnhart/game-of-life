@@ -1,6 +1,12 @@
 // Based on solution from https://stackoverflow.com/questions/74215349/trying-to-update-ref-on-resize-in-react-js
 
 import { useState, useEffect } from "react";
+import { ControlRefs } from "./useControlRefs";
+
+export interface CanvasState {
+  canvasSize: { width: number; height: number };
+  gridSize: { width: number; height: number };
+}
 
 export const CANVAS_WIDTHS = {
   xs: 300,
@@ -30,11 +36,24 @@ export const TW_BREAKPOINTS = {
 };
 
 // Hook
-function useCanvasSize(margin: number) {
+function useCanvasSize(margin: number, controlRefs: ControlRefs) {
   const [canvasSize, setCanvasSize] = useState({
     width: CANVAS_WIDTHS.xs,
     height: CANVAS_HEIGHTS.xs,
   });
+
+  const initGridWidth = Math.sqrt(
+    (controlRefs.totalCells.current * controlRefs.aspect.current.width) /
+      controlRefs.aspect.current.height
+  );
+  const initGridHeight =
+    (initGridWidth * controlRefs.aspect.current.height) /
+    controlRefs.aspect.current.width;
+  const [gridSize, setGridSize] = useState<{ width: number; height: number }>({
+    width: initGridWidth,
+    height: initGridHeight,
+  });
+
   useEffect(() => {
     // Handler to call on window resize
     function handleResize() {
@@ -77,8 +96,14 @@ function useCanvasSize(margin: number) {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, [canvasSize.height, canvasSize.width, margin]); // Empty array ensures that effect is only run on mount
-  return canvasSize;
+  }, [canvasSize.height, canvasSize.width, margin]);
+
+  const canvasState: CanvasState = {
+    canvasSize,
+    gridSize,
+  };
+
+  return canvasState;
 }
 
 export default useCanvasSize;
