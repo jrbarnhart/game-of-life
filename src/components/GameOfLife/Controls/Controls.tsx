@@ -18,6 +18,7 @@ const Controls = ({
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
   const [highlightDrawing, setHighlightDrawing] = useState<boolean>(false);
+  const [highlightErase, setHighlightErase] = useState<boolean>(false);
   const [highlightMirrorX, setHighlightMirrorX] = useState<boolean>(false);
   const [highlightMirrorY, setHighlightMirrorY] = useState<boolean>(false);
 
@@ -98,6 +99,10 @@ const Controls = ({
       setHighlightMirrorX(false);
       setHighlightMirrorY(false);
     }
+  };
+
+  const handleEraseClick = () => {
+    // Handle erase
   };
 
   const handleMirrorClick = (allignment: "x" | "y") => {
@@ -214,9 +219,16 @@ const Controls = ({
         >
           Draw
         </button>
-        <p className="h-10 text-lg font-bold text-black text-center grid items-center">
-          Mirror:{" "}
-        </p>
+        <button
+          onClick={handleEraseClick}
+          className={`${
+            highlightErase
+              ? "text-orange-400 border-orange-400"
+              : "text-white border-black"
+          } h-10 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+        >
+          Erase
+        </button>
         <button
           onClick={() => {
             handleMirrorClick("x");
