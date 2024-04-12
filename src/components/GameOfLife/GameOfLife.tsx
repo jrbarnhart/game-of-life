@@ -12,8 +12,8 @@ const GameOfLife = () => {
   const canvasState = useCanvasState(12, 300, controlRefs);
 
   const cellData = useCellData({
-    width: canvasState.gridSize.width,
-    height: canvasState.gridSize.height,
+    width: canvasState.gridSize.current.width,
+    height: canvasState.gridSize.current.height,
   });
 
   const initialData = new Set<number>();
