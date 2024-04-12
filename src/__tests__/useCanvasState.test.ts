@@ -1,7 +1,6 @@
 import { renderHook, act } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import useCanvasState, {
-  CANVAS_HEIGHTS,
   CANVAS_WIDTHS,
 } from "../components/GameOfLife/GameCanvas/useCanvasState";
 
@@ -23,6 +22,10 @@ const dummyControlRefs = {
   totalCells: { current: 1350 }, // 45 x 30 default
 };
 
+const dummyHeightRatio =
+  dummyControlRefs.aspect.current.height /
+  dummyControlRefs.aspect.current.width;
+
 describe("usecanvasState", () => {
   it("returns xxl values when screen is wider than xxl breakpoint + margin", () => {
     window.innerWidth = XXL_SCREEN.width;
@@ -34,7 +37,9 @@ describe("usecanvasState", () => {
     const canvasState = result.current;
     rerender();
     expect(canvasState.canvasSize.width).toBe(CANVAS_WIDTHS.xxl - margin);
-    expect(canvasState.canvasSize.height).toBe(CANVAS_HEIGHTS.xxl - margin);
+    expect(canvasState.canvasSize.height).toBe(
+      CANVAS_WIDTHS.xxl * dummyHeightRatio - margin
+    );
   });
 
   it("returns xl values when screen is wider than xl breakpoint + margin but smaller than xxl", () => {
@@ -47,7 +52,9 @@ describe("usecanvasState", () => {
     const canvasState = result.current;
     rerender();
     expect(canvasState.canvasSize.width).toBe(CANVAS_WIDTHS.xl - margin);
-    expect(canvasState.canvasSize.height).toBe(CANVAS_HEIGHTS.xl - margin);
+    expect(canvasState.canvasSize.height).toBe(
+      CANVAS_WIDTHS.xl * dummyHeightRatio - margin
+    );
   });
 
   it("returns lg values when screen is wider than lg breakpoint + margin but smaller than xl", () => {
@@ -60,7 +67,9 @@ describe("usecanvasState", () => {
     const canvasState = result.current;
     rerender();
     expect(canvasState.canvasSize.width).toBe(CANVAS_WIDTHS.lg - margin);
-    expect(canvasState.canvasSize.height).toBe(CANVAS_HEIGHTS.lg - margin);
+    expect(canvasState.canvasSize.height).toBe(
+      CANVAS_WIDTHS.lg * dummyHeightRatio - margin
+    );
   });
 
   it("returns md values when screen is wider than md breakpoint + margin but smaller than lg", () => {
@@ -73,7 +82,9 @@ describe("usecanvasState", () => {
     const canvasState = result.current;
     rerender();
     expect(canvasState.canvasSize.width).toBe(CANVAS_WIDTHS.md - margin);
-    expect(canvasState.canvasSize.height).toBe(CANVAS_HEIGHTS.md - margin);
+    expect(canvasState.canvasSize.height).toBe(
+      CANVAS_WIDTHS.md * dummyHeightRatio - margin
+    );
   });
 
   it("returns sm values when screen is wider than sm breakpoint + margin but smaller than md", () => {
@@ -86,7 +97,9 @@ describe("usecanvasState", () => {
     const canvasState = result.current;
     rerender();
     expect(canvasState.canvasSize.width).toBe(CANVAS_WIDTHS.sm - margin);
-    expect(canvasState.canvasSize.height).toBe(CANVAS_HEIGHTS.sm - margin);
+    expect(canvasState.canvasSize.height).toBe(
+      CANVAS_WIDTHS.sm * dummyHeightRatio - margin
+    );
   });
 
   it("returns xs values when screen is smaller than sm breakpoint + margin", () => {
@@ -99,7 +112,9 @@ describe("usecanvasState", () => {
     const canvasState = result.current;
     rerender();
     expect(canvasState.canvasSize.width).toBe(CANVAS_WIDTHS.xs - margin);
-    expect(canvasState.canvasSize.height).toBe(CANVAS_HEIGHTS.xs - margin);
+    expect(canvasState.canvasSize.height).toBe(
+      CANVAS_WIDTHS.xs * dummyHeightRatio - margin
+    );
   });
 
   it("returns correct values when window is resized", () => {
@@ -114,7 +129,9 @@ describe("usecanvasState", () => {
       window.dispatchEvent(new Event("resize"));
     });
     expect(result.current.canvasSize.width).toBe(CANVAS_WIDTHS.sm - margin);
-    expect(result.current.canvasSize.height).toBe(CANVAS_HEIGHTS.sm - margin);
+    expect(result.current.canvasSize.height).toBe(
+      CANVAS_WIDTHS.sm * dummyHeightRatio - margin
+    );
 
     act(() => {
       window.innerWidth = MD_SCREEN.width;
@@ -122,7 +139,9 @@ describe("usecanvasState", () => {
       window.dispatchEvent(new Event("resize"));
     });
     expect(result.current.canvasSize.width).toBe(CANVAS_WIDTHS.md - margin);
-    expect(result.current.canvasSize.height).toBe(CANVAS_HEIGHTS.md - margin);
+    expect(result.current.canvasSize.height).toBe(
+      CANVAS_WIDTHS.md * dummyHeightRatio - margin
+    );
 
     act(() => {
       window.innerWidth = LG_SCREEN.width;
@@ -130,7 +149,9 @@ describe("usecanvasState", () => {
       window.dispatchEvent(new Event("resize"));
     });
     expect(result.current.canvasSize.width).toBe(CANVAS_WIDTHS.lg - margin);
-    expect(result.current.canvasSize.height).toBe(CANVAS_HEIGHTS.lg - margin);
+    expect(result.current.canvasSize.height).toBe(
+      CANVAS_WIDTHS.lg * dummyHeightRatio - margin
+    );
 
     act(() => {
       window.innerWidth = XL_SCREEN.width;
@@ -138,7 +159,9 @@ describe("usecanvasState", () => {
       window.dispatchEvent(new Event("resize"));
     });
     expect(result.current.canvasSize.width).toBe(CANVAS_WIDTHS.xl - margin);
-    expect(result.current.canvasSize.height).toBe(CANVAS_HEIGHTS.xl - margin);
+    expect(result.current.canvasSize.height).toBe(
+      CANVAS_WIDTHS.xl * dummyHeightRatio - margin
+    );
 
     act(() => {
       window.innerWidth = XXL_SCREEN.width;
@@ -146,6 +169,8 @@ describe("usecanvasState", () => {
       window.dispatchEvent(new Event("resize"));
     });
     expect(result.current.canvasSize.width).toBe(CANVAS_WIDTHS.xxl - margin);
-    expect(result.current.canvasSize.height).toBe(CANVAS_HEIGHTS.xxl - margin);
+    expect(result.current.canvasSize.height).toBe(
+      CANVAS_WIDTHS.xxl * dummyHeightRatio - margin
+    );
   });
 });
