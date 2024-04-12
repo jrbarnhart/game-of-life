@@ -31,7 +31,11 @@ export const TW_BREAKPOINTS = {
 };
 
 // Hook
-function useCanvasState(margin: number, controlRefs: ControlRefs) {
+function useCanvasState(
+  marginX: number,
+  marginY: number,
+  controlRefs: ControlRefs
+) {
   const heightRatio =
     controlRefs.aspect.current.height / controlRefs.aspect.current.width;
 
@@ -57,27 +61,31 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
     // Set canvas size based on window size and breakpoints
     const heightRatio =
       controlRefs.aspect.current.height / controlRefs.aspect.current.width;
+    const availableWidth = window.innerWidth - marginX;
+    const availableHeight = window.innerHeight - marginY;
+
     let newWidth = canvasSize.width;
     let newHeight = canvasSize.height;
-
-    if (window.innerWidth >= TW_BREAKPOINTS.xxl + margin) {
-      newWidth = CANVAS_WIDTHS.xxl - margin;
-      newHeight = CANVAS_WIDTHS.xxl * heightRatio - margin;
-    } else if (window.innerWidth >= TW_BREAKPOINTS.xl + margin) {
-      newWidth = CANVAS_WIDTHS.xl - margin;
-      newHeight = CANVAS_WIDTHS.xl * heightRatio - margin;
-    } else if (window.innerWidth >= TW_BREAKPOINTS.lg + margin) {
-      newWidth = CANVAS_WIDTHS.lg - margin;
-      newHeight = CANVAS_WIDTHS.lg * heightRatio - margin;
-    } else if (window.innerWidth >= TW_BREAKPOINTS.md + margin) {
-      newWidth = CANVAS_WIDTHS.md - margin;
-      newHeight = CANVAS_WIDTHS.md * heightRatio - margin;
-    } else if (window.innerWidth >= TW_BREAKPOINTS.sm + margin) {
-      newWidth = CANVAS_WIDTHS.sm - margin;
-      newHeight = CANVAS_WIDTHS.sm * heightRatio - margin;
-    } else if (window.innerWidth < TW_BREAKPOINTS.sm + margin) {
-      newWidth = CANVAS_WIDTHS.xs - margin;
-      newHeight = CANVAS_WIDTHS.xs * heightRatio - margin;
+    // Set width based on window width
+    if (window.innerWidth >= TW_BREAKPOINTS.xxl + marginX) {
+      newWidth = Math.min(CANVAS_WIDTHS.xxl, availableWidth);
+    } else if (window.innerWidth >= TW_BREAKPOINTS.xl + marginX) {
+      newWidth = Math.min(CANVAS_WIDTHS.xl, availableWidth);
+    } else if (window.innerWidth >= TW_BREAKPOINTS.lg + marginX) {
+      newWidth = Math.min(CANVAS_WIDTHS.lg, availableWidth);
+    } else if (window.innerWidth >= TW_BREAKPOINTS.md + marginX) {
+      newWidth = Math.min(CANVAS_WIDTHS.md, availableWidth);
+    } else if (window.innerWidth >= TW_BREAKPOINTS.sm + marginX) {
+      newWidth = Math.min(CANVAS_WIDTHS.sm, availableWidth);
+    } else if (window.innerWidth < TW_BREAKPOINTS.sm + marginX) {
+      newWidth = Math.min(CANVAS_WIDTHS.xs, availableWidth);
+    }
+    // Set height based on width
+    newHeight = newWidth * heightRatio;
+    // If it is too high then set to available height and size width proportionally
+    if (newHeight > availableHeight) {
+      newHeight = availableHeight;
+      newWidth = newHeight / heightRatio;
     }
 
     if (newWidth !== canvasSize.width || newHeight !== canvasSize.height) {
@@ -87,7 +95,13 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
       });
       console.log("Resized canvas", newWidth, newHeight);
     }
-  }, [canvasSize.height, canvasSize.width, controlRefs.aspect, margin]);
+  }, [
+    canvasSize.height,
+    canvasSize.width,
+    controlRefs.aspect,
+    marginX,
+    marginY,
+  ]);
 
   useEffect(() => {
     // Add event listener
