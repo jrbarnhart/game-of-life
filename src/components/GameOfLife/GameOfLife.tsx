@@ -9,7 +9,7 @@ import useControlRefs from "./GameCanvas/useControlRefs";
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
 
-  const canvasState = useCanvasState(12, controlRefs);
+  const canvasState = useCanvasState(12, 300, controlRefs);
 
   const cellData = useCellData({
     width: canvasState.gridSize.width,
