@@ -1,6 +1,7 @@
-import { SetStateAction, useState } from "react";
+import { useState } from "react";
 import { CellData } from "../GameCanvas/useCellData";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
+import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
 
 const Controls = ({
   controlRefs,
@@ -8,16 +9,14 @@ const Controls = ({
   clearCanvas,
   drawNext,
   initialData,
-  setGridSize,
+  canvasState,
 }: {
   controlRefs: ControlRefs;
   cellData: CellData;
   clearCanvas: () => void;
   drawNext: () => void;
   initialData: Set<number>;
-  setGridSize: React.Dispatch<
-    SetStateAction<{ width: number; height: number }>
-  >;
+  canvasState: CanvasStateInterface;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -138,6 +137,28 @@ const Controls = ({
       controlRefs.mirrorY.current = !controlRefs.mirrorY.current;
       setHighlightMirrorY(controlRefs.mirrorY.current ? 1 : 0);
     }
+  };
+
+  const handleAspectClick = () => {
+    // Switch between 3:2 and 2:3
+    if (controlRefs.aspect.current.width === 3) {
+      controlRefs.aspect.current.width = 2;
+      controlRefs.aspect.current.height = 3;
+    } else {
+      controlRefs.aspect.current.width = 3;
+      controlRefs.aspect.current.height = 2;
+    }
+
+    const width = Math.sqrt(
+      (controlRefs.totalCells.current * controlRefs.aspect.current.width) /
+        controlRefs.aspect.current.height
+    );
+    const height =
+      (width * controlRefs.aspect.current.height) /
+      controlRefs.aspect.current.width;
+
+    canvasState.setGridSize({ width, height });
+    canvasState.handleResize();
   };
 
   return (
@@ -283,7 +304,10 @@ const Controls = ({
           Mirror Y
         </button>
       </div>
-      <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black">
+      <div
+        onClick={handleAspectClick}
+        className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black"
+      >
         <button className="h-10  rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400">
           {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
         </button>
