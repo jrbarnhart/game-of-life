@@ -1,14 +1,11 @@
 // Based on solution from https://stackoverflow.com/questions/74215349/trying-to-update-ref-on-resize-in-react-js
 
-import { useState, useEffect, SetStateAction, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { ControlRefs } from "./useControlRefs";
 
 export interface CanvasStateInterface {
   canvasSize: { width: number; height: number };
-  gridSize: { width: number; height: number };
-  setGridSize: React.Dispatch<
-    SetStateAction<{ width: number; height: number }>
-  >;
+  gridSize: React.MutableRefObject<{ width: number; height: number }>;
   handleResize: () => void;
 }
 
@@ -52,7 +49,7 @@ function useCanvasState(
     (initGridWidth * controlRefs.aspect.current.height) /
     controlRefs.aspect.current.width;
 
-  const [gridSize, setGridSize] = useState<{ width: number; height: number }>({
+  const gridSize = useRef<{ width: number; height: number }>({
     width: initGridWidth,
     height: initGridHeight,
   });
@@ -117,7 +114,6 @@ function useCanvasState(
   const canvasState: CanvasStateInterface = {
     canvasSize,
     gridSize,
-    setGridSize,
     handleResize,
   };
 
