@@ -140,6 +140,8 @@ const Controls = ({
   };
 
   const handleAspectClick = () => {
+    // "click" stop to handle ref and highlight state updates
+    handleStopClick();
     // Switch between 3:2 and 2:3
     if (controlRefs.aspect.current.width === 3) {
       controlRefs.aspect.current.width = 2;
