@@ -163,7 +163,7 @@ const Controls = ({
 
   return (
     <div>
-      <div className="w-96 p-1 grid grid-flow-col gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 border-black">
+      <div className="w-80 p-1 grid grid-flow-col gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 border-black">
         <button
           aria-label="play"
           onClick={handlePlayClick}
@@ -249,7 +249,7 @@ const Controls = ({
           </svg>
         </button>
       </div>
-      <div className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-b-0 border-black">
+      <div className="w-80 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-b-0 border-black">
         <button
           onClick={handleDrawClick}
           className={`${
@@ -306,7 +306,7 @@ const Controls = ({
       </div>
       <div
         onClick={handleAspectClick}
-        className="w-96 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black"
+        className="w-80 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black"
       >
         <button className="h-10  rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400">
           {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
@@ -315,7 +315,7 @@ const Controls = ({
           htmlFor="total-cells"
           className="h-10 text-center grid items-center text-black"
         >
-          Total Cells:
+          Cells:
         </label>
         <select
           name="totalCells"
