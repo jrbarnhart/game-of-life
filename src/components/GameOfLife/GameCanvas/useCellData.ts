@@ -106,6 +106,13 @@ const useCellData = (gridSize: GridSize) => {
 
   // Method to initialize data randomly
   const initData = (initialData?: Set<number> | undefined) => {
+    // Recreate Uint8Arrays if needed
+    if (currentState.current.length !== gridSize.width * gridSize.height) {
+      console.log("Recreated Uint8s");
+      currentState.current = new Uint8Array(gridSize.width * gridSize.height);
+      nextState.current = new Uint8Array(gridSize.width * gridSize.height);
+    }
+
     if (initialData) {
       // Initialize cells based on passed array of indexes
       for (const index of initialData) {
