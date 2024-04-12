@@ -142,6 +142,7 @@ const Controls = ({
   const handleAspectClick = () => {
     // "click" stop to handle ref and highlight state updates
     handleStopClick();
+
     // Switch between 3:2 and 2:3
     if (controlRefs.aspect.current.width === 3) {
       controlRefs.aspect.current.width = 2;
@@ -160,13 +161,31 @@ const Controls = ({
       controlRefs.aspect.current.width;
 
     canvasState.setGridSize({ width, height });
+    console.log("Set grid size:", width, height);
     canvasState.handleResize();
   };
 
-  const handleTotalCellsSelect = () => {
+  const handleTotalCellsSelect: React.ChangeEventHandler<HTMLSelectElement> = (
+    event
+  ) => {
     // "click" stop to handle ref and highlight state updates
     handleStopClick();
-    // Reinit data to new value
+
+    const newTotal = parseInt(event.currentTarget.value);
+    controlRefs.totalCells.current = newTotal;
+
+    const width = Math.sqrt(
+      (controlRefs.totalCells.current * controlRefs.aspect.current.width) /
+        controlRefs.aspect.current.height
+    );
+    const height =
+      (width * controlRefs.aspect.current.height) /
+      controlRefs.aspect.current.width;
+
+    // Set grid size
+    canvasState.setGridSize({ width, height });
+    // Reinit data (race condition!?)
+    cellData.initData();
   };
 
   return (
