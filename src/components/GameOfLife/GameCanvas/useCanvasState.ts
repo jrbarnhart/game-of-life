@@ -60,6 +60,7 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
         controlRefs.aspect.current.height / controlRefs.aspect.current.width;
       let newWidth = canvasSize.width;
       let newHeight = canvasSize.height;
+
       if (window.innerWidth >= TW_BREAKPOINTS.xxl + margin) {
         newWidth = CANVAS_WIDTHS.xxl - margin;
         newHeight = CANVAS_WIDTHS.xxl * heightRatio - margin;
@@ -85,7 +86,7 @@ function useCanvasState(margin: number, controlRefs: ControlRefs) {
           width: newWidth,
           height: newHeight,
         });
-        console.log("Resized canvas");
+        console.log("Resized canvas", newWidth, newHeight);
       }
     }
     // Add event listener
