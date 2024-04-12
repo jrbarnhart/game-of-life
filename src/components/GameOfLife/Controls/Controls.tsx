@@ -160,7 +160,7 @@ const Controls = ({
       (width * controlRefs.aspect.current.height) /
       controlRefs.aspect.current.width;
 
-    canvasState.setGridSize({ width, height });
+    canvasState.gridSize.current = { width, height };
     console.log("Set grid size:", width, height);
     canvasState.handleResize();
   };
@@ -183,8 +183,8 @@ const Controls = ({
       controlRefs.aspect.current.width;
 
     // Set grid size
-    canvasState.setGridSize({ width, height });
-    // Reinit data (race condition!?)
+    canvasState.gridSize.current = { width, height };
+    // Reinit data
     cellData.initData();
   };
 
