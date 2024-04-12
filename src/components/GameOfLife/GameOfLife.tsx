@@ -58,7 +58,7 @@ const GameOfLife = () => {
         clearCanvas={clearCanvas}
         drawNext={drawNext}
         initialData={initialData}
-        setGridSize={canvasState.setGridSize}
+        canvasState={canvasState}
       />
     </div>
   );
