@@ -163,6 +163,12 @@ const Controls = ({
     canvasState.handleResize();
   };
 
+  const handleTotalCellsSelect = () => {
+    // "click" stop to handle ref and highlight state updates
+    handleStopClick();
+    // Reinit data to new value
+  };
+
   return (
     <div>
       <div className="w-80 p-1 grid grid-flow-col gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 border-black">
@@ -306,11 +312,11 @@ const Controls = ({
           Mirror Y
         </button>
       </div>
-      <div
-        onClick={handleAspectClick}
-        className="w-80 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black"
-      >
-        <button className="h-10  rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400">
+      <div className="w-80 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-black">
+        <button
+          onClick={handleAspectClick}
+          className="h-10  rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+        >
           {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
         </button>
         <label
@@ -320,6 +326,7 @@ const Controls = ({
           Cells:
         </label>
         <select
+          onChange={handleTotalCellsSelect}
           name="totalCells"
           id="total-cells"
           className="h-10 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
