@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef } from "react";
-import { CellData, GridSize } from "./useCellData";
+import { CellData } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
 import { CanvasStateInterface } from "./useCanvasState";
 
@@ -47,8 +47,8 @@ const useCellAnimation = (
   ) => {
     if (!ctx) return;
 
-    const row = Math.floor(cellIndex / cellData.gridSize.width);
-    const col = cellIndex % cellData.gridSize.width;
+    const row = Math.floor(cellIndex / cellData.gridSize.current.width);
+    const col = cellIndex % cellData.gridSize.current.width;
     const x = col * cellWidth;
     const y = row * cellHeight;
 
@@ -76,8 +76,12 @@ const useCellAnimation = (
       const elapsed = now - lastFrameTimeRef.current; // Time elapsed since last frame
       const targetFrameRate = 1000 / 10;
 
-      const cellWidth = canvas ? canvas.width / cellData.gridSize.width : 0;
-      const cellHeight = canvas ? canvas.height / cellData.gridSize.height : 0;
+      const cellWidth = canvas
+        ? canvas.width / cellData.gridSize.current.width
+        : 0;
+      const cellHeight = canvas
+        ? canvas.height / cellData.gridSize.current.height
+        : 0;
 
       // If initial draw
       if (options?.initialDraw && ctx) {
@@ -89,7 +93,7 @@ const useCellAnimation = (
             cellWidth,
             cellHeight,
             cellData.gameState,
-            cellData.gridSize.width
+            cellData.gridSize.current.width
           );
         }
       }
@@ -106,7 +110,7 @@ const useCellAnimation = (
               cellWidth,
               cellHeight,
               cellData.gameState,
-              cellData.gridSize.width
+              cellData.gridSize.current.width
             );
           }
         }
@@ -129,13 +133,13 @@ const useCellAnimation = (
   const drawGridLines = (
     overlay: HTMLCanvasElement | null,
     overlayCtx: CanvasRenderingContext2D | null,
-    gridSize: GridSize
+    gridSize: React.MutableRefObject<{ width: number; height: number }>
   ) => {
     if (!overlay || !overlayCtx) return;
     console.log("Lines!");
 
-    const cellWidth = overlay.width / gridSize.width;
-    const cellHeight = overlay.height / gridSize.height;
+    const cellWidth = overlay.width / gridSize.current.width;
+    const cellHeight = overlay.height / gridSize.current.height;
 
     overlayCtx.strokeStyle = "grey";
 
@@ -164,9 +168,11 @@ const useCellAnimation = (
     // Draw cells in changedCells set
     for (const cellIndex of cellData.changedCells) {
       if (ctx) {
-        const cellWidth = canvas ? canvas.width / cellData.gridSize.width : 0;
+        const cellWidth = canvas
+          ? canvas.width / cellData.gridSize.current.width
+          : 0;
         const cellHeight = canvas
-          ? canvas.height / cellData.gridSize.height
+          ? canvas.height / cellData.gridSize.current.height
           : 0;
         drawCell(
           ctx,
@@ -174,7 +180,7 @@ const useCellAnimation = (
           cellWidth,
           cellHeight,
           cellData.gameState,
-          cellData.gridSize.width
+          cellData.gridSize.current.width
         );
         cellData.computeNext;
       }

@@ -4,38 +4,43 @@ export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
   livingCells: Set<number>;
-  gridSize: GridSize;
+  gridSize: React.MutableRefObject<{ width: number; height: number }>;
   initData: (initialData?: Set<number> | undefined) => void;
   clear: () => void;
   computeNext: () => void;
 }
 
-export interface GridSize {
-  width: number;
-  height: number;
-}
-
-const useCellData = (gridSize: GridSize) => {
+const useCellData = (
+  gridSize: React.MutableRefObject<{ width: number; height: number }>
+) => {
   // Game State: Each Uint8 represents alive or dead (128 or 0) + number of living neighbors
   const currentState = useRef<Uint8Array>(
-    new Uint8Array(gridSize.width * gridSize.height)
+    new Uint8Array(gridSize.current.width * gridSize.current.height)
   );
   const nextState = useRef<Uint8Array>(
-    new Uint8Array(gridSize.width * gridSize.height)
+    new Uint8Array(gridSize.current.width * gridSize.current.height)
   );
   // Sets for keeping track of living cells and cells that have changed
   const livingCells = useRef<Set<number>>(new Set());
   const changedCells = useRef<Set<number>>(new Set());
 
   const countLivingNeighbors = useCallback(
-    (gameState: Uint8Array, row: number, col: number, gridSize: GridSize) => {
+    (
+      gameState: Uint8Array,
+      row: number,
+      col: number,
+      gridSize: React.MutableRefObject<{ width: number; height: number }>
+    ) => {
       let livingNeighborCount = 0;
       for (let i = -1; i <= 1; i++) {
         for (let j = -1; j <= 1; j++) {
           if (!(i === 0 && j === 0)) {
-            const neighborRow = (row + i + gridSize.height) % gridSize.height;
-            const neighborCol = (col + j + gridSize.width) % gridSize.width;
-            const neighborIndex = neighborRow * gridSize.width + neighborCol;
+            const neighborRow =
+              (row + i + gridSize.current.height) % gridSize.current.height;
+            const neighborCol =
+              (col + j + gridSize.current.width) % gridSize.current.width;
+            const neighborIndex =
+              neighborRow * gridSize.current.width + neighborCol;
 
             if (gameState[neighborIndex] >= 128) {
               livingNeighborCount++;
@@ -51,18 +56,21 @@ const useCellData = (gridSize: GridSize) => {
   const incrementLivingNeighbors = (
     gameState: Uint8Array,
     index: number,
-    gridSize: GridSize,
+    gridSize: React.MutableRefObject<{ width: number; height: number }>,
     amount: number
   ) => {
-    const row = Math.floor(index / gridSize.width);
-    const col = index % gridSize.width;
+    const row = Math.floor(index / gridSize.current.width);
+    const col = index % gridSize.current.width;
 
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
         if (!(i === 0 && j === 0)) {
-          const neighborRow = (row + i + gridSize.height) % gridSize.height;
-          const neighborCol = (col + j + gridSize.width) % gridSize.width;
-          const neighborIndex = neighborRow * gridSize.width + neighborCol;
+          const neighborRow =
+            (row + i + gridSize.current.height) % gridSize.current.height;
+          const neighborCol =
+            (col + j + gridSize.current.width) % gridSize.current.width;
+          const neighborIndex =
+            neighborRow * gridSize.current.width + neighborCol;
 
           // console.log("Increment living neighbors in:", neighborIndex);
           gameState[neighborIndex] += amount;
@@ -75,17 +83,20 @@ const useCellData = (gridSize: GridSize) => {
     currentState: Uint8Array,
     nextState: Uint8Array,
     index: number,
-    gridSize: GridSize
+    gridSize: React.MutableRefObject<{ width: number; height: number }>
   ) => {
-    const row = Math.floor(index / gridSize.width);
-    const col = index % gridSize.width;
+    const row = Math.floor(index / gridSize.current.width);
+    const col = index % gridSize.current.width;
     const birthIndexes = [];
     for (let i = -1; i <= 1; i++) {
       for (let j = -1; j <= 1; j++) {
         if (!(i === 0 && j === 0)) {
-          const neighborRow = (row + i + gridSize.height) % gridSize.height;
-          const neighborCol = (col + j + gridSize.width) % gridSize.width;
-          const neighborIndex = neighborRow * gridSize.width + neighborCol;
+          const neighborRow =
+            (row + i + gridSize.current.height) % gridSize.current.height;
+          const neighborCol =
+            (col + j + gridSize.current.width) % gridSize.current.width;
+          const neighborIndex =
+            neighborRow * gridSize.current.width + neighborCol;
 
           if (
             currentState[neighborIndex] === 3 &&
@@ -107,10 +118,17 @@ const useCellData = (gridSize: GridSize) => {
   // Method to initialize data randomly
   const initData = (initialData?: Set<number> | undefined) => {
     // Recreate Uint8Arrays if needed
-    if (currentState.current.length !== gridSize.width * gridSize.height) {
+    if (
+      currentState.current.length !==
+      gridSize.current.width * gridSize.current.height
+    ) {
       console.log("Recreated Uint8s");
-      currentState.current = new Uint8Array(gridSize.width * gridSize.height);
-      nextState.current = new Uint8Array(gridSize.width * gridSize.height);
+      currentState.current = new Uint8Array(
+        gridSize.current.width * gridSize.current.height
+      );
+      nextState.current = new Uint8Array(
+        gridSize.current.width * gridSize.current.height
+      );
     }
 
     if (initialData) {
@@ -132,9 +150,9 @@ const useCellData = (gridSize: GridSize) => {
     }
 
     // Initialize neighbor counts
-    for (let row = 0; row < gridSize.height; row++) {
-      for (let col = 0; col < gridSize.width; col++) {
-        const index = row * gridSize.width + col;
+    for (let row = 0; row < gridSize.current.height; row++) {
+      for (let col = 0; col < gridSize.current.width; col++) {
+        const index = row * gridSize.current.width + col;
         currentState.current[index] += countLivingNeighbors(
           currentState.current,
           row,

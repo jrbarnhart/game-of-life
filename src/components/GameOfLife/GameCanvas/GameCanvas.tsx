@@ -58,13 +58,15 @@ const GameCanvas = ({
         }
       }
 
-      const cellWidth = canvasRef.current.width / cellData.gridSize.width;
-      const cellHeight = canvasRef.current.height / cellData.gridSize.height;
+      const cellWidth =
+        canvasRef.current.width / cellData.gridSize.current.width;
+      const cellHeight =
+        canvasRef.current.height / cellData.gridSize.current.height;
       const canvasX = mouseX - boundingRect.left;
       const canvasY = mouseY - boundingRect.top;
       const gridX = Math.floor(canvasX / cellWidth);
       const gridY = Math.floor(canvasY / cellHeight);
-      const index = gridY * cellData.gridSize.width + gridX;
+      const index = gridY * cellData.gridSize.current.width + gridX;
 
       if (index !== previousIndex.current) {
         if (controlRefs.isErasing.current) {
@@ -75,17 +77,20 @@ const GameCanvas = ({
           drawInitialCell(index, cellWidth, cellHeight);
         }
         if (controlRefs.mirrorX.current || controlRefs.mirrorY.current) {
-          const rowIndex = Math.floor(index / cellData.gridSize.width);
-          const colIndex = index % cellData.gridSize.width;
-          const mirroredRowIndex = cellData.gridSize.height - 1 - rowIndex;
-          const mirroredColIndex = cellData.gridSize.width - 1 - colIndex;
+          const rowIndex = Math.floor(index / cellData.gridSize.current.width);
+          const colIndex = index % cellData.gridSize.current.width;
+          const mirroredRowIndex =
+            cellData.gridSize.current.height - 1 - rowIndex;
+          const mirroredColIndex =
+            cellData.gridSize.current.width - 1 - colIndex;
           if (controlRefs.mirrorX.current && controlRefs.mirrorY.current) {
             const mirroredIndexX =
-              rowIndex * cellData.gridSize.width + mirroredColIndex;
+              rowIndex * cellData.gridSize.current.width + mirroredColIndex;
             const mirroredIndexY =
-              mirroredRowIndex * cellData.gridSize.width + colIndex;
+              mirroredRowIndex * cellData.gridSize.current.width + colIndex;
             const mirroredIndexXY =
-              mirroredRowIndex * cellData.gridSize.width + mirroredColIndex;
+              mirroredRowIndex * cellData.gridSize.current.width +
+              mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndexX);
               initialData.delete(mirroredIndexY);
@@ -109,7 +114,7 @@ const GameCanvas = ({
             }
           } else if (controlRefs.mirrorX.current) {
             const mirroredIndex =
-              rowIndex * cellData.gridSize.width + mirroredColIndex;
+              rowIndex * cellData.gridSize.current.width + mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
               drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
@@ -121,7 +126,7 @@ const GameCanvas = ({
             }
           } else if (controlRefs.mirrorY.current) {
             const mirroredIndex =
-              mirroredRowIndex * cellData.gridSize.width + colIndex;
+              mirroredRowIndex * cellData.gridSize.current.width + colIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
               drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
