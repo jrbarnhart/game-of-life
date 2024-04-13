@@ -4,7 +4,6 @@ export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
   livingCells: Set<number>;
-  gridSize: React.MutableRefObject<{ width: number; height: number }>;
   initData: (initialData?: Set<number> | undefined) => void;
   clear: () => void;
   computeNext: () => void;
@@ -214,7 +213,6 @@ const useCellData = (
     gameState: currentState.current,
     changedCells: changedCells.current,
     livingCells: livingCells.current,
-    gridSize,
     initData,
     clear,
     computeNext,

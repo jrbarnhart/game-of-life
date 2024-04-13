@@ -1,7 +1,7 @@
 import React from "react";
 import { useRef } from "react";
-import { CellData } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
+import { CanvasStateInterface } from "./useCanvasState";
 
 const GameCanvas = ({
   canvasRef,
@@ -9,7 +9,7 @@ const GameCanvas = ({
   containerRef,
   initialData,
   controlRefs,
-  cellData,
+  canvasState,
   drawInitialCell,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -17,7 +17,7 @@ const GameCanvas = ({
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
   controlRefs: ControlRefs;
-  cellData: CellData;
+  canvasState: CanvasStateInterface;
   drawInitialCell: (
     cellIndex: number,
     cellWidth: number,
@@ -59,14 +59,14 @@ const GameCanvas = ({
       }
 
       const cellWidth =
-        canvasRef.current.width / cellData.gridSize.current.width;
+        canvasRef.current.width / canvasState.gridSize.current.width;
       const cellHeight =
-        canvasRef.current.height / cellData.gridSize.current.height;
+        canvasRef.current.height / canvasState.gridSize.current.height;
       const canvasX = mouseX - boundingRect.left;
       const canvasY = mouseY - boundingRect.top;
       const gridX = Math.floor(canvasX / cellWidth);
       const gridY = Math.floor(canvasY / cellHeight);
-      const index = gridY * cellData.gridSize.current.width + gridX;
+      const index = gridY * canvasState.gridSize.current.width + gridX;
 
       if (index !== previousIndex.current) {
         if (controlRefs.isErasing.current) {
@@ -77,19 +77,21 @@ const GameCanvas = ({
           drawInitialCell(index, cellWidth, cellHeight);
         }
         if (controlRefs.mirrorX.current || controlRefs.mirrorY.current) {
-          const rowIndex = Math.floor(index / cellData.gridSize.current.width);
-          const colIndex = index % cellData.gridSize.current.width;
+          const rowIndex = Math.floor(
+            index / canvasState.gridSize.current.width
+          );
+          const colIndex = index % canvasState.gridSize.current.width;
           const mirroredRowIndex =
-            cellData.gridSize.current.height - 1 - rowIndex;
+            canvasState.gridSize.current.height - 1 - rowIndex;
           const mirroredColIndex =
-            cellData.gridSize.current.width - 1 - colIndex;
+            canvasState.gridSize.current.width - 1 - colIndex;
           if (controlRefs.mirrorX.current && controlRefs.mirrorY.current) {
             const mirroredIndexX =
-              rowIndex * cellData.gridSize.current.width + mirroredColIndex;
+              rowIndex * canvasState.gridSize.current.width + mirroredColIndex;
             const mirroredIndexY =
-              mirroredRowIndex * cellData.gridSize.current.width + colIndex;
+              mirroredRowIndex * canvasState.gridSize.current.width + colIndex;
             const mirroredIndexXY =
-              mirroredRowIndex * cellData.gridSize.current.width +
+              mirroredRowIndex * canvasState.gridSize.current.width +
               mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndexX);
@@ -114,7 +116,7 @@ const GameCanvas = ({
             }
           } else if (controlRefs.mirrorX.current) {
             const mirroredIndex =
-              rowIndex * cellData.gridSize.current.width + mirroredColIndex;
+              rowIndex * canvasState.gridSize.current.width + mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
               drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
@@ -126,7 +128,7 @@ const GameCanvas = ({
             }
           } else if (controlRefs.mirrorY.current) {
             const mirroredIndex =
-              mirroredRowIndex * cellData.gridSize.current.width + colIndex;
+              mirroredRowIndex * canvasState.gridSize.current.width + colIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
               drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
