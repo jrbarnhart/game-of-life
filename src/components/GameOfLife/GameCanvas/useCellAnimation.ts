@@ -171,10 +171,12 @@ const useCellAnimation = (
   };
 
   const clearCanvas = useCallback(() => {
-    if (canvas && ctx) {
+    if (canvas && ctx && overlay && overlayCtx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
+      drawGridLines(overlay, overlayCtx, canvasState.gridSize);
     }
-  }, [canvas, ctx]);
+  }, [canvas, canvasState.gridSize, ctx, overlay, overlayCtx]);
 
   const drawNext = () => {
     // Draw cells in changedCells set
