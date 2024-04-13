@@ -1,7 +1,7 @@
 import { useCallback, useRef } from "react";
 
 export interface CellData {
-  gameState: Uint8Array;
+  gameState: React.MutableRefObject<Uint8Array>;
   changedCells: Set<number>;
   livingCells: Set<number>;
   initStateArrays: (width: number, height: number) => void;
@@ -118,9 +118,9 @@ const useCellData = (
   const initStateArrays = (width: number, height: number) => {
     // Recreate Uint8Arrays if needed
     if (currentState.current.length !== width * height) {
-      console.log("Recreated Uint8s");
       currentState.current = new Uint8Array(width * height);
       nextState.current = new Uint8Array(width * height);
+      console.log("Recreated Uint8s", currentState.current, cellData.gameState);
     }
   };
 
@@ -206,7 +206,7 @@ const useCellData = (
   };
 
   const cellData: CellData = {
-    gameState: currentState.current,
+    gameState: currentState,
     changedCells: changedCells.current,
     livingCells: livingCells.current,
     initStateArrays,
