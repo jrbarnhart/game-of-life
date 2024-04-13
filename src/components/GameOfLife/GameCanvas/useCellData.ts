@@ -4,7 +4,7 @@ export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
   livingCells: Set<number>;
-  initStateArrays: () => void;
+  initStateArrays: (width: number, height: number) => void;
   initData: (initialData?: Set<number> | undefined) => void;
   clear: () => void;
   computeNext: () => void;
@@ -115,19 +115,12 @@ const useCellData = (
     return birthIndexes;
   };
 
-  const initStateArrays = () => {
+  const initStateArrays = (width: number, height: number) => {
     // Recreate Uint8Arrays if needed
-    if (
-      currentState.current.length !==
-      gridSize.current.width * gridSize.current.height
-    ) {
+    if (currentState.current.length !== width * height) {
       console.log("Recreated Uint8s");
-      currentState.current = new Uint8Array(
-        gridSize.current.width * gridSize.current.height
-      );
-      nextState.current = new Uint8Array(
-        gridSize.current.width * gridSize.current.height
-      );
+      currentState.current = new Uint8Array(width * height);
+      nextState.current = new Uint8Array(width * height);
     }
   };
 
