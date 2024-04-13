@@ -4,6 +4,7 @@ export interface CellData {
   gameState: Uint8Array;
   changedCells: Set<number>;
   livingCells: Set<number>;
+  initStateArrays: () => void;
   initData: (initialData?: Set<number> | undefined) => void;
   clear: () => void;
   computeNext: () => void;
@@ -114,8 +115,7 @@ const useCellData = (
     return birthIndexes;
   };
 
-  // Method to initialize data randomly
-  const initData = (initialData?: Set<number> | undefined) => {
+  const initStateArrays = () => {
     // Recreate Uint8Arrays if needed
     if (
       currentState.current.length !==
@@ -129,7 +129,10 @@ const useCellData = (
         gridSize.current.width * gridSize.current.height
       );
     }
+  };
 
+  // Method to initialize data randomly
+  const initData = (initialData?: Set<number> | undefined) => {
     if (initialData) {
       // Initialize cells based on passed array of indexes
       for (const index of initialData) {
@@ -213,6 +216,7 @@ const useCellData = (
     gameState: currentState.current,
     changedCells: changedCells.current,
     livingCells: livingCells.current,
+    initStateArrays,
     initData,
     clear,
     computeNext,
