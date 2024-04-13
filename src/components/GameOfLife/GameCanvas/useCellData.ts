@@ -120,7 +120,7 @@ const useCellData = (
     if (currentState.current.length !== width * height) {
       currentState.current = new Uint8Array(width * height);
       nextState.current = new Uint8Array(width * height);
-      console.log("Recreated Uint8s", currentState.current, cellData.gameState);
+      console.log("Recreated Uint8s");
     }
   };
 
