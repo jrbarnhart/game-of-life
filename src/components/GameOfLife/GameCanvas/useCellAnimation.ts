@@ -3,6 +3,18 @@ import { CellData } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
 import { CanvasStateInterface } from "./useCanvasState";
 
+export interface CellAnimation {
+  clearCanvas: () => void;
+  drawNext: () => void;
+  drawInitialCell: (
+    cellIndex: number,
+    cellWidth: number,
+    cellHeight: number,
+    options?: { erase: boolean } | undefined
+  ) => void;
+  startAnimation: () => void;
+}
+
 const useCellAnimation = (
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
