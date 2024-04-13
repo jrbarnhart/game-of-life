@@ -104,7 +104,7 @@ const useCellAnimation = (
             cellIndex,
             cellWidth,
             cellHeight,
-            cellData.gameState,
+            cellData.gameState.current,
             canvasState.gridSize.current.width
           );
         }
@@ -121,7 +121,7 @@ const useCellAnimation = (
               cellIndex,
               cellWidth,
               cellHeight,
-              cellData.gameState,
+              cellData.gameState.current,
               canvasState.gridSize.current.width
             );
           }
@@ -191,7 +191,7 @@ const useCellAnimation = (
           cellIndex,
           cellWidth,
           cellHeight,
-          cellData.gameState,
+          cellData.gameState.current,
           canvasState.gridSize.current.width
         );
         cellData.computeNext;
