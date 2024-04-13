@@ -190,8 +190,12 @@ const useCellAnimation = (
     cellData.computeNext();
   };
 
-  // Start the animation if canvas is initialized
-  useEffect(() => {
+  const startAnimation = useCallback(() => {
+    // Stop old animation
+    if (animationFrameRef.current) {
+      cancelAnimationFrame(animationFrameRef.current);
+    }
+
     if (canvasInitialized && ctx && canvas) {
       clearCanvas();
       drawGridLines(overlay, overlayCtx, canvasState.gridSize);
@@ -207,6 +211,23 @@ const useCellAnimation = (
       );
       console.log("Animation started");
     }
+  }, [
+    animationLoop,
+    canvas,
+    canvasInitialized,
+    canvasState.gridSize,
+    cellData,
+    clearCanvas,
+    controlRefs.isPaused,
+    controlRefs.isPlaying,
+    ctx,
+    overlay,
+    overlayCtx,
+  ]);
+
+  // Start the animation if canvas is initialized
+  useEffect(() => {
+    startAnimation();
 
     return () => {
       if (animationFrameRef.current) {
@@ -225,12 +246,14 @@ const useCellAnimation = (
     ctx,
     overlay,
     overlayCtx,
+    startAnimation,
   ]);
 
   const cellAnimation = {
     clearCanvas,
     drawNext,
     drawInitialCell,
+    startAnimation,
   };
 
   return cellAnimation;
