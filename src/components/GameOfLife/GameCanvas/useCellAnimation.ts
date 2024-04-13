@@ -212,7 +212,6 @@ const useCellAnimation = (
 
     if (canvasInitialized && ctx && canvas) {
       clearCanvas();
-      drawGridLines(overlay, overlayCtx, canvasState.gridSize);
       animationLoop(
         ctx,
         canvas,
@@ -229,14 +228,11 @@ const useCellAnimation = (
     animationLoop,
     canvas,
     canvasInitialized,
-    canvasState.gridSize,
     cellData,
     clearCanvas,
     controlRefs.isPaused,
     controlRefs.isPlaying,
     ctx,
-    overlay,
-    overlayCtx,
   ]);
 
   // Start the animation if canvas is initialized
