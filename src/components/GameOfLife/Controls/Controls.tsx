@@ -2,19 +2,18 @@ import { useState } from "react";
 import { CellData } from "../GameCanvas/useCellData";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
+import { CellAnimation } from "../GameCanvas/useCellAnimation";
 
 const Controls = ({
   controlRefs,
   cellData,
-  clearCanvas,
-  drawNext,
+  cellAnimation,
   initialData,
   canvasState,
 }: {
   controlRefs: ControlRefs;
   cellData: CellData;
-  clearCanvas: () => void;
-  drawNext: () => void;
+  cellAnimation: CellAnimation;
   initialData: Set<number>;
   canvasState: CanvasStateInterface;
 }) => {
@@ -77,7 +76,7 @@ const Controls = ({
     setHighlightMirrorX(-1);
     setHighlightMirrorY(-1);
     cellData.clear();
-    clearCanvas();
+    cellAnimation.clearCanvas();
     initialData.clear();
   };
 
@@ -86,7 +85,7 @@ const Controls = ({
       controlRefs.isPaused.current = true;
       setHighlightPlay(false);
       setHighlightPause(true);
-      drawNext();
+      cellAnimation.drawNext();
     }
   };
 
@@ -97,7 +96,7 @@ const Controls = ({
       setHighlightPlay(false);
       setHighlightPause(false);
       cellData.clear();
-      clearCanvas();
+      cellAnimation.clearCanvas();
     }
     controlRefs.isDrawing.current = !controlRefs.isDrawing.current;
     setHighlightDraw(controlRefs.isDrawing.current);
