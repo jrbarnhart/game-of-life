@@ -170,7 +170,7 @@ const Controls = ({
     // "click" stop to handle ref and highlight state updates
     handleStopClick();
 
-    const newTotal = parseInt(event.currentTarget.value);
+    const newTotal = parseInt(event.target.value);
     controlRefs.totalCells.current = newTotal;
 
     const width = Math.sqrt(
@@ -181,10 +181,9 @@ const Controls = ({
       (width * controlRefs.aspect.current.height) /
       controlRefs.aspect.current.width;
 
-    // Set grid size
     canvasState.gridSize.current = { width, height };
-    // Reinit data
-    cellData.initData();
+    cellData.initStateArrays(width, height);
+    cellAnimation.startAnimation();
   };
 
   return (
