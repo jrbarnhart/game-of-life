@@ -2,6 +2,7 @@ import React from "react";
 import { useRef } from "react";
 import { ControlRefs } from "./useControlRefs";
 import { CanvasStateInterface } from "./useCanvasState";
+import { CellAnimation } from "./useCellAnimation";
 
 const GameCanvas = ({
   canvasRef,
@@ -10,7 +11,7 @@ const GameCanvas = ({
   initialData,
   controlRefs,
   canvasState,
-  drawInitialCell,
+  cellAnimation,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -18,12 +19,7 @@ const GameCanvas = ({
   initialData: Set<number>;
   controlRefs: ControlRefs;
   canvasState: CanvasStateInterface;
-  drawInitialCell: (
-    cellIndex: number,
-    cellWidth: number,
-    cellHeight: number,
-    options?: { erase: boolean } | undefined
-  ) => void;
+  cellAnimation: CellAnimation;
 }) => {
   const previousIndex = useRef<number | null>(null);
   const isMouseOrTouchDown = useRef<boolean>(false);
@@ -71,10 +67,12 @@ const GameCanvas = ({
       if (index !== previousIndex.current) {
         if (controlRefs.isErasing.current) {
           initialData.delete(index);
-          drawInitialCell(index, cellWidth, cellHeight, { erase: true });
+          cellAnimation.drawInitialCell(index, cellWidth, cellHeight, {
+            erase: true,
+          });
         } else {
           initialData.add(index);
-          drawInitialCell(index, cellWidth, cellHeight);
+          cellAnimation.drawInitialCell(index, cellWidth, cellHeight);
         }
         if (controlRefs.mirrorX.current || controlRefs.mirrorY.current) {
           const rowIndex = Math.floor(
@@ -97,46 +95,91 @@ const GameCanvas = ({
               initialData.delete(mirroredIndexX);
               initialData.delete(mirroredIndexY);
               initialData.delete(mirroredIndexXY);
-              drawInitialCell(mirroredIndexX, cellWidth, cellHeight, {
-                erase: true,
-              });
-              drawInitialCell(mirroredIndexY, cellWidth, cellHeight, {
-                erase: true,
-              });
-              drawInitialCell(mirroredIndexXY, cellWidth, cellHeight, {
-                erase: true,
-              });
+              cellAnimation.drawInitialCell(
+                mirroredIndexX,
+                cellWidth,
+                cellHeight,
+                {
+                  erase: true,
+                }
+              );
+              cellAnimation.drawInitialCell(
+                mirroredIndexY,
+                cellWidth,
+                cellHeight,
+                {
+                  erase: true,
+                }
+              );
+              cellAnimation.drawInitialCell(
+                mirroredIndexXY,
+                cellWidth,
+                cellHeight,
+                {
+                  erase: true,
+                }
+              );
             } else {
               initialData.add(mirroredIndexX);
               initialData.add(mirroredIndexY);
               initialData.add(mirroredIndexXY);
-              drawInitialCell(mirroredIndexX, cellWidth, cellHeight);
-              drawInitialCell(mirroredIndexY, cellWidth, cellHeight);
-              drawInitialCell(mirroredIndexXY, cellWidth, cellHeight);
+              cellAnimation.drawInitialCell(
+                mirroredIndexX,
+                cellWidth,
+                cellHeight
+              );
+              cellAnimation.drawInitialCell(
+                mirroredIndexY,
+                cellWidth,
+                cellHeight
+              );
+              cellAnimation.drawInitialCell(
+                mirroredIndexXY,
+                cellWidth,
+                cellHeight
+              );
             }
           } else if (controlRefs.mirrorX.current) {
             const mirroredIndex =
               rowIndex * canvasState.gridSize.current.width + mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
-              drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
-                erase: true,
-              });
+              cellAnimation.drawInitialCell(
+                mirroredIndex,
+                cellWidth,
+                cellHeight,
+                {
+                  erase: true,
+                }
+              );
             } else {
               initialData.add(mirroredIndex);
-              drawInitialCell(mirroredIndex, cellWidth, cellHeight);
+              cellAnimation.drawInitialCell(
+                mirroredIndex,
+                cellWidth,
+                cellHeight
+              );
             }
           } else if (controlRefs.mirrorY.current) {
             const mirroredIndex =
               mirroredRowIndex * canvasState.gridSize.current.width + colIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
-              drawInitialCell(mirroredIndex, cellWidth, cellHeight, {
-                erase: true,
-              });
+              cellAnimation.drawInitialCell(
+                mirroredIndex,
+                cellWidth,
+                cellHeight,
+                {
+                  erase: true,
+                }
+              );
             } else {
               initialData.add(mirroredIndex);
-              drawInitialCell(mirroredIndex, cellWidth, cellHeight);
+              cellAnimation.drawInitialCell(
+                mirroredIndex,
+                cellWidth,
+                cellHeight
+              );
             }
           }
         }
