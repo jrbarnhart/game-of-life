@@ -33,11 +33,19 @@ const useCellAnimation = (
     (
       ctx: CanvasRenderingContext2D,
       cellIndex: number,
-      cellWidth: number,
-      cellHeight: number,
       gameState: Uint8Array,
-      gridWidth: number
+      gridWidth: number,
+      canvas: HTMLCanvasElement,
+      gridSize: { width: number; height: number }
     ) => {
+      // Prevent divide by 0 leading to NaN draw calls
+      if (gridSize.height === 0 || gridSize.width === 0) {
+        return;
+      }
+
+      const cellWidth = canvas.width / gridSize.width;
+      const cellHeight = canvas.height / gridSize.height;
+
       const row = Math.floor(cellIndex / gridWidth);
       const col = cellIndex % gridWidth;
       const x = col * cellWidth;
@@ -88,24 +96,17 @@ const useCellAnimation = (
       const elapsed = now - lastFrameTimeRef.current; // Time elapsed since last frame
       const targetFrameRate = 1000 / 10;
 
-      const cellWidth = canvas
-        ? canvas.width / canvasState.gridSize.current.width
-        : 0;
-      const cellHeight = canvas
-        ? canvas.height / canvasState.gridSize.current.height
-        : 0;
-
       // If initial draw
-      if (options?.initialDraw && ctx) {
+      if (options?.initialDraw && canvas && ctx) {
         console.log("initial draw");
         for (const cellIndex of cellData.livingCells) {
           drawCell(
             ctx,
             cellIndex,
-            cellWidth,
-            cellHeight,
             cellData.gameState.current,
-            canvasState.gridSize.current.width
+            canvasState.gridSize.current.width,
+            canvas,
+            canvasState.gridSize.current
           );
         }
       }
@@ -115,14 +116,14 @@ const useCellAnimation = (
 
         // Draw cells in changedCells set
         for (const cellIndex of cellData.changedCells) {
-          if (ctx) {
+          if (canvas && ctx) {
             drawCell(
               ctx,
               cellIndex,
-              cellWidth,
-              cellHeight,
               cellData.gameState.current,
-              canvasState.gridSize.current.width
+              canvasState.gridSize.current.width,
+              canvas,
+              canvasState.gridSize.current
             );
           }
         }
@@ -181,20 +182,14 @@ const useCellAnimation = (
   const drawNext = () => {
     // Draw cells in changedCells set
     for (const cellIndex of cellData.changedCells) {
-      if (ctx) {
-        const cellWidth = canvas
-          ? canvas.width / canvasState.gridSize.current.width
-          : 0;
-        const cellHeight = canvas
-          ? canvas.height / canvasState.gridSize.current.height
-          : 0;
+      if (canvas && ctx) {
         drawCell(
           ctx,
           cellIndex,
-          cellWidth,
-          cellHeight,
           cellData.gameState.current,
-          canvasState.gridSize.current.width
+          canvasState.gridSize.current.width,
+          canvas,
+          canvasState.gridSize.current
         );
         cellData.computeNext;
       }
