@@ -135,7 +135,7 @@ const useCellData = (
     } else {
       // Initialize cells to living or dead at 1:1 ratio
       for (let i = 0; i < currentState.current.length; i++) {
-        const val = Math.random() >= 0.5 ? 128 : 0;
+        const val = Math.random() >= 0.6666 ? 128 : 0;
         currentState.current[i] = val;
         if (val === 128) {
           livingCells.current.add(i);
