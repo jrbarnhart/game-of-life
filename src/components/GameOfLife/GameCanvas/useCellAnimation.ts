@@ -4,7 +4,12 @@ import { ControlRefs } from "./useControlRefs";
 import { CanvasStateInterface } from "./useCanvasState";
 
 export interface CellAnimation {
-  cellSize: React.MutableRefObject<{ width: number; height: number }>;
+  cellSize: React.MutableRefObject<{
+    width: number;
+    height: number;
+    offX: number;
+    offY: number;
+  }>;
   clearCanvas: () => void;
   drawNext: () => void;
   drawInitialCell: (
