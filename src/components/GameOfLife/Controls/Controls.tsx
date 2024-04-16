@@ -351,7 +351,7 @@ const Controls = ({
           <option value="1350">1,350</option>
           <option value="5400">5,400</option>
           <option value="21600">21,600</option>
-          <option value="135000">135,000</option>
+          <option value="60000">60,000</option>
         </select>
       </div>
     </div>
