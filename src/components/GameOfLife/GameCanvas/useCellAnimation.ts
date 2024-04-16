@@ -4,6 +4,7 @@ import { ControlRefs } from "./useControlRefs";
 import { CanvasStateInterface } from "./useCanvasState";
 
 export interface CellAnimation {
+  cellSize: React.MutableRefObject<{ width: number; height: number }>;
   clearCanvas: () => void;
   drawNext: () => void;
   drawInitialCell: (
@@ -25,6 +26,21 @@ const useCellAnimation = (
 ) => {
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
+  const cellSize = useRef<{ width: number; height: number }>({
+    width: 0,
+    height: 0,
+  });
+
+  const updateCellSize = useCallback(() => {
+    if (!canvas) return;
+    // Rounded to prevent sub-pixel drawing, and down to prevent draws off canvas
+    cellSize.current.width = Math.floor(
+      canvas.width / canvasState.gridSize.current.width
+    );
+    cellSize.current.height = Math.floor(
+      canvas.height / canvasState.gridSize.current.height
+    );
+  }, [canvas, canvasState.gridSize]);
 
   // Helper fn for drawing cells
   const drawCell = useCallback(
@@ -40,25 +56,23 @@ const useCellAnimation = (
         return;
       }
 
-      // Rounded to prevent sub-pixel drawing, and down to prevent draws off canvas
-      const cellWidth = Math.floor(canvas.width / gridSize.width);
-      const cellHeight = Math.floor(canvas.height / gridSize.height);
-
       const row = Math.floor(cellIndex / gridSize.width);
       const col = cellIndex % gridSize.width;
 
       // Calculate offset to center grid
-      const offX = Math.floor((canvas.width - gridSize.width * cellWidth) / 2);
+      const offX = Math.floor(
+        (canvas.width - gridSize.width * cellSize.current.width) / 2
+      );
       const offY = Math.floor(
-        (canvas.height - gridSize.height * cellHeight) / 2
+        (canvas.height - gridSize.height * cellSize.current.height) / 2
       );
 
-      const x = col * cellWidth + offX;
-      const y = row * cellHeight + offY;
+      const x = col * cellSize.current.width + offX;
+      const y = row * cellSize.current.height + offY;
 
       ctx.fillStyle = gameState[cellIndex] < 128 ? "black" : "white";
       ctx.beginPath();
-      ctx.rect(x, y, cellWidth, cellHeight);
+      ctx.rect(x, y, cellSize.current.width, cellSize.current.height);
       ctx.fill();
     },
     []
@@ -73,27 +87,26 @@ const useCellAnimation = (
       !canvas ||
       canvasState.gridSize.current.height === 0 ||
       canvasState.gridSize.current.width === 0
-    )
+    ) {
       return;
+    }
 
-    const cellWidth = Math.floor(
-      canvas.width / canvasState.gridSize.current.width
-    );
-    const cellHeight = Math.floor(
-      canvas.height / canvasState.gridSize.current.height
-    );
     // Calculate offset to center grid
     const offX = Math.floor(
-      (canvas.width - canvasState.gridSize.current.width * cellWidth) / 2
+      (canvas.width -
+        canvasState.gridSize.current.width * cellSize.current.width) /
+        2
     );
     const offY = Math.floor(
-      (canvas.height - canvasState.gridSize.current.height * cellHeight) / 2
+      (canvas.height -
+        canvasState.gridSize.current.height * cellSize.current.height) /
+        2
     );
 
     const row = Math.floor(cellIndex / canvasState.gridSize.current.width);
     const col = cellIndex % canvasState.gridSize.current.width;
-    const x = col * cellWidth + offX;
-    const y = row * cellHeight + offY;
+    const x = col * cellSize.current.width + offX;
+    const y = row * cellSize.current.height + offY;
 
     if (options?.erase) {
       ctx.fillStyle = "black";
@@ -101,7 +114,7 @@ const useCellAnimation = (
       ctx.fillStyle = "white";
     }
     ctx.beginPath();
-    ctx.rect(x, y, cellWidth, cellHeight);
+    ctx.rect(x, y, cellSize.current.width, cellSize.current.height);
     ctx.fill();
   };
 
@@ -237,6 +250,8 @@ const useCellAnimation = (
       cancelAnimationFrame(animationFrameRef.current);
     }
 
+    updateCellSize();
+
     if (canvasInitialized && ctx && canvas) {
       clearCanvas();
       animationLoop(
@@ -260,6 +275,7 @@ const useCellAnimation = (
     controlRefs.isPaused,
     controlRefs.isPlaying,
     ctx,
+    updateCellSize,
   ]);
 
   // Start the animation if canvas is initialized
@@ -287,6 +303,7 @@ const useCellAnimation = (
   ]);
 
   const cellAnimation: CellAnimation = {
+    cellSize,
     clearCanvas,
     drawNext,
     drawInitialCell,
