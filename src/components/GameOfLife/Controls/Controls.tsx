@@ -154,16 +154,16 @@ const Controls = ({
       controlRefs.aspect.current.height = 2;
     }
 
-    const width = Math.sqrt(
-      (controlRefs.totalCells.current * controlRefs.aspect.current.width) /
-        controlRefs.aspect.current.height
-    );
-    const height =
-      (width * controlRefs.aspect.current.height) /
-      controlRefs.aspect.current.width;
+    // Switch grid width and height
+    const tempVal = gridSize.current.width;
+    gridSize.current.width = gridSize.current.height;
+    gridSize.current.height = tempVal;
 
-    gridSize.current = { width, height };
-    console.log("Set grid size:", width, height);
+    console.log(
+      "Set grid size:",
+      gridSize.current.width,
+      gridSize.current.height
+    );
     canvasState.handleResize();
   };
 
