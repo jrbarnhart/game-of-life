@@ -10,12 +10,14 @@ const Controls = ({
   cellAnimation,
   initialData,
   canvasState,
+  gridSize,
 }: {
   controlRefs: ControlRefs;
   cellData: CellData;
   cellAnimation: CellAnimation;
   initialData: Set<number>;
   canvasState: CanvasStateInterface;
+  gridSize: React.MutableRefObject<{ width: number; height: number }>;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -159,7 +161,7 @@ const Controls = ({
       (width * controlRefs.aspect.current.height) /
       controlRefs.aspect.current.width;
 
-    canvasState.gridSize.current = { width, height };
+    gridSize.current = { width, height };
     console.log("Set grid size:", width, height);
     canvasState.handleResize();
   };
@@ -181,7 +183,7 @@ const Controls = ({
       (width * controlRefs.aspect.current.height) /
       controlRefs.aspect.current.width;
 
-    canvasState.gridSize.current = { width, height };
+    gridSize.current = { width, height };
     cellData.initStateArrays(width, height);
     cellAnimation.startAnimation();
   };
