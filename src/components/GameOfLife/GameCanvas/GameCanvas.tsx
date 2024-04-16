@@ -54,10 +54,8 @@ const GameCanvas = ({
         }
       }
 
-      const cellWidth =
-        canvasRef.current.width / canvasState.gridSize.current.width;
-      const cellHeight =
-        canvasRef.current.height / canvasState.gridSize.current.height;
+      const cellWidth = cellAnimation.cellSize.current.width;
+      const cellHeight = cellAnimation.cellSize.current.height;
       const canvasX = mouseX - boundingRect.left;
       const canvasY = mouseY - boundingRect.top;
       const gridX = Math.floor(canvasX / cellWidth);
