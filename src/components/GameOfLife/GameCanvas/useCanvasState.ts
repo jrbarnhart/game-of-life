@@ -77,7 +77,7 @@ function useCanvasState(marginY: number, controlRefs: ControlRefs) {
     ) {
       newWidth = CANVAS_SIZES.sm[widthProperty];
       newHeight = CANVAS_SIZES.sm[heightProperty];
-    } else if (availableWidth < TW_BREAKPOINTS.sm) {
+    } else {
       newWidth = CANVAS_SIZES.xs[widthProperty];
       newHeight = CANVAS_SIZES.xs[heightProperty];
     }
