@@ -38,42 +38,48 @@ function useCanvasState(marginY: number, controlRefs: ControlRefs) {
     const availableWidth = window.innerWidth;
     const availableHeight = window.innerHeight - marginY;
 
+    const wideAspect =
+      controlRefs.aspect.current.width > controlRefs.aspect.current.height;
+    const widthProperty = wideAspect ? "x" : "y";
+    const heightProperty = wideAspect ? "y" : "x";
+
     let newWidth = canvasSize.width;
     let newHeight = canvasSize.height;
+
     // Set width based on window width
     if (
       availableWidth >= TW_BREAKPOINTS.xxl &&
-      availableHeight >= CANVAS_SIZES.xxl.y
+      availableHeight >= CANVAS_SIZES.xxl[heightProperty]
     ) {
-      newWidth = CANVAS_SIZES.xxl.x;
-      newHeight = CANVAS_SIZES.xxl.y;
+      newWidth = CANVAS_SIZES.xxl[widthProperty];
+      newHeight = CANVAS_SIZES.xxl[heightProperty];
     } else if (
       availableWidth >= TW_BREAKPOINTS.xl &&
-      availableHeight >= CANVAS_SIZES.xl.y
+      availableHeight >= CANVAS_SIZES.xl[heightProperty]
     ) {
-      newWidth = CANVAS_SIZES.xl.x;
-      newHeight = CANVAS_SIZES.xl.y;
+      newWidth = CANVAS_SIZES.xl[widthProperty];
+      newHeight = CANVAS_SIZES.xl[heightProperty];
     } else if (
       availableWidth >= TW_BREAKPOINTS.lg &&
-      availableHeight >= CANVAS_SIZES.lg.y
+      availableHeight >= CANVAS_SIZES.lg[heightProperty]
     ) {
-      newWidth = CANVAS_SIZES.lg.x;
-      newHeight = CANVAS_SIZES.lg.y;
+      newWidth = CANVAS_SIZES.lg[widthProperty];
+      newHeight = CANVAS_SIZES.lg[heightProperty];
     } else if (
       availableWidth >= TW_BREAKPOINTS.md &&
-      availableHeight >= CANVAS_SIZES.md.y
+      availableHeight >= CANVAS_SIZES.md[heightProperty]
     ) {
-      newWidth = CANVAS_SIZES.md.x;
-      newHeight = CANVAS_SIZES.md.y;
+      newWidth = CANVAS_SIZES.md[widthProperty];
+      newHeight = CANVAS_SIZES.md[heightProperty];
     } else if (
       availableWidth >= TW_BREAKPOINTS.sm &&
-      availableHeight >= CANVAS_SIZES.sm.y
+      availableHeight >= CANVAS_SIZES.sm[heightProperty]
     ) {
-      newWidth = CANVAS_SIZES.sm.x;
-      newHeight = CANVAS_SIZES.sm.y;
+      newWidth = CANVAS_SIZES.sm[widthProperty];
+      newHeight = CANVAS_SIZES.sm[heightProperty];
     } else if (availableWidth < TW_BREAKPOINTS.sm) {
-      newWidth = CANVAS_SIZES.xs.x;
-      newHeight = CANVAS_SIZES.xs.y;
+      newWidth = CANVAS_SIZES.xs[widthProperty];
+      newHeight = CANVAS_SIZES.xs[heightProperty];
     }
 
     if (newWidth !== canvasSize.width || newHeight !== canvasSize.height) {
@@ -83,7 +89,7 @@ function useCanvasState(marginY: number, controlRefs: ControlRefs) {
       });
       console.log("Resized canvas", newWidth, newHeight);
     }
-  }, [canvasSize.height, canvasSize.width, marginY]);
+  }, [canvasSize.height, canvasSize.width, controlRefs.aspect, marginY]);
 
   useEffect(() => {
     // Add event listener
