@@ -8,8 +8,6 @@ export interface CellAnimation {
   drawNext: () => void;
   drawInitialCell: (
     cellIndex: number,
-    cellWidth: number,
-    cellHeight: number,
     options?: { erase: boolean } | undefined
   ) => void;
   startAnimation: () => void;
@@ -68,16 +66,34 @@ const useCellAnimation = (
 
   const drawInitialCell = (
     cellIndex: number,
-    cellWidth: number,
-    cellHeight: number,
     options?: { erase: boolean } | undefined
   ) => {
-    if (!ctx) return;
+    if (
+      !ctx ||
+      !canvas ||
+      canvasState.gridSize.current.height === 0 ||
+      canvasState.gridSize.current.width === 0
+    )
+      return;
+
+    const cellWidth = Math.floor(
+      canvas.width / canvasState.gridSize.current.width
+    );
+    const cellHeight = Math.floor(
+      canvas.height / canvasState.gridSize.current.height
+    );
+    // Calculate offset to center grid
+    const offX = Math.floor(
+      (canvas.width - canvasState.gridSize.current.width * cellWidth) / 2
+    );
+    const offY = Math.floor(
+      (canvas.height - canvasState.gridSize.current.height * cellHeight) / 2
+    );
 
     const row = Math.floor(cellIndex / canvasState.gridSize.current.width);
     const col = cellIndex % canvasState.gridSize.current.width;
-    const x = col * cellWidth;
-    const y = row * cellHeight;
+    const x = col * cellWidth + offX;
+    const y = row * cellHeight + offY;
 
     if (options?.erase) {
       ctx.fillStyle = "black";
@@ -270,7 +286,7 @@ const useCellAnimation = (
     startAnimation,
   ]);
 
-  const cellAnimation = {
+  const cellAnimation: CellAnimation = {
     clearCanvas,
     drawNext,
     drawInitialCell,
