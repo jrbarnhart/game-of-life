@@ -31,25 +31,32 @@ const useCellAnimation = (
   // Helper fn for drawing cells
   const drawCell = useCallback(
     (
-      ctx: CanvasRenderingContext2D,
-      cellIndex: number,
-      gameState: Uint8Array,
-      gridWidth: number,
       canvas: HTMLCanvasElement,
-      gridSize: { width: number; height: number }
+      ctx: CanvasRenderingContext2D,
+      gridSize: { width: number; height: number },
+      gameState: Uint8Array,
+      cellIndex: number
     ) => {
       // Prevent divide by 0 leading to NaN draw calls
       if (gridSize.height === 0 || gridSize.width === 0) {
         return;
       }
 
-      const cellWidth = canvas.width / gridSize.width;
-      const cellHeight = canvas.height / gridSize.height;
+      // Rounded to prevent sub-pixel drawing, and down to prevent draws off canvas
+      const cellWidth = Math.floor(canvas.width / gridSize.width);
+      const cellHeight = Math.floor(canvas.height / gridSize.height);
 
-      const row = Math.floor(cellIndex / gridWidth);
-      const col = cellIndex % gridWidth;
-      const x = col * cellWidth;
-      const y = row * cellHeight;
+      const row = Math.floor(cellIndex / gridSize.width);
+      const col = cellIndex % gridSize.width;
+
+      // Calculate offset to center grid
+      const offX = Math.floor((canvas.width - gridSize.width * cellWidth) / 2);
+      const offY = Math.floor(
+        (canvas.height - gridSize.height * cellHeight) / 2
+      );
+
+      const x = col * cellWidth + offX;
+      const y = row * cellHeight + offY;
 
       ctx.fillStyle = gameState[cellIndex] < 128 ? "black" : "white";
       ctx.beginPath();
@@ -101,12 +108,11 @@ const useCellAnimation = (
         console.log("initial draw");
         for (const cellIndex of cellData.livingCells) {
           drawCell(
-            ctx,
-            cellIndex,
-            cellData.gameState.current,
-            canvasState.gridSize.current.width,
             canvas,
-            canvasState.gridSize.current
+            ctx,
+            canvasState.gridSize.current,
+            cellData.gameState.current,
+            cellIndex
           );
         }
       }
@@ -118,12 +124,11 @@ const useCellAnimation = (
         for (const cellIndex of cellData.changedCells) {
           if (canvas && ctx) {
             drawCell(
-              ctx,
-              cellIndex,
-              cellData.gameState.current,
-              canvasState.gridSize.current.width,
               canvas,
-              canvasState.gridSize.current
+              ctx,
+              canvasState.gridSize.current,
+              cellData.gameState.current,
+              cellIndex
             );
           }
         }
@@ -184,12 +189,11 @@ const useCellAnimation = (
     for (const cellIndex of cellData.changedCells) {
       if (canvas && ctx) {
         drawCell(
-          ctx,
-          cellIndex,
-          cellData.gameState.current,
-          canvasState.gridSize.current.width,
           canvas,
-          canvasState.gridSize.current
+          ctx,
+          canvasState.gridSize.current,
+          cellData.gameState.current,
+          cellIndex
         );
         cellData.computeNext;
       }
