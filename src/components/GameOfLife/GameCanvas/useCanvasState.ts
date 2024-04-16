@@ -28,11 +28,7 @@ export const TW_BREAKPOINTS = {
 };
 
 // Hook
-function useCanvasState(
-  marginX: number,
-  marginY: number,
-  controlRefs: ControlRefs
-) {
+function useCanvasState(marginY: number, controlRefs: ControlRefs) {
   const heightRatio =
     controlRefs.aspect.current.height / controlRefs.aspect.current.width;
 
@@ -58,23 +54,23 @@ function useCanvasState(
     // Set canvas size based on window size and breakpoints
     const heightRatio =
       controlRefs.aspect.current.height / controlRefs.aspect.current.width;
-    const availableWidth = window.innerWidth - marginX;
+    const availableWidth = window.innerWidth;
     const availableHeight = window.innerHeight - marginY;
 
     let newWidth = canvasSize.width;
     let newHeight = canvasSize.height;
     // Set width based on window width
-    if (window.innerWidth >= TW_BREAKPOINTS.xxl + marginX) {
+    if (window.innerWidth >= TW_BREAKPOINTS.xxl) {
       newWidth = Math.min(CANVAS_WIDTHS.xxl, availableWidth);
-    } else if (window.innerWidth >= TW_BREAKPOINTS.xl + marginX) {
+    } else if (window.innerWidth >= TW_BREAKPOINTS.xl) {
       newWidth = Math.min(CANVAS_WIDTHS.xl, availableWidth);
-    } else if (window.innerWidth >= TW_BREAKPOINTS.lg + marginX) {
+    } else if (window.innerWidth >= TW_BREAKPOINTS.lg) {
       newWidth = Math.min(CANVAS_WIDTHS.lg, availableWidth);
-    } else if (window.innerWidth >= TW_BREAKPOINTS.md + marginX) {
+    } else if (window.innerWidth >= TW_BREAKPOINTS.md) {
       newWidth = Math.min(CANVAS_WIDTHS.md, availableWidth);
-    } else if (window.innerWidth >= TW_BREAKPOINTS.sm + marginX) {
+    } else if (window.innerWidth >= TW_BREAKPOINTS.sm) {
       newWidth = Math.min(CANVAS_WIDTHS.sm, availableWidth);
-    } else if (window.innerWidth < TW_BREAKPOINTS.sm + marginX) {
+    } else if (window.innerWidth < TW_BREAKPOINTS.sm) {
       newWidth = Math.min(CANVAS_WIDTHS.xs, availableWidth);
     }
     // Set height based on width
@@ -92,13 +88,7 @@ function useCanvasState(
       });
       console.log("Resized canvas", newWidth, newHeight);
     }
-  }, [
-    canvasSize.height,
-    canvasSize.width,
-    controlRefs.aspect,
-    marginX,
-    marginY,
-  ]);
+  }, [canvasSize.height, canvasSize.width, controlRefs.aspect, marginY]);
 
   useEffect(() => {
     // Add event listener
