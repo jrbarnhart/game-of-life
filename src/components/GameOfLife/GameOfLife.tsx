@@ -49,7 +49,7 @@ const GameOfLife = () => {
         containerRef={containerRef}
         initialData={initialData}
         controlRefs={controlRefs}
-        canvasState={canvasState}
+        gridSize={gridSize}
         cellAnimation={cellAnimation}
       />
       <Controls
@@ -58,6 +58,7 @@ const GameOfLife = () => {
         cellAnimation={cellAnimation}
         initialData={initialData}
         canvasState={canvasState}
+        gridSize={gridSize}
       />
     </div>
   );
