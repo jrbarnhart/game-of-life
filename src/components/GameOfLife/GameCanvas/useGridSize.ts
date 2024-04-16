@@ -1,6 +1,6 @@
 import { useRef } from "react";
 
-const GRID_SIZES = {
+export const GRID_SIZES = {
   sm: { x: 30, y: 20 },
   md: { x: 75, y: 50 },
   lg: { x: 150, y: 100 },
