@@ -11,11 +11,11 @@ export interface CanvasStateInterface {
 
 export const CANVAS_WIDTHS = {
   xs: 300,
-  sm: 498,
+  sm: 600,
   md: 600,
-  lg: 798,
-  xl: 996,
-  xxl: 996,
+  lg: 900,
+  xl: 1200,
+  xxl: 1500,
 };
 
 // TailwindCSS breakpoints
