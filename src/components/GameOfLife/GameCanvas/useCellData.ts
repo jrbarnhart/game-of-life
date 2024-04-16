@@ -165,6 +165,8 @@ const useCellData = (
   // Method for clearing state data by setting values to 0
   const clear = () => {
     currentState.current.fill(0);
+    livingCells.current.clear();
+    changedCells.current.clear();
   };
 
   // Method for calculating next state using Game of Life rules
