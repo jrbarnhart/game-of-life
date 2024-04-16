@@ -60,7 +60,6 @@ const useCellAnimation = (
     );
   }, [canvas, canvasState.gridSize]);
 
-  // Helper fn for drawing cells
   const drawCell = useCallback(
     (
       ctx: CanvasRenderingContext2D,
@@ -124,11 +123,10 @@ const useCellAnimation = (
       options?: { initialDraw: boolean }
     ) => {
       // Limit FPS
-      const now = window.performance.now(); // Current timestamp
-      const elapsed = now - lastFrameTimeRef.current; // Time elapsed since last frame
+      const now = window.performance.now();
+      const elapsed = now - lastFrameTimeRef.current;
       const targetFrameRate = 1000 / 10;
 
-      // If initial draw
       if (options?.initialDraw && canvas && ctx) {
         console.log("initial draw");
         for (const cellIndex of cellData.livingCells) {
@@ -144,7 +142,6 @@ const useCellAnimation = (
       if (elapsed > targetFrameRate && isPlaying.current && !isPaused.current) {
         lastFrameTimeRef.current = now;
 
-        // Draw cells in changedCells set
         for (const cellIndex of cellData.changedCells) {
           if (canvas && ctx) {
             drawCell(
@@ -156,7 +153,6 @@ const useCellAnimation = (
           }
         }
 
-        // Compute the next cell data state
         cellData.computeNext();
 
         animationFrameRef.current = requestAnimationFrame(() => {
@@ -220,7 +216,6 @@ const useCellAnimation = (
   }, [canvas, canvasState.gridSize, ctx, overlay, overlayCtx]);
 
   const drawNext = () => {
-    // Draw cells in changedCells set
     for (const cellIndex of cellData.changedCells) {
       if (canvas && ctx) {
         drawCell(
@@ -233,12 +228,10 @@ const useCellAnimation = (
       }
     }
 
-    // Compute the next cell data state
     cellData.computeNext();
   };
 
   const startAnimation = useCallback(() => {
-    // Stop old animation
     if (animationFrameRef.current) {
       cancelAnimationFrame(animationFrameRef.current);
     }
