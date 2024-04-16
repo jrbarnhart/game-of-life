@@ -1,7 +1,6 @@
 import React from "react";
 import { useRef } from "react";
 import { ControlRefs } from "./useControlRefs";
-import { CanvasStateInterface } from "./useCanvasState";
 import { CellAnimation } from "./useCellAnimation";
 
 const GameCanvas = ({
@@ -10,7 +9,7 @@ const GameCanvas = ({
   containerRef,
   initialData,
   controlRefs,
-  canvasState,
+  gridSize,
   cellAnimation,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -18,7 +17,7 @@ const GameCanvas = ({
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
   controlRefs: ControlRefs;
-  canvasState: CanvasStateInterface;
+  gridSize: React.MutableRefObject<{ width: number; height: number }>;
   cellAnimation: CellAnimation;
 }) => {
   const previousIndex = useRef<number | null>(null);
@@ -62,7 +61,7 @@ const GameCanvas = ({
       const canvasY = mouseY - boundingRect.top - offY;
       const gridX = Math.floor(canvasX / cellWidth);
       const gridY = Math.floor(canvasY / cellHeight);
-      const index = gridY * canvasState.gridSize.current.width + gridX;
+      const index = gridY * gridSize.current.width + gridX;
 
       if (index !== previousIndex.current) {
         if (controlRefs.isErasing.current) {
@@ -75,22 +74,17 @@ const GameCanvas = ({
           cellAnimation.drawInitialCell(index);
         }
         if (controlRefs.mirrorX.current || controlRefs.mirrorY.current) {
-          const rowIndex = Math.floor(
-            index / canvasState.gridSize.current.width
-          );
-          const colIndex = index % canvasState.gridSize.current.width;
-          const mirroredRowIndex =
-            canvasState.gridSize.current.height - 1 - rowIndex;
-          const mirroredColIndex =
-            canvasState.gridSize.current.width - 1 - colIndex;
+          const rowIndex = Math.floor(index / gridSize.current.width);
+          const colIndex = index % gridSize.current.width;
+          const mirroredRowIndex = gridSize.current.height - 1 - rowIndex;
+          const mirroredColIndex = gridSize.current.width - 1 - colIndex;
           if (controlRefs.mirrorX.current && controlRefs.mirrorY.current) {
             const mirroredIndexX =
-              rowIndex * canvasState.gridSize.current.width + mirroredColIndex;
+              rowIndex * gridSize.current.width + mirroredColIndex;
             const mirroredIndexY =
-              mirroredRowIndex * canvasState.gridSize.current.width + colIndex;
+              mirroredRowIndex * gridSize.current.width + colIndex;
             const mirroredIndexXY =
-              mirroredRowIndex * canvasState.gridSize.current.width +
-              mirroredColIndex;
+              mirroredRowIndex * gridSize.current.width + mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndexX);
               initialData.delete(mirroredIndexY);
@@ -114,7 +108,7 @@ const GameCanvas = ({
             }
           } else if (controlRefs.mirrorX.current) {
             const mirroredIndex =
-              rowIndex * canvasState.gridSize.current.width + mirroredColIndex;
+              rowIndex * gridSize.current.width + mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
               cellAnimation.drawInitialCell(mirroredIndex, {
@@ -126,7 +120,7 @@ const GameCanvas = ({
             }
           } else if (controlRefs.mirrorY.current) {
             const mirroredIndex =
-              mirroredRowIndex * canvasState.gridSize.current.width + colIndex;
+              mirroredRowIndex * gridSize.current.width + colIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
               cellAnimation.drawInitialCell(mirroredIndex, {
