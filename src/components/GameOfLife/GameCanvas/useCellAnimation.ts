@@ -26,9 +26,16 @@ const useCellAnimation = (
 ) => {
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
-  const cellSize = useRef<{ width: number; height: number }>({
+  const cellSize = useRef<{
+    width: number;
+    height: number;
+    offX: number;
+    offY: number;
+  }>({
     width: 0,
     height: 0,
+    offX: 0,
+    offY: 0,
   });
 
   const updateCellSize = useCallback(() => {
@@ -40,12 +47,22 @@ const useCellAnimation = (
     cellSize.current.height = Math.floor(
       canvas.height / canvasState.gridSize.current.height
     );
+
+    cellSize.current.offX = Math.floor(
+      (canvas.width -
+        canvasState.gridSize.current.width * cellSize.current.width) /
+        2
+    );
+    cellSize.current.offY = Math.floor(
+      (canvas.height -
+        canvasState.gridSize.current.height * cellSize.current.height) /
+        2
+    );
   }, [canvas, canvasState.gridSize]);
 
   // Helper fn for drawing cells
   const drawCell = useCallback(
     (
-      canvas: HTMLCanvasElement,
       ctx: CanvasRenderingContext2D,
       gridSize: { width: number; height: number },
       gameState: Uint8Array,
@@ -58,17 +75,8 @@ const useCellAnimation = (
 
       const row = Math.floor(cellIndex / gridSize.width);
       const col = cellIndex % gridSize.width;
-
-      // Calculate offset to center grid
-      const offX = Math.floor(
-        (canvas.width - gridSize.width * cellSize.current.width) / 2
-      );
-      const offY = Math.floor(
-        (canvas.height - gridSize.height * cellSize.current.height) / 2
-      );
-
-      const x = col * cellSize.current.width + offX;
-      const y = row * cellSize.current.height + offY;
+      const x = col * cellSize.current.width + cellSize.current.offX;
+      const y = row * cellSize.current.height + cellSize.current.offY;
 
       ctx.fillStyle = gameState[cellIndex] < 128 ? "black" : "white";
       ctx.beginPath();
@@ -91,22 +99,10 @@ const useCellAnimation = (
       return;
     }
 
-    // Calculate offset to center grid
-    const offX = Math.floor(
-      (canvas.width -
-        canvasState.gridSize.current.width * cellSize.current.width) /
-        2
-    );
-    const offY = Math.floor(
-      (canvas.height -
-        canvasState.gridSize.current.height * cellSize.current.height) /
-        2
-    );
-
     const row = Math.floor(cellIndex / canvasState.gridSize.current.width);
     const col = cellIndex % canvasState.gridSize.current.width;
-    const x = col * cellSize.current.width + offX;
-    const y = row * cellSize.current.height + offY;
+    const x = col * cellSize.current.width + cellSize.current.offX;
+    const y = row * cellSize.current.height + cellSize.current.offY;
 
     if (options?.erase) {
       ctx.fillStyle = "black";
@@ -137,7 +133,6 @@ const useCellAnimation = (
         console.log("initial draw");
         for (const cellIndex of cellData.livingCells) {
           drawCell(
-            canvas,
             ctx,
             canvasState.gridSize.current,
             cellData.gameState.current,
@@ -153,7 +148,6 @@ const useCellAnimation = (
         for (const cellIndex of cellData.changedCells) {
           if (canvas && ctx) {
             drawCell(
-              canvas,
               ctx,
               canvasState.gridSize.current,
               cellData.gameState.current,
@@ -230,7 +224,6 @@ const useCellAnimation = (
     for (const cellIndex of cellData.changedCells) {
       if (canvas && ctx) {
         drawCell(
-          canvas,
           ctx,
           canvasState.gridSize.current,
           cellData.gameState.current,
