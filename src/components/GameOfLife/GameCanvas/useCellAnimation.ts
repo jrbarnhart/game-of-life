@@ -156,22 +156,29 @@ const useCellAnimation = (
     if (!overlay || !overlayCtx) return;
     console.log("Lines!");
 
-    const cellWidth = overlay.width / gridSize.current.width;
-    const cellHeight = overlay.height / gridSize.current.height;
+    const cellWidth = Math.floor(overlay.width / gridSize.current.width);
+    const cellHeight = Math.floor(overlay.height / gridSize.current.height);
+
+    const offX = Math.floor(
+      (overlay.width - gridSize.current.width * cellWidth) / 2
+    );
+    const offY = Math.floor(
+      (overlay.height - gridSize.current.height * cellHeight) / 2
+    );
 
     overlayCtx.strokeStyle = "grey";
 
-    for (let x = 0; x <= overlay.width; x += cellWidth) {
+    for (let x = 0 + offX; x <= overlay.width - offX; x += cellWidth) {
       overlayCtx.beginPath();
-      overlayCtx.moveTo(x, 0);
-      overlayCtx.lineTo(x, overlay.height);
+      overlayCtx.moveTo(x, offY);
+      overlayCtx.lineTo(x, overlay.height - offY);
       overlayCtx.stroke();
     }
 
-    for (let y = 0; y <= overlay.height; y += cellHeight) {
+    for (let y = 0 + offY; y <= overlay.height - offY; y += cellHeight) {
       overlayCtx.beginPath();
-      overlayCtx.moveTo(0, y);
-      overlayCtx.lineTo(overlay.width, y);
+      overlayCtx.moveTo(offX, y);
+      overlayCtx.lineTo(overlay.width - offX, y);
       overlayCtx.stroke();
     }
   };
@@ -180,7 +187,12 @@ const useCellAnimation = (
     if (canvas && ctx && overlay && overlayCtx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
-      drawGridLines(overlay, overlayCtx, canvasState.gridSize);
+      if (
+        canvasState.gridSize.current.width < 100 &&
+        canvasState.gridSize.current.height < 100
+      ) {
+        drawGridLines(overlay, overlayCtx, canvasState.gridSize);
+      }
     }
   }, [canvas, canvasState.gridSize, ctx, overlay, overlayCtx]);
 
