@@ -3,6 +3,7 @@ import { CellData } from "../GameCanvas/useCellData";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
 import { CellAnimation } from "../GameCanvas/useCellAnimation";
+import { GRID_SIZES } from "../GameCanvas/useGridSize";
 
 const Controls = ({
   controlRefs,
@@ -352,10 +353,18 @@ const Controls = ({
         >
           {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
               Values must fit this size AND ratio or game will not function. */}
-          <option value="600">600</option>
-          <option value="3750">3,750</option>
-          <option value="15000">15,000</option>
-          <option value="60000">60,000</option>
+          <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
+            {(GRID_SIZES.sm.x * GRID_SIZES.sm.y).toLocaleString()}
+          </option>
+          <option value={GRID_SIZES.md.x * GRID_SIZES.md.y}>
+            {(GRID_SIZES.md.x * GRID_SIZES.md.y).toLocaleString()}
+          </option>
+          <option value={GRID_SIZES.lg.x * GRID_SIZES.lg.y}>{`${(
+            GRID_SIZES.lg.x * GRID_SIZES.lg.y
+          ).toLocaleString()} (No Grid)`}</option>
+          <option value={GRID_SIZES.xl.x * GRID_SIZES.xl.y}>{`${(
+            GRID_SIZES.xl.x * GRID_SIZES.xl.y
+          ).toLocaleString()} (No Grid)`}</option>
         </select>
       </div>
     </div>
