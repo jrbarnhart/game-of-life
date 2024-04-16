@@ -348,6 +348,8 @@ const Controls = ({
           id="total-cells"
           className="h-10 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
         >
+          {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
+              Values must fit this size AND ratio or game will not function. */}
           <option value="600">600</option>
           <option value="15000">15,000</option>
           <option value="60000">60,000</option>
