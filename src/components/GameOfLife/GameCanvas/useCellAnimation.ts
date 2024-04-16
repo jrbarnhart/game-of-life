@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CellData } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
-import { CanvasStateInterface } from "./useCanvasState";
 
 export interface CellAnimation {
   cellSize: React.MutableRefObject<{
@@ -26,7 +25,7 @@ const useCellAnimation = (
   overlayCtx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
   controlRefs: ControlRefs,
-  canvasState: CanvasStateInterface,
+  gridSize: React.MutableRefObject<{ width: number; height: number }>,
   cellData: CellData
 ) => {
   const animationFrameRef = useRef<number | null>(null);
@@ -46,24 +45,18 @@ const useCellAnimation = (
   const updateCellSize = useCallback(() => {
     if (!canvas) return;
     // Rounded to prevent sub-pixel drawing, and down to prevent draws off canvas
-    cellSize.current.width = Math.floor(
-      canvas.width / canvasState.gridSize.current.width
-    );
+    cellSize.current.width = Math.floor(canvas.width / gridSize.current.width);
     cellSize.current.height = Math.floor(
-      canvas.height / canvasState.gridSize.current.height
+      canvas.height / gridSize.current.height
     );
 
     cellSize.current.offX = Math.floor(
-      (canvas.width -
-        canvasState.gridSize.current.width * cellSize.current.width) /
-        2
+      (canvas.width - gridSize.current.width * cellSize.current.width) / 2
     );
     cellSize.current.offY = Math.floor(
-      (canvas.height -
-        canvasState.gridSize.current.height * cellSize.current.height) /
-        2
+      (canvas.height - gridSize.current.height * cellSize.current.height) / 2
     );
-  }, [canvas, canvasState.gridSize]);
+  }, [canvas, gridSize]);
 
   const drawCell = useCallback(
     (
@@ -97,14 +90,14 @@ const useCellAnimation = (
     if (
       !ctx ||
       !canvas ||
-      canvasState.gridSize.current.height === 0 ||
-      canvasState.gridSize.current.width === 0
+      gridSize.current.height === 0 ||
+      gridSize.current.width === 0
     ) {
       return;
     }
 
-    const row = Math.floor(cellIndex / canvasState.gridSize.current.width);
-    const col = cellIndex % canvasState.gridSize.current.width;
+    const row = Math.floor(cellIndex / gridSize.current.width);
+    const col = cellIndex % gridSize.current.width;
     const x = col * cellSize.current.width + cellSize.current.offX;
     const y = row * cellSize.current.height + cellSize.current.offY;
 
@@ -137,7 +130,7 @@ const useCellAnimation = (
         for (const cellIndex of cellData.livingCells) {
           drawCell(
             ctx,
-            canvasState.gridSize.current,
+            gridSize.current,
             cellData.gameState.current,
             cellIndex
           );
@@ -151,7 +144,7 @@ const useCellAnimation = (
           if (canvas && ctx) {
             drawCell(
               ctx,
-              canvasState.gridSize.current,
+              gridSize.current,
               cellData.gameState.current,
               cellIndex
             );
@@ -169,7 +162,7 @@ const useCellAnimation = (
         });
       }
     },
-    [canvasState.gridSize, drawCell]
+    [drawCell, gridSize]
   );
 
   const drawGridLines = (
@@ -211,24 +204,16 @@ const useCellAnimation = (
     if (canvas && ctx && overlay && overlayCtx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
-      if (
-        canvasState.gridSize.current.width < 100 &&
-        canvasState.gridSize.current.height < 100
-      ) {
-        drawGridLines(overlay, overlayCtx, canvasState.gridSize);
+      if (gridSize.current.width < 100 && gridSize.current.height < 100) {
+        drawGridLines(overlay, overlayCtx, gridSize);
       }
     }
-  }, [canvas, canvasState.gridSize, ctx, overlay, overlayCtx]);
+  }, [canvas, gridSize, ctx, overlay, overlayCtx]);
 
   const drawNext = () => {
     for (const cellIndex of cellData.changedCells) {
       if (canvas && ctx) {
-        drawCell(
-          ctx,
-          canvasState.gridSize.current,
-          cellData.gameState.current,
-          cellIndex
-        );
+        drawCell(ctx, gridSize.current, cellData.gameState.current, cellIndex);
         cellData.computeNext;
       }
     }
@@ -282,7 +267,7 @@ const useCellAnimation = (
     animationLoop,
     canvas,
     canvasInitialized,
-    canvasState.gridSize,
+    gridSize,
     cellData,
     clearCanvas,
     controlRefs.isPaused,
