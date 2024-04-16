@@ -348,9 +348,8 @@ const Controls = ({
           id="total-cells"
           className="h-10 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
         >
-          <option value="1350">1,350</option>
-          <option value="5400">5,400</option>
-          <option value="21600">21,600</option>
+          <option value="600">600</option>
+          <option value="15000">15,000</option>
           <option value="60000">60,000</option>
         </select>
       </div>
