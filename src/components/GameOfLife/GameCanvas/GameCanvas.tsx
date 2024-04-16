@@ -67,12 +67,12 @@ const GameCanvas = ({
       if (index !== previousIndex.current) {
         if (controlRefs.isErasing.current) {
           initialData.delete(index);
-          cellAnimation.drawInitialCell(index, cellWidth, cellHeight, {
+          cellAnimation.drawInitialCell(index, {
             erase: true,
           });
         } else {
           initialData.add(index);
-          cellAnimation.drawInitialCell(index, cellWidth, cellHeight);
+          cellAnimation.drawInitialCell(index);
         }
         if (controlRefs.mirrorX.current || controlRefs.mirrorY.current) {
           const rowIndex = Math.floor(
@@ -95,91 +95,46 @@ const GameCanvas = ({
               initialData.delete(mirroredIndexX);
               initialData.delete(mirroredIndexY);
               initialData.delete(mirroredIndexXY);
-              cellAnimation.drawInitialCell(
-                mirroredIndexX,
-                cellWidth,
-                cellHeight,
-                {
-                  erase: true,
-                }
-              );
-              cellAnimation.drawInitialCell(
-                mirroredIndexY,
-                cellWidth,
-                cellHeight,
-                {
-                  erase: true,
-                }
-              );
-              cellAnimation.drawInitialCell(
-                mirroredIndexXY,
-                cellWidth,
-                cellHeight,
-                {
-                  erase: true,
-                }
-              );
+              cellAnimation.drawInitialCell(mirroredIndexX, {
+                erase: true,
+              });
+              cellAnimation.drawInitialCell(mirroredIndexY, {
+                erase: true,
+              });
+              cellAnimation.drawInitialCell(mirroredIndexXY, {
+                erase: true,
+              });
             } else {
               initialData.add(mirroredIndexX);
               initialData.add(mirroredIndexY);
               initialData.add(mirroredIndexXY);
-              cellAnimation.drawInitialCell(
-                mirroredIndexX,
-                cellWidth,
-                cellHeight
-              );
-              cellAnimation.drawInitialCell(
-                mirroredIndexY,
-                cellWidth,
-                cellHeight
-              );
-              cellAnimation.drawInitialCell(
-                mirroredIndexXY,
-                cellWidth,
-                cellHeight
-              );
+              cellAnimation.drawInitialCell(mirroredIndexX);
+              cellAnimation.drawInitialCell(mirroredIndexY);
+              cellAnimation.drawInitialCell(mirroredIndexXY);
             }
           } else if (controlRefs.mirrorX.current) {
             const mirroredIndex =
               rowIndex * canvasState.gridSize.current.width + mirroredColIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
-              cellAnimation.drawInitialCell(
-                mirroredIndex,
-                cellWidth,
-                cellHeight,
-                {
-                  erase: true,
-                }
-              );
+              cellAnimation.drawInitialCell(mirroredIndex, {
+                erase: true,
+              });
             } else {
               initialData.add(mirroredIndex);
-              cellAnimation.drawInitialCell(
-                mirroredIndex,
-                cellWidth,
-                cellHeight
-              );
+              cellAnimation.drawInitialCell(mirroredIndex);
             }
           } else if (controlRefs.mirrorY.current) {
             const mirroredIndex =
               mirroredRowIndex * canvasState.gridSize.current.width + colIndex;
             if (controlRefs.isErasing.current) {
               initialData.delete(mirroredIndex);
-              cellAnimation.drawInitialCell(
-                mirroredIndex,
-                cellWidth,
-                cellHeight,
-                {
-                  erase: true,
-                }
-              );
+              cellAnimation.drawInitialCell(mirroredIndex, {
+                erase: true,
+              });
             } else {
               initialData.add(mirroredIndex);
-              cellAnimation.drawInitialCell(
-                mirroredIndex,
-                cellWidth,
-                cellHeight
-              );
+              cellAnimation.drawInitialCell(mirroredIndex);
             }
           }
         }
