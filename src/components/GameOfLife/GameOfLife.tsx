@@ -37,7 +37,7 @@ const GameOfLife = () => {
     overlayContextRef.current,
     canvasInitialized,
     controlRefs,
-    canvasState,
+    gridSize,
     cellData
   );
 
