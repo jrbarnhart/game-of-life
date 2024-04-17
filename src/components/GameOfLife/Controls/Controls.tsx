@@ -199,7 +199,7 @@ const Controls = ({
             highlightPlay
               ? "border-orange-400 text-orange-400"
               : "border-black text-neutral-50"
-          } h-9 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+          } h-9 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           <svg
             aria-hidden
@@ -222,7 +222,7 @@ const Controls = ({
             highlightPause
               ? "border-orange-400 text-orange-400"
               : "border-black text-neutral-50"
-          } h-9 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+          } h-9 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           <svg
             aria-hidden
@@ -241,7 +241,7 @@ const Controls = ({
         <button
           aria-label="next frame"
           onClick={handleNextClick}
-          className="h-9 text-neutral-50 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
+          className="h-9 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 text-neutral-50 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
             aria-hidden
@@ -260,7 +260,7 @@ const Controls = ({
         <button
           aria-label="stop"
           onClick={handleStopClick}
-          className="h-9 text-neutral-50 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
+          className="h-9 focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 text-neutral-50 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
             aria-hidden
@@ -284,7 +284,7 @@ const Controls = ({
             highlightDraw
               ? "text-orange-400 border-orange-400"
               : "text-white border-black"
-          } h-full hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+          } h-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           Draw
         </button>
@@ -296,7 +296,7 @@ const Controls = ({
               : highlightErase === -1
               ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
-          } h-full rounded-md border-2  grid items-center justify-items-center`}
+          } h-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 rounded-md border-2  grid items-center justify-items-center`}
           aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Erase
@@ -311,7 +311,7 @@ const Controls = ({
               : highlightMirrorX === -1
               ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
-          } h-full rounded-md border-2  grid items-center justify-items-center`}
+          } h-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 rounded-md border-2  grid items-center justify-items-center`}
           aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Mirror X
@@ -326,7 +326,7 @@ const Controls = ({
               : highlightMirrorY === -1
               ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
               : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
-          } h-full rounded-md border-2  grid items-center justify-items-center`}
+          } h-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 rounded-md border-2  grid items-center justify-items-center`}
           aria-disabled={highlightMirrorX === -1 ? true : false}
         >
           Mirror Y
@@ -335,7 +335,7 @@ const Controls = ({
       <div className="h-12 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
         <button
           onClick={handleAspectClick}
-          className="h-full rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+          className="h-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
         >
           {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
         </button>
@@ -349,7 +349,7 @@ const Controls = ({
           onChange={handleTotalCellsSelect}
           name="totalCells"
           id="total-cells"
-          className="h-full rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
+          className="h-full focus:outline-none focus:ring-2 focus:ring-orange-300 focus:border-orange-400 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
         >
           {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
               Values must fit this size AND ratio or game will not function. */}
