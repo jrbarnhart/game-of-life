@@ -197,9 +197,9 @@ const Controls = ({
           onClick={handlePlayClick}
           className={`${
             highlightPlay
-              ? "border-orange-400 text-neutral-50"
-              : "border-black text-neutral-950"
-          } h-9 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+              ? "border-orange-400 text-orange-400"
+              : "border-black text-neutral-50"
+          } h-9 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           <svg
             aria-hidden
@@ -220,9 +220,9 @@ const Controls = ({
           onClick={handlePauseClick}
           className={`${
             highlightPause
-              ? "border-orange-400 text-neutral-50"
-              : "border-black text-neutral-950"
-          } h-9 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
+              ? "border-orange-400 text-orange-400"
+              : "border-black text-neutral-50"
+          } h-9 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
         >
           <svg
             aria-hidden
@@ -241,7 +241,7 @@ const Controls = ({
         <button
           aria-label="next frame"
           onClick={handleNextClick}
-          className="h-9 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
+          className="h-9 text-neutral-50 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
             aria-hidden
@@ -260,7 +260,7 @@ const Controls = ({
         <button
           aria-label="stop"
           onClick={handleStopClick}
-          className="h-9 text-neutral-950 hover:text-neutral-50 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
+          className="h-9 text-neutral-50 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 border-black hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center"
         >
           <svg
             aria-hidden
