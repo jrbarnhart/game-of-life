@@ -63,9 +63,9 @@ const GameCanvas = ({
       const offY = cellAnimation.cellSize.current.offY;
       const canvasX = mouseX - boundingRect.left - offX;
       const canvasY = mouseY - boundingRect.top - offY;
-      const posX = Math.floor(canvasX / cellWidth);
-      const posY = Math.floor(canvasY / cellHeight);
-      const index = posY * gridSize.current.width + posX;
+      const indexPosX = Math.floor(canvasX / cellWidth);
+      const indexPosY = Math.floor(canvasY / cellHeight);
+      const index = indexPosY * gridSize.current.width + indexPosX;
 
       if (index !== previousIndex.current) {
         if (isErasing) {
@@ -108,19 +108,13 @@ const GameCanvas = ({
               cellAnimation.drawInitialCell(mirroredIndexY);
               cellAnimation.drawInitialCell(mirroredIndexXY);
             }
-          } else if (mirrorX) {
-            const mirroredIndex = rowIndex * gridWidth + mirroredColIndex;
-            if (isErasing) {
-              initialData.delete(mirroredIndex);
-              cellAnimation.drawInitialCell(mirroredIndex, {
-                erase: true,
-              });
+          } else {
+            let mirroredIndex;
+            if (mirrorX) {
+              mirroredIndex = rowIndex * gridWidth + mirroredColIndex;
             } else {
-              initialData.add(mirroredIndex);
-              cellAnimation.drawInitialCell(mirroredIndex);
+              mirroredIndex = mirroredRowIndex * gridWidth + colIndex;
             }
-          } else if (mirrorY) {
-            const mirroredIndex = mirroredRowIndex * gridWidth + colIndex;
             if (isErasing) {
               initialData.delete(mirroredIndex);
               cellAnimation.drawInitialCell(mirroredIndex, {
