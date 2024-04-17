@@ -27,16 +27,18 @@ export const TW_BREAKPOINTS = {
 };
 
 // Hook
-function useCanvasState(marginY: number, controlRefs: ControlRefs) {
+function useCanvasState(controlRefs: ControlRefs) {
   const [canvasSize, setCanvasSize] = useState({
     width: CANVAS_SIZES.xs.x,
     height: CANVAS_SIZES.xs.y,
   });
 
   const handleResize = useCallback(() => {
-    // Set canvas size based on window size and breakpoints
+    // heightTaken by non-canvas elements will be 160px on large screens and 256px on smaller screens
+    const heightTaken = window.innerWidth >= TW_BREAKPOINTS.lg ? 160 : 256;
+
     const availableWidth = window.innerWidth;
-    const availableHeight = window.innerHeight - marginY;
+    const availableHeight = window.innerHeight - heightTaken;
 
     const wideAspect =
       controlRefs.aspect.current.width > controlRefs.aspect.current.height;
@@ -89,7 +91,7 @@ function useCanvasState(marginY: number, controlRefs: ControlRefs) {
       });
       console.log("Resized canvas", newWidth, newHeight);
     }
-  }, [canvasSize.height, canvasSize.width, controlRefs.aspect, marginY]);
+  }, [canvasSize.height, canvasSize.width, controlRefs.aspect]);
 
   useEffect(() => {
     // Add event listener
