@@ -191,7 +191,7 @@ const Controls = ({
 
   return (
     <div className="grid lg:grid-flow-col">
-      <div className="w-80 h-12 lg:w-72 p-1 grid grid-flow-col content-center gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 lg:border-b-2 border-black">
+      <div className="h-12 w-72 p-1 grid grid-flow-col content-center gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 lg:border-b-2 border-black">
         <button
           aria-label="play"
           onClick={handlePlayClick}
@@ -277,7 +277,7 @@ const Controls = ({
           </svg>
         </button>
       </div>
-      <div className="w-80 h-12 lg:w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-b-0 lg:border-b-2 lg:border-t-2 lg:border-l-0 lg:border-r-0 border-black">
+      <div className="h-12 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 border-b-0 lg:border-b-2 lg:border-t-2 lg:border-l-0 lg:border-r-0 border-black">
         <button
           onClick={handleDrawClick}
           className={`${
@@ -332,7 +332,7 @@ const Controls = ({
           Mirror Y
         </button>
       </div>
-      <div className="w-80 h-12 lg:w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
+      <div className="h-12 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
         <button
           onClick={handleAspectClick}
           className="h-full rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
