@@ -191,13 +191,13 @@ const Controls = ({
   };
 
   return (
-    <div className="grid">
+    <div className="grid auto-rows-min z-50">
       <div
         className={`${
           canvasState.windowAspect === "landscape"
             ? "absolute top-0 left-0"
             : ""
-        } z-50 w-full grid justify-items-center items-center p-2`}
+        } w-full grid justify-items-center items-center p-2`}
       >
         <div className="bg-zinc-800 p-2 rounded-lg">
           <InfoHeader
@@ -209,7 +209,7 @@ const Controls = ({
       <div
         className={`${
           canvasState.windowAspect === "landscape"
-            ? "absolute bottom-0 z-50 left-1/2 -translate-x-1/2"
+            ? "absolute bottom-0 left-1/2 -translate-x-1/2"
             : "justify-self-center"
         } grid lg:grid-flow-col`}
       >
