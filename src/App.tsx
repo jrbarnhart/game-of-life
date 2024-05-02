@@ -4,8 +4,10 @@ import InfoHeader from "./components/InfoHeader/InfoHeader";
 function App() {
   return (
     <>
-      <main className="text-neutral-50 h-full w-full grid grid-rows-[repeat(2,_min-content)] justify-items-center gap-y-5">
-        <InfoHeader link="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" />
+      <main className="text-neutral-50 h-full w-full grid justify-items-center items-center">
+        <div className="absolute top-0 left-0 z-10 w-full">
+          <InfoHeader link="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life" />
+        </div>
         <GameOfLife />
       </main>
     </>
