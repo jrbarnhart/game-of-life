@@ -42,7 +42,11 @@ const GameOfLife = () => {
   );
 
   return (
-    <div className="grid justify-items-center gap-y-5">
+    <div
+      className={`${
+        canvasState.windowAspect === "landscape" ? "relative" : ""
+      } grid justify-items-center`}
+    >
       <GameCanvas
         canvasRef={canvasRef}
         overlayRef={overlayRef}
