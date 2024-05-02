@@ -10,7 +10,7 @@ import useGridSize from "./GameCanvas/useGridSize";
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
 
-  const canvasState = useCanvasState(controlRefs);
+  const canvasState = useCanvasState();
 
   const gridSize = useGridSize();
 
