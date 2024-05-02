@@ -44,18 +44,28 @@ const GameOfLife = () => {
   return (
     <div
       className={`${
-        canvasState.windowAspect === "landscape" ? "relative" : ""
+        canvasState.windowAspect === "landscape"
+          ? "relative self-center"
+          : "pt-5"
       } grid justify-items-center`}
     >
-      <GameCanvas
-        canvasRef={canvasRef}
-        overlayRef={overlayRef}
-        containerRef={containerRef}
-        initialData={initialData}
-        controlRefs={controlRefs}
-        gridSize={gridSize}
-        cellAnimation={cellAnimation}
-      />
+      <div
+        className={
+          canvasState.windowAspect === "landscape"
+            ? ""
+            : "w-min absolute left-1/2 -translate-x-1/2"
+        }
+      >
+        <GameCanvas
+          canvasRef={canvasRef}
+          overlayRef={overlayRef}
+          containerRef={containerRef}
+          initialData={initialData}
+          controlRefs={controlRefs}
+          gridSize={gridSize}
+          cellAnimation={cellAnimation}
+        />
+      </div>
       <Controls
         controlRefs={controlRefs}
         cellData={cellData}
