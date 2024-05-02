@@ -191,8 +191,14 @@ const Controls = ({
   };
 
   return (
-    <div>
-      <div className="absolute top-0 left-0 z-50 w-full grid justify-items-center items-center p-2">
+    <div className="grid">
+      <div
+        className={`${
+          canvasState.windowAspect === "landscape"
+            ? "absolute top-0 left-0"
+            : ""
+        } z-50 w-full grid justify-items-center items-center p-2`}
+      >
         <div className="bg-zinc-800 p-2 rounded-lg">
           <InfoHeader
             text="Conway's Game of Life"
@@ -200,7 +206,13 @@ const Controls = ({
           />
         </div>
       </div>
-      <div className="absolute bottom-0 z-50 left-1/2 -translate-x-1/2 grid lg:grid-flow-col">
+      <div
+        className={`${
+          canvasState.windowAspect === "landscape"
+            ? "absolute bottom-0 z-50 left-1/2 -translate-x-1/2"
+            : "justify-self-center"
+        } grid lg:grid-flow-col`}
+      >
         <div className="h-12 w-72 p-1 grid grid-flow-col content-center gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 lg:border-b-2 border-black">
           <button
             aria-label="play"
