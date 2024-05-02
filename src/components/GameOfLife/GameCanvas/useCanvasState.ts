@@ -1,88 +1,102 @@
 // Based on solution from https://stackoverflow.com/questions/74215349/trying-to-update-ref-on-resize-in-react-js
 
 import { useState, useEffect, useCallback } from "react";
-import { ControlRefs } from "./useControlRefs";
 
 export interface CanvasStateInterface {
-  canvasSize: { width: number; height: number };
+  canvasSize: {
+    width: number;
+    height: number;
+  };
+  windowAspect: "portrait" | "landscape";
   handleResize: () => void;
 }
 
-export const CANVAS_SIZES = {
-  xs: { x: 300, y: 200 },
-  sm: { x: 600, y: 400 },
-  md: { x: 600, y: 400 },
-  lg: { x: 900, y: 600 },
-  xl: { x: 1200, y: 800 },
-  xxl: { x: 1500, y: 1000 },
-};
-
-// TailwindCSS breakpoints
-export const TW_BREAKPOINTS = {
-  sm: 640,
-  md: 768,
-  lg: 1024,
-  xl: 1280,
-  xxl: 1536,
-};
+export const CANVAS_SIZES = [
+  { width: 256, height: 144 },
+  { width: 384, height: 216 },
+  { width: 432, height: 243 },
+  { width: 512, height: 288 },
+  { width: 640, height: 360 },
+  { width: 768, height: 432 },
+  { width: 896, height: 504 },
+  { width: 960, height: 540 },
+  { width: 1024, height: 576 },
+  { width: 1152, height: 648 },
+  { width: 1280, height: 720 },
+  { width: 1360, height: 765 },
+  { width: 1408, height: 792 },
+  { width: 1536, height: 864 },
+  { width: 1664, height: 936 },
+  { width: 1792, height: 1008 },
+  { width: 1920, height: 1080 },
+  { width: 2048, height: 1152 },
+  { width: 2560, height: 1440 },
+  { width: 3072, height: 1728 },
+  { width: 3200, height: 1800 },
+  { width: 3840, height: 2160 },
+  { width: 4096, height: 2304 },
+  { width: 5120, height: 2880 },
+  { width: 7680, height: 4320 },
+  { width: 8192, height: 4608 },
+  { width: 15360, height: 8640 },
+  { width: 16384, height: 9216 },
+];
 
 // Hook
-function useCanvasState(controlRefs: ControlRefs) {
+function useCanvasState() {
   const [canvasSize, setCanvasSize] = useState({
-    width: CANVAS_SIZES.xs.x,
-    height: CANVAS_SIZES.xs.y,
+    width: CANVAS_SIZES[0].width,
+    height: CANVAS_SIZES[0].height,
   });
 
+  const [windowAspect, setWindowAspect] = useState<"portrait" | "landscape">(
+    "portrait"
+  );
+
   const handleResize = useCallback(() => {
-    // heightTaken by non-canvas elements will be 160px on large screens and 256px on smaller screens
-    const heightTaken = window.innerWidth >= TW_BREAKPOINTS.lg ? 160 : 256;
-
-    const availableWidth = window.innerWidth;
-    const availableHeight = window.innerHeight - heightTaken;
-
-    const wideAspect =
-      controlRefs.aspect.current.width > controlRefs.aspect.current.height;
-    const widthProperty = wideAspect ? "x" : "y";
-    const heightProperty = wideAspect ? "y" : "x";
-
-    let newWidth = canvasSize.width;
-    let newHeight = canvasSize.height;
-
-    // Set width based on window width
     if (
-      availableWidth >= TW_BREAKPOINTS.xxl &&
-      availableHeight >= CANVAS_SIZES.xxl[heightProperty]
+      window.innerWidth > window.innerHeight &&
+      windowAspect !== "landscape"
     ) {
-      newWidth = CANVAS_SIZES.xxl[widthProperty];
-      newHeight = CANVAS_SIZES.xxl[heightProperty];
+      setWindowAspect("landscape");
     } else if (
-      availableWidth >= TW_BREAKPOINTS.xl &&
-      availableHeight >= CANVAS_SIZES.xl[heightProperty]
+      window.innerWidth <= window.innerHeight &&
+      windowAspect !== "portrait"
     ) {
-      newWidth = CANVAS_SIZES.xl[widthProperty];
-      newHeight = CANVAS_SIZES.xl[heightProperty];
-    } else if (
-      availableWidth >= TW_BREAKPOINTS.lg &&
-      availableHeight >= CANVAS_SIZES.lg[heightProperty]
-    ) {
-      newWidth = CANVAS_SIZES.lg[widthProperty];
-      newHeight = CANVAS_SIZES.lg[heightProperty];
-    } else if (
-      availableWidth >= TW_BREAKPOINTS.md &&
-      availableHeight >= CANVAS_SIZES.md[heightProperty]
-    ) {
-      newWidth = CANVAS_SIZES.md[widthProperty];
-      newHeight = CANVAS_SIZES.md[heightProperty];
-    } else if (
-      availableWidth >= TW_BREAKPOINTS.sm &&
-      availableHeight >= CANVAS_SIZES.sm[heightProperty]
-    ) {
-      newWidth = CANVAS_SIZES.sm[widthProperty];
-      newHeight = CANVAS_SIZES.sm[heightProperty];
-    } else {
-      newWidth = CANVAS_SIZES.xs[widthProperty];
-      newHeight = CANVAS_SIZES.xs[heightProperty];
+      setWindowAspect("portrait");
     }
+
+    let maxWidthIndex = 0;
+    let sizeIndex = 0;
+
+    // Get the max viable width index
+    for (let i = 0; i < CANVAS_SIZES.length; i++) {
+      // If the current width fits move on
+      // If it does not fit use previous index and break
+      if (CANVAS_SIZES[i].width <= window.innerWidth) {
+        continue;
+      } else if (i > 0) {
+        maxWidthIndex = i - 1;
+        break;
+      } else {
+        maxWidthIndex = 0;
+        break;
+      }
+    }
+
+    // Get the max viable size index
+    for (let i = maxWidthIndex; i > 0; i--) {
+      if (CANVAS_SIZES[i].height <= window.innerHeight) {
+        sizeIndex = i;
+      } else if (i < 0) {
+        sizeIndex = i - 1;
+      } else {
+        sizeIndex = 0;
+      }
+    }
+
+    const newWidth = CANVAS_SIZES[sizeIndex].width;
+    const newHeight = CANVAS_SIZES[sizeIndex].height;
 
     if (newWidth !== canvasSize.width || newHeight !== canvasSize.height) {
       setCanvasSize({
@@ -91,7 +105,7 @@ function useCanvasState(controlRefs: ControlRefs) {
       });
       console.log("Resized canvas", newWidth, newHeight);
     }
-  }, [canvasSize.height, canvasSize.width, controlRefs.aspect]);
+  }, [canvasSize.height, canvasSize.width, windowAspect]);
 
   useEffect(() => {
     // Add event listener
@@ -106,6 +120,7 @@ function useCanvasState(controlRefs: ControlRefs) {
 
   const canvasState: CanvasStateInterface = {
     canvasSize,
+    windowAspect,
     handleResize,
   };
 
