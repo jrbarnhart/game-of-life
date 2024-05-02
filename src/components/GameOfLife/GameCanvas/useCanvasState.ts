@@ -12,7 +12,6 @@ export interface CanvasStateInterface {
 }
 
 export const CANVAS_SIZES = [
-  { width: 256, height: 144 },
   { width: 384, height: 216 },
   { width: 432, height: 243 },
   { width: 512, height: 288 },
@@ -66,13 +65,9 @@ function useCanvasState() {
       setWindowAspect("portrait");
     }
 
-    let maxWidthIndex = 0;
-    let sizeIndex = 0;
-
     // Get the max viable width index
+    let maxWidthIndex = 0;
     for (let i = 0; i < CANVAS_SIZES.length; i++) {
-      // If the current width fits move on
-      // If it does not fit use previous index and break
       if (CANVAS_SIZES[i].width <= window.innerWidth) {
         continue;
       } else if (i > 0) {
@@ -85,13 +80,11 @@ function useCanvasState() {
     }
 
     // Get the max viable size index
+    let sizeIndex = 0;
     for (let i = maxWidthIndex; i > 0; i--) {
       if (CANVAS_SIZES[i].height <= window.innerHeight) {
         sizeIndex = i;
-      } else if (i < 0) {
-        sizeIndex = i - 1;
-      } else {
-        sizeIndex = 0;
+        break;
       }
     }
 
