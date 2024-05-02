@@ -191,7 +191,7 @@ const Controls = ({
   };
 
   return (
-    <div className="grid auto-rows-min z-50">
+    <div className="grid auto-rows-min">
       <div
         className={`${
           canvasState.windowAspect === "landscape"
