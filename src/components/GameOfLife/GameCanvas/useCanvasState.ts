@@ -53,22 +53,19 @@ function useCanvasState() {
   );
 
   const handleResize = useCallback(() => {
-    if (
-      window.innerWidth > window.innerHeight &&
-      windowAspect !== "landscape"
-    ) {
+    const availWidth = Math.min(window.screen.availWidth, window.innerWidth);
+    const availHeight = Math.min(window.screen.availHeight, window.innerHeight);
+
+    if (availWidth > availHeight && windowAspect !== "landscape") {
       setWindowAspect("landscape");
-    } else if (
-      window.innerWidth <= window.innerHeight &&
-      windowAspect !== "portrait"
-    ) {
+    } else if (availWidth <= availHeight && windowAspect !== "portrait") {
       setWindowAspect("portrait");
     }
 
     // Get the max viable width index
     let maxWidthIndex = 0;
     for (let i = 0; i < CANVAS_SIZES.length; i++) {
-      if (CANVAS_SIZES[i].width <= window.innerWidth) {
+      if (CANVAS_SIZES[i].width <= availWidth) {
         continue;
       } else if (i > 0) {
         maxWidthIndex = i - 1;
@@ -82,7 +79,7 @@ function useCanvasState() {
     // Get the max viable size index
     let sizeIndex = 0;
     for (let i = maxWidthIndex; i > 0; i--) {
-      if (CANVAS_SIZES[i].height <= window.innerHeight) {
+      if (CANVAS_SIZES[i].height <= availHeight) {
         sizeIndex = i;
         break;
       }
