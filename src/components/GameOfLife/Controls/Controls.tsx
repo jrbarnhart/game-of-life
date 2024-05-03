@@ -192,13 +192,7 @@ const Controls = ({
 
   return (
     <div className="grid auto-rows-min">
-      <div
-        className={`${
-          canvasState.windowAspect === "landscape"
-            ? "absolute top-0 left-0"
-            : ""
-        } w-full grid justify-items-center items-center p-2`}
-      >
+      <div className="absolute top-0 left-0 w-full grid justify-items-center items-center p-2">
         <div className="bg-zinc-800 p-2 rounded-lg">
           <InfoHeader
             text="Conway's Game of Life"
