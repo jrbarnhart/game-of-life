@@ -53,7 +53,7 @@ const GameOfLife = () => {
         className={
           canvasState.windowAspect === "landscape"
             ? ""
-            : "w-min absolute left-1/2 -translate-x-1/2"
+            : "w-min absolute top-20 left-1/2 -translate-x-1/2"
         }
       >
         <GameCanvas
@@ -68,14 +68,9 @@ const GameOfLife = () => {
       </div>
       <div
         className={`${
-          canvasState.windowAspect === "landscape" ? "" : "self-end mb-20"
+          canvasState.windowAspect === "landscape" ? "" : "self-end mb-10"
         } z-50`}
       >
-        {canvasState.windowAspect === "portrait" && (
-          <p className="self-end px-5 text-center text-lg">
-            Tip: Rotate device or expand window for better view.
-          </p>
-        )}
         <Controls
           controlRefs={controlRefs}
           cellData={cellData}
@@ -84,6 +79,11 @@ const GameOfLife = () => {
           canvasState={canvasState}
           gridSize={gridSize}
         />
+        {canvasState.windowAspect === "portrait" && (
+          <p className="self-end p-5 text-center text-lg">
+            Tip: Rotate device or expand window for better view.
+          </p>
+        )}
       </div>
     </div>
   );
