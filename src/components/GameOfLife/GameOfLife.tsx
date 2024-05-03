@@ -6,6 +6,7 @@ import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
 import useGridSize from "./GameCanvas/useGridSize";
+import { useRef } from "react";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
@@ -41,8 +42,11 @@ const GameOfLife = () => {
     cellData
   );
 
+  const gameContainerRef = useRef<HTMLDivElement | null>(null);
+
   return (
     <div
+      ref={gameContainerRef}
       className={`${
         canvasState.windowAspect === "landscape"
           ? "relative self-center"
@@ -76,6 +80,7 @@ const GameOfLife = () => {
           initialData={initialData}
           canvasState={canvasState}
           gridSize={gridSize}
+          gameContainerRef={gameContainerRef}
         />
         {canvasState.windowAspect === "portrait" && (
           <p className="self-end p-5 text-center text-lg">
