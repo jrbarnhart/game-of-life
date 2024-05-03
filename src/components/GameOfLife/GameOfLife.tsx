@@ -47,13 +47,11 @@ const GameOfLife = () => {
         canvasState.windowAspect === "landscape"
           ? "relative self-center"
           : "pt-5"
-      } grid justify-items-center`}
+      } grid justify-items-center w-full overflow-hidden relative`}
     >
       <div
         className={
-          canvasState.windowAspect === "landscape"
-            ? ""
-            : "w-min absolute top-20 left-1/2 -translate-x-1/2"
+          canvasState.windowAspect === "landscape" ? "" : "absolute top-16"
         }
       >
         <GameCanvas
