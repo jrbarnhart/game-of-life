@@ -66,14 +66,25 @@ const GameOfLife = () => {
           cellAnimation={cellAnimation}
         />
       </div>
-      <Controls
-        controlRefs={controlRefs}
-        cellData={cellData}
-        cellAnimation={cellAnimation}
-        initialData={initialData}
-        canvasState={canvasState}
-        gridSize={gridSize}
-      />
+      <div
+        className={`${
+          canvasState.windowAspect === "landscape" ? "" : "self-end mb-20"
+        } z-50`}
+      >
+        {canvasState.windowAspect === "portrait" && (
+          <p className="self-end px-5 text-center text-lg">
+            Tip: Rotate device or expand window for better view.
+          </p>
+        )}
+        <Controls
+          controlRefs={controlRefs}
+          cellData={cellData}
+          cellAnimation={cellAnimation}
+          initialData={initialData}
+          canvasState={canvasState}
+          gridSize={gridSize}
+        />
+      </div>
     </div>
   );
 };
