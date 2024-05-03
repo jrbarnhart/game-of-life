@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CellData } from "../GameCanvas/useCellData";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
@@ -13,6 +13,7 @@ const Controls = ({
   initialData,
   canvasState,
   gridSize,
+  gameContainerRef,
 }: {
   controlRefs: ControlRefs;
   cellData: CellData;
@@ -20,6 +21,7 @@ const Controls = ({
   initialData: Set<number>;
   canvasState: CanvasStateInterface;
   gridSize: React.MutableRefObject<{ width: number; height: number }>;
+  gameContainerRef: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -28,6 +30,20 @@ const Controls = ({
   const [highlightErase, setHighlightErase] = useState<number>(-1);
   const [highlightMirrorX, setHighlightMirrorX] = useState<number>(-1);
   const [highlightMirrorY, setHighlightMirrorY] = useState<number>(-1);
+
+  const [isFullscreen, setIsFullscreen] = useState<boolean>(false);
+
+  useEffect(() => {
+    const onFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+
+    document.addEventListener("fullscreenchange", onFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", onFullscreenChange);
+    };
+  }, []);
 
   const handlePlayClick = () => {
     if (!controlRefs.isPlaying.current) {
@@ -142,30 +158,16 @@ const Controls = ({
     }
   };
 
-  const handleAspectClick = () => {
-    // "click" stop to handle ref and highlight state updates
-    handleStopClick();
-
-    // Switch between 3:2 and 2:3
-    if (controlRefs.aspect.current.width === 3) {
-      controlRefs.aspect.current.width = 2;
-      controlRefs.aspect.current.height = 3;
+  const handleFullscreenClick = () => {
+    if (!isFullscreen && gameContainerRef.current) {
+      gameContainerRef.current.requestFullscreen().catch((err: unknown) => {
+        console.error(err);
+      });
     } else {
-      controlRefs.aspect.current.width = 3;
-      controlRefs.aspect.current.height = 2;
+      document.exitFullscreen().catch((err: unknown) => {
+        console.error(err);
+      });
     }
-
-    // Switch grid width and height
-    const tempVal = gridSize.current.width;
-    gridSize.current.width = gridSize.current.height;
-    gridSize.current.height = tempVal;
-
-    console.log(
-      "Set grid size:",
-      gridSize.current.width,
-      gridSize.current.height
-    );
-    canvasState.handleResize();
   };
 
   const handleTotalCellsSelect: React.ChangeEventHandler<HTMLSelectElement> = (
@@ -350,10 +352,31 @@ const Controls = ({
         </div>
         <div className="h-12 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
           <button
-            onClick={handleAspectClick}
+            onClick={handleFullscreenClick}
             className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           >
-            {`${controlRefs.aspect.current.width.toString()}:${controlRefs.aspect.current.height.toString()}`}
+            {!isFullscreen && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#e8eaed"
+              >
+                <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
+              </svg>
+            )}
+            {isFullscreen && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#e8eaed"
+              >
+                <path d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z" />
+              </svg>
+            )}
           </button>
           <label
             htmlFor="total-cells"
