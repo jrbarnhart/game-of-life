@@ -31,7 +31,8 @@ const GameOfLife = ({
     canvasInitialized,
     controlRefs,
     gridSize,
-    cellData
+    cellData,
+    initialData
   );
 
   const gameContainerRef = useRef<HTMLDivElement | null>(null);
