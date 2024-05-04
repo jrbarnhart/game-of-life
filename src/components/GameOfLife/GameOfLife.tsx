@@ -53,17 +53,17 @@ const GameOfLife = () => {
     <div
       ref={gameContainerRef}
       className={`${
-        canvasState.windowAspect === "landscape"
-          ? "relative self-center w-min"
-          : "pt-5"
+        canvasState.windowAspect === "landscape" ? "self-center w-min" : "pt-5"
       } 
       ${outdatedBrowserFS ? "w-svw h-svh" : ""}
       grid justify-items-center w-full overflow-hidden relative`}
     >
       <div
-        className={`${
-          canvasState.windowAspect === "landscape" ? "" : "absolute"
-        } ${outdatedBrowserFS ? "h-svh grid items-center" : "top-16"}`}
+        className={
+          canvasState.windowAspect === "portrait"
+            ? "absolute top-16 bottom-0"
+            : ""
+        }
       >
         <GameCanvas
           canvasRef={canvasRef}
@@ -75,28 +75,40 @@ const GameOfLife = () => {
           cellAnimation={cellAnimation}
         />
       </div>
-      <div
-        className={`${
-          canvasState.windowAspect === "landscape" ? "" : "self-end mb-10"
-        } z-50`}
-      >
-        <Controls
-          controlRefs={controlRefs}
-          cellData={cellData}
-          cellAnimation={cellAnimation}
-          initialData={initialData}
-          canvasState={canvasState}
-          gridSize={gridSize}
-          gameContainerRef={gameContainerRef}
-          outdatedBrowserFS={outdatedBrowserFS}
-          setOutdatedBrowserFS={setOutdatedBrowserFS}
-        />
-        {canvasState.windowAspect === "portrait" && (
+      {canvasState.windowAspect === "portrait" && (
+        <div className="self-end grid content-end auto-rows-min mb-10 z-50 h-full w-full">
+          <Controls
+            controlRefs={controlRefs}
+            cellData={cellData}
+            cellAnimation={cellAnimation}
+            initialData={initialData}
+            canvasState={canvasState}
+            gridSize={gridSize}
+            gameContainerRef={gameContainerRef}
+            outdatedBrowserFS={outdatedBrowserFS}
+            setOutdatedBrowserFS={setOutdatedBrowserFS}
+          />
+
           <p className="self-end p-5 text-center text-lg">
             Tip: Rotate device or expand window for better view.
           </p>
-        )}
-      </div>
+        </div>
+      )}
+      {canvasState.windowAspect === "landscape" && (
+        <div className="z-50 absolute top-0 left-0 h-full w-full">
+          <Controls
+            controlRefs={controlRefs}
+            cellData={cellData}
+            cellAnimation={cellAnimation}
+            initialData={initialData}
+            canvasState={canvasState}
+            gridSize={gridSize}
+            gameContainerRef={gameContainerRef}
+            outdatedBrowserFS={outdatedBrowserFS}
+            setOutdatedBrowserFS={setOutdatedBrowserFS}
+          />
+        </div>
+      )}
     </div>
   );
 };
