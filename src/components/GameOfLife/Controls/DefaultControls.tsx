@@ -16,6 +16,8 @@ const DefaultControls = ({
   handleMirrorClick,
   highlightMirrorX,
   highlightMirrorY,
+  handleFullscreenClick,
+  isFullscreen,
   handleTotalCellsSelect,
 }: {
   handlePlayClick: () => void;
@@ -188,6 +190,34 @@ const DefaultControls = ({
           </button>
         </div>
         <div className="h-12 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
+          <button
+            aria-label="toggle fullscreen"
+            onClick={handleFullscreenClick}
+            className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+          >
+            {!isFullscreen && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#e8eaed"
+              >
+                <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
+              </svg>
+            )}
+            {isFullscreen && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#e8eaed"
+              >
+                <path d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z" />
+              </svg>
+            )}
+          </button>
           <label
             htmlFor="total-cells"
             className="h-full text-center grid items-center text-black"
@@ -198,7 +228,7 @@ const DefaultControls = ({
             onChange={handleTotalCellsSelect}
             name="totalCells"
             id="total-cells"
-            className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md col-span-3 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
+            className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
           >
             {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
                 Values must fit this size AND ratio or game will not function. */}
