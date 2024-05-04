@@ -76,7 +76,7 @@ const GameOfLife = () => {
         />
       </div>
       {canvasState.windowAspect === "portrait" && (
-        <div className="self-end grid content-end auto-rows-min mb-10 z-50 h-full w-full">
+        <div className="self-end grid content-end auto-rows-min mb-10 z-50 h-fit">
           <Controls
             controlRefs={controlRefs}
             cellData={cellData}
