@@ -18,10 +18,27 @@ const usePseudoFS = ({
       }
     };
 
-    screen.orientation.addEventListener("change", handleOrientationChange);
+    const handleResize = () => {
+      if (window.screen.availHeight > window.screen.availWidth) {
+        setOutdatedBrowserFS(false);
+      }
+    };
+
+    if (typeof screen.orientation !== "undefined") {
+      screen.orientation.addEventListener("change", handleOrientationChange);
+    } else {
+      window.addEventListener("resize", handleResize);
+    }
 
     return () => {
-      screen.orientation.removeEventListener("change", handleOrientationChange);
+      if (typeof screen.orientation !== "undefined") {
+        screen.orientation.removeEventListener(
+          "change",
+          handleOrientationChange
+        );
+      } else {
+        window.removeEventListener("resize", handleResize);
+      }
     };
   }, []);
 
