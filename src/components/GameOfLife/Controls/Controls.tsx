@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction } from "react";
 import { CellData } from "../GameCanvas/useCellData";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
@@ -14,6 +14,7 @@ const Controls = ({
   canvasState,
   gridSize,
   gameContainerRef,
+  setOutdatedBrowserFS,
 }: {
   controlRefs: ControlRefs;
   cellData: CellData;
@@ -22,6 +23,7 @@ const Controls = ({
   canvasState: CanvasStateInterface;
   gridSize: React.MutableRefObject<{ width: number; height: number }>;
   gameContainerRef: React.MutableRefObject<HTMLDivElement | null>;
+  setOutdatedBrowserFS: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
@@ -159,7 +161,17 @@ const Controls = ({
   };
 
   const handleFullscreenClick = () => {
+    // Handle Safari being an out of date piece of garbage
+    if (!document.fullscreenEnabled) {
+      console.log("Shitty browser detected.");
+      setOutdatedBrowserFS((prev) => !prev);
+      return;
+    }
+
+    // Fullscreen API that literally every other browser implements
     if (!isFullscreen && gameContainerRef.current) {
+      // Just in case of weirdness remove safari only classes
+      setOutdatedBrowserFS(false);
       gameContainerRef.current.requestFullscreen().catch((err: unknown) => {
         console.error(err);
       });
