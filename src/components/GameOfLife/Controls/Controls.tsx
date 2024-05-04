@@ -215,7 +215,10 @@ const Controls = ({
         />
       )}
       {canvasState.windowAspect === "landscape" && (
-        <FullscreenControls isFullscreen={isFullscreen} />
+        <FullscreenControls
+          isFullscreen={isFullscreen}
+          controlRefs={controlRefs}
+        />
       )}
     </>
   );
