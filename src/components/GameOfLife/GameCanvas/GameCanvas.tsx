@@ -5,7 +5,6 @@ import { CellAnimation } from "./useCellAnimation";
 
 const GameCanvas = ({
   canvasRef,
-  overlayRef,
   containerRef,
   initialData,
   controlRefs,
@@ -13,7 +12,6 @@ const GameCanvas = ({
   cellAnimation,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
-  overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
   controlRefs: ControlRefs;
@@ -155,10 +153,9 @@ const GameCanvas = ({
         onMouseMove={handleMouseOrTouch}
         onTouchStart={handleMouseOrTouchStart}
         onTouchMove={handleMouseOrTouch}
-        className="bg-transparent absolute top-0 z-10 touch-none"
-        ref={overlayRef}
+        className="bg-black absolute top-0 z-10 touch-none"
+        ref={canvasRef}
       />
-      <canvas className="bg-black absolute top-0 touch-none" ref={canvasRef} />
     </div>
   );
 };

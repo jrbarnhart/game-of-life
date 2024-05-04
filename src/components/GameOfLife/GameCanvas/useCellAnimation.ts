@@ -21,8 +21,6 @@ export interface CellAnimation {
 const useCellAnimation = (
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
-  overlay: HTMLCanvasElement | null,
-  overlayCtx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
   controlRefs: ControlRefs,
   gridSize: React.MutableRefObject<{ width: number; height: number }>,
@@ -165,7 +163,7 @@ const useCellAnimation = (
     [drawCell, gridSize]
   );
 
-  const drawGridLines = (
+  /*   const drawGridLines = (
     overlay: HTMLCanvasElement | null,
     overlayCtx: CanvasRenderingContext2D | null,
     gridSize: React.MutableRefObject<{ width: number; height: number }>
@@ -198,17 +196,13 @@ const useCellAnimation = (
       overlayCtx.lineTo(overlay.width - offX, y);
       overlayCtx.stroke();
     }
-  };
+  }; */
 
   const clearCanvas = useCallback(() => {
-    if (canvas && ctx && overlay && overlayCtx) {
+    if (canvas && ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      overlayCtx.clearRect(0, 0, overlay.width, overlay.height);
-      if (gridSize.current.width < 100 && gridSize.current.height < 100) {
-        drawGridLines(overlay, overlayCtx, gridSize);
-      }
     }
-  }, [canvas, gridSize, ctx, overlay, overlayCtx]);
+  }, [canvas, ctx]);
 
   const drawNext = () => {
     for (const cellIndex of cellData.changedCells) {
@@ -273,8 +267,6 @@ const useCellAnimation = (
     controlRefs.isPaused,
     controlRefs.isPlaying,
     ctx,
-    overlay,
-    overlayCtx,
     startAnimation,
   ]);
 

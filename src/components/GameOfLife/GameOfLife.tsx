@@ -22,23 +22,12 @@ const GameOfLife = ({
 
   const canvasState = useCanvasState();
 
-  const {
-    canvasInitialized,
-    canvasRef,
-    contextRef,
-    overlayRef,
-    overlayContextRef,
-    containerRef,
-  } = useInitCanvas(
-    canvasState.canvasSize.width,
-    canvasState.canvasSize.height
-  );
+  const { canvasInitialized, canvasRef, contextRef, containerRef } =
+    useInitCanvas(canvasState.canvasSize.width, canvasState.canvasSize.height);
 
   const cellAnimation = useCellAnimation(
     canvasRef.current,
     contextRef.current,
-    overlayRef.current,
-    overlayContextRef.current,
     canvasInitialized,
     controlRefs,
     gridSize,
@@ -69,7 +58,6 @@ const GameOfLife = ({
       >
         <GameCanvas
           canvasRef={canvasRef}
-          overlayRef={overlayRef}
           containerRef={containerRef}
           initialData={initialData}
           controlRefs={controlRefs}
