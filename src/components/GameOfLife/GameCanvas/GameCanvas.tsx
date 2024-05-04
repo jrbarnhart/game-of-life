@@ -11,6 +11,7 @@ const GameCanvas = ({
   controlRefs,
   gridSize,
   cellAnimation,
+  outdatedBrowserFS,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   overlayRef: React.MutableRefObject<HTMLCanvasElement | null>;
@@ -19,6 +20,7 @@ const GameCanvas = ({
   controlRefs: ControlRefs;
   gridSize: React.MutableRefObject<{ width: number; height: number }>;
   cellAnimation: CellAnimation;
+  outdatedBrowserFS: boolean;
 }) => {
   const previousIndex = useRef<number | null>(null);
   const isMouseOrTouchDown = useRef<boolean>(false);
@@ -155,10 +157,17 @@ const GameCanvas = ({
         onMouseMove={handleMouseOrTouch}
         onTouchStart={handleMouseOrTouchStart}
         onTouchMove={handleMouseOrTouch}
-        className="absolute top-0 bg-transparent z-10 touch-none"
+        className={`${
+          outdatedBrowserFS ? "h-lvh w-lvw" : ""
+        } bg-transparent absolute top-0 z-10 touch-none`}
         ref={overlayRef}
       />
-      <canvas className="bg-black absolute top-0 touch-none" ref={canvasRef} />
+      <canvas
+        className={`${
+          outdatedBrowserFS ? "h-lvh w-lvw" : ""
+        } bg-black absolute top-0 touch-none`}
+        ref={canvasRef}
+      />
     </div>
   );
 };
