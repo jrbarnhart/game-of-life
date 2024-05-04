@@ -6,7 +6,8 @@ import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
 import useGridSize from "./GameCanvas/useGridSize";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import useDisableFS from "./GameCanvas/useDisableFS";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
@@ -46,21 +47,8 @@ const GameOfLife = () => {
 
   const [outdatedBrowserFS, setOutdatedBrowserFS] = useState<boolean>(false);
 
-  // Disable fullscreen for testing purposes
-  useEffect(() => {
-    Object.defineProperty(Document.prototype, "fullscreenEnabled", {
-      get: function () {
-        return false;
-      },
-    });
-
-    Element.prototype.requestFullscreen = function () {
-      const err = new Error(
-        "Sorry, your browser does not support the fullscreen API."
-      );
-      return Promise.reject(err);
-    };
-  }, []);
+  // Used to disable fullscreen for testing purposes
+  useDisableFS({ use: true });
 
   return (
     <div
