@@ -6,7 +6,7 @@ import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
 import useGridSize from "./GameCanvas/useGridSize";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
@@ -44,6 +44,24 @@ const GameOfLife = () => {
 
   const gameContainerRef = useRef<HTMLDivElement | null>(null);
 
+  const [outdatedBrowserFS, setOutdatedBrowserFS] = useState<boolean>(false);
+
+  // Disable fullscreen for testing purposes
+  useEffect(() => {
+    Object.defineProperty(Document.prototype, "fullscreenEnabled", {
+      get: function () {
+        return false;
+      },
+    });
+
+    Element.prototype.requestFullscreen = function () {
+      const err = new Error(
+        "Sorry, your browser does not support the fullscreen API."
+      );
+      return Promise.reject(err);
+    };
+  }, []);
+
   return (
     <div
       ref={gameContainerRef}
@@ -51,7 +69,9 @@ const GameOfLife = () => {
         canvasState.windowAspect === "landscape"
           ? "relative self-center w-min"
           : "pt-5"
-      } grid justify-items-center w-full overflow-hidden relative`}
+      } 
+      ${outdatedBrowserFS ? "bg-red-500" : ""}
+      grid justify-items-center w-full overflow-hidden relative`}
     >
       <div
         className={
@@ -81,6 +101,7 @@ const GameOfLife = () => {
           canvasState={canvasState}
           gridSize={gridSize}
           gameContainerRef={gameContainerRef}
+          setOutdatedBrowserFS={setOutdatedBrowserFS}
         />
         {canvasState.windowAspect === "portrait" && (
           <p className="self-end p-5 text-center text-lg">
