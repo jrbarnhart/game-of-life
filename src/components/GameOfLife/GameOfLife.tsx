@@ -95,7 +95,11 @@ const GameOfLife = () => {
         </div>
       )}
       {canvasState.windowAspect === "landscape" && (
-        <div className="z-50 absolute top-0 left-0 h-full w-full">
+        <div
+          className={`${
+            controlRefs.showOnlyDraw ? "pointer-events-none" : ""
+          } z-50 absolute top-0 left-0 h-full w-full`}
+        >
           <Controls
             controlRefs={controlRefs}
             cellData={cellData}
