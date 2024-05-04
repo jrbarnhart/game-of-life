@@ -5,16 +5,46 @@ import { GRID_SIZES } from "../GameCanvas/useGridSize";
 const FullscreenControls = ({
   isFullscreen,
   controlRefs,
+  handlePlayClick,
+  handlePauseClick,
+  handleNextClick,
+  handleStopClick,
+  handleDrawClick,
+  highlightDraw,
+  handleEraseClick,
+  highlightErase,
+  handleMirrorClick,
+  highlightMirrorX,
+  highlightMirrorY,
+  handleFullscreenClick,
+  handleTotalCellsSelect,
 }: {
   isFullscreen: boolean;
   controlRefs: ControlRefs;
+  handlePlayClick: () => void;
+  handlePauseClick: () => void;
+  handleNextClick: () => void;
+  handleStopClick: () => void;
+  handleDrawClick: () => void;
+  highlightDraw: boolean;
+  handleEraseClick: () => void;
+  highlightErase: number;
+  handleMirrorClick: (allignment: "x" | "y") => void;
+  highlightMirrorX: number;
+  highlightMirrorY: number;
+  handleFullscreenClick: () => void;
+  handleTotalCellsSelect: React.ChangeEventHandler;
 }) => {
   return (
     <div className="absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4">
       <div className="col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg">
         <label htmlFor="total-cells" className="text-neutral-50">
           Cells:{" "}
-          <select id="total-cells" className="text-neutral-950">
+          <select
+            onChange={handleTotalCellsSelect}
+            id="total-cells"
+            className="text-neutral-950"
+          >
             {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
                 Values must fit this size AND ratio or game will not function. */}
             <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
@@ -43,6 +73,7 @@ const FullscreenControls = ({
       <div className="col-span-full row-start-2 justify-self-center self-center grid grid-flow-col items-center gap-x-14">
         <button
           aria-label="stop"
+          onClick={handleStopClick}
           className="size-16 bg-neutral-500 bg-opacity-90 rounded-full"
         >
           <svg
@@ -61,9 +92,12 @@ const FullscreenControls = ({
         </button>
         <button
           aria-label={!controlRefs.isPlaying.current ? "play" : "pause"}
+          onClick={
+            !controlRefs.isPlaying.current ? handlePlayClick : handlePauseClick
+          }
           className="size-20 bg-neutral-500 bg-opacity-90 rounded-full"
         >
-          {!controlRefs.isPlaying.current && (
+          {(!controlRefs.isPlaying.current || controlRefs.isPaused.current) && (
             <svg
               aria-hidden
               xmlns="http://www.w3.org/2000/svg"
@@ -78,7 +112,7 @@ const FullscreenControls = ({
               />
             </svg>
           )}
-          {controlRefs.isPlaying.current && (
+          {controlRefs.isPlaying.current && !controlRefs.isPaused.current && (
             <svg
               aria-hidden
               xmlns="http://www.w3.org/2000/svg"
@@ -96,6 +130,7 @@ const FullscreenControls = ({
         </button>
         <button
           aria-label="next frame"
+          onClick={handleNextClick}
           className="size-16 bg-neutral-500 bg-opacity-90 rounded-full"
         >
           <svg
@@ -115,7 +150,7 @@ const FullscreenControls = ({
       </div>
 
       <div className="col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg">
-        <button aria-label="draw" className="size-8">
+        <button aria-label="draw" onClick={handleDrawClick} className="size-8">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -123,7 +158,11 @@ const FullscreenControls = ({
             />
           </svg>
         </button>
-        <button aria-label="erase" className="size-8">
+        <button
+          aria-label="erase"
+          onClick={handleEraseClick}
+          className="size-8"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -131,7 +170,13 @@ const FullscreenControls = ({
             />
           </svg>
         </button>
-        <button aria-label="mirror vertical drawing" className="size-8">
+        <button
+          aria-label="mirror vertical drawing"
+          onClick={() => {
+            handleMirrorClick("x");
+          }}
+          className="size-8"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -141,6 +186,9 @@ const FullscreenControls = ({
         </button>
         <button
           aria-label="mirror horizontal drawing"
+          onClick={() => {
+            handleMirrorClick("y");
+          }}
           className="rotate-90 size-8"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -153,7 +201,10 @@ const FullscreenControls = ({
       </div>
 
       <div className="col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg">
-        <button className="grid grid-flow-col items-center gap-x-2">
+        <button
+          onClick={handleFullscreenClick}
+          className="grid grid-flow-col items-center gap-x-2"
+        >
           <p className="text-lg">Full Screen:</p>
           <div className="size-8">
             {!isFullscreen && (
