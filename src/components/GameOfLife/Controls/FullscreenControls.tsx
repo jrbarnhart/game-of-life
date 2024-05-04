@@ -87,9 +87,7 @@ const FullscreenControls = ({
     <div
       ref={controlsContainerRef}
       className={`${
-        !showControls || controlRefs.isDrawing.current
-          ? "pointer-events-none"
-          : ""
+        !showControls || controlRefs.showOnlyDraw ? "pointer-events-none" : ""
       } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4 transition-opacity`}
     >
       {outdatedBrowserFS && (
@@ -104,7 +102,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
         } col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg`}
       >
         <label htmlFor="total-cells" className="text-neutral-50">
@@ -134,7 +132,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
         } col-start-3 col-span-2 justify-self-end p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-bl-lg`}
       >
         <InfoHeader
@@ -145,7 +143,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
         } col-span-full row-start-2 justify-self-center self-center grid grid-flow-col items-center gap-x-14`}
       >
         <button
@@ -227,9 +225,7 @@ const FullscreenControls = ({
       </div>
 
       <div
-        className={`${
-          controlRefs.isDrawing.current ? "pointer-events-auto" : ""
-        } ${
+        className={`${controlRefs.showOnlyDraw ? "pointer-events-auto" : ""} ${
           !showControls ? "opacity-0" : ""
         } col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg`}
       >
@@ -307,7 +303,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
         } col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg`}
       >
         <button
