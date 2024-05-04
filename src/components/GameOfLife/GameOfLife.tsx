@@ -65,7 +65,7 @@ const GameOfLife = () => {
   }, []);
 
   // Used to disable fullscreen for testing purposes
-  useDisableFS({ use: true });
+  useDisableFS({ use: false });
 
   return (
     <div
