@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
@@ -37,26 +37,43 @@ const FullscreenControls = ({
   handleTotalCellsSelect: React.ChangeEventHandler;
 }) => {
   const [showControls, setShowControls] = useState<boolean>(true);
+  const controlsContainerRef = useRef<HTMLDivElement | null>(null);
+  const timeoutRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const handleClick = () => {
+    const handleWindowClick = () => {
       if (!showControls) {
         setShowControls(true);
+      } else if (
+        controlRefs.isPlaying.current &&
+        !controlRefs.isPaused.current
+      ) {
+        setShowControls(false);
+      }
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      if (controlRefs.isPlaying.current) {
+        timeoutRef.current = setTimeout(() => {
+          setShowControls(false);
+        }, 2500);
       }
     };
 
-    window.addEventListener("click", handleClick);
+    window.addEventListener("click", handleWindowClick);
 
     return () => {
-      window.removeEventListener("click", handleClick);
+      window.removeEventListener("click", handleWindowClick);
     };
   });
 
   return (
     <div
+      ref={controlsContainerRef}
       className={`${
-        !showControls ? "opacity-0" : ""
-      } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4`}
+        !showControls ? "opacity-0 pointer-events-none" : ""
+      } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4 transition-opacity`}
     >
       <div className="col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg">
         <label htmlFor="total-cells" className="text-neutral-50">
