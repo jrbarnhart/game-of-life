@@ -18,10 +18,10 @@ const usePseudoFS = ({
       }
     };
 
-    window.addEventListener("orientationchange", handleOrientationChange);
+    screen.orientation.addEventListener("change", handleOrientationChange);
 
     return () => {
-      window.removeEventListener("orientationchange", handleOrientationChange);
+      screen.orientation.removeEventListener("change", handleOrientationChange);
     };
   }, []);
 
