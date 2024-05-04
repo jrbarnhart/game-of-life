@@ -15,6 +15,7 @@ export interface CellAnimation {
     cellIndex: number,
     options?: { erase: boolean } | undefined
   ) => void;
+  drawCurrentCells: () => void;
   startAnimation: () => void;
 }
 
@@ -24,7 +25,8 @@ const useCellAnimation = (
   canvasInitialized: boolean,
   controlRefs: ControlRefs,
   gridSize: React.MutableRefObject<{ width: number; height: number }>,
-  cellData: CellData
+  cellData: CellData,
+  initialData: Set<number>
 ) => {
   const animationFrameRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number>(0);
@@ -198,6 +200,20 @@ const useCellAnimation = (
     }
   }; */
 
+  const drawCurrentCells = () => {
+    // If not playing draw initial cells if they exist
+    // Else draw the current living cells
+    if (!controlRefs.isPlaying.current && ctx) {
+      for (const cellIndex of initialData) {
+        drawCell(ctx, gridSize.current, cellData.gameState.current, cellIndex);
+      }
+    } else if (ctx) {
+      for (const cellIndex of cellData.livingCells) {
+        drawCell(ctx, gridSize.current, cellData.gameState.current, cellIndex);
+      }
+    }
+  };
+
   const clearCanvas = useCallback(() => {
     if (canvas && ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -257,24 +273,14 @@ const useCellAnimation = (
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [
-    animationLoop,
-    canvas,
-    canvasInitialized,
-    gridSize,
-    cellData,
-    clearCanvas,
-    controlRefs.isPaused,
-    controlRefs.isPlaying,
-    ctx,
-    startAnimation,
-  ]);
+  }, [startAnimation]);
 
   const cellAnimation: CellAnimation = {
     cellSize,
     clearCanvas,
     drawNext,
     drawInitialCell,
+    drawCurrentCells,
     startAnimation,
   };
 
