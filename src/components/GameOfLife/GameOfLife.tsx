@@ -48,13 +48,21 @@ const GameOfLife = () => {
   const [outdatedBrowserFS, setOutdatedBrowserFS] = useState<boolean>(false);
 
   useEffect(() => {
-    if (outdatedBrowserFS && gameContainerRef.current) {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: "instant",
-      });
-    }
-  }, [outdatedBrowserFS]);
+    const handleOrientationChange = () => {
+      if (
+        screen.orientation.type === "portrait-primary" ||
+        screen.orientation.type === "portrait-secondary"
+      ) {
+        setOutdatedBrowserFS(false);
+      }
+    };
+
+    window.addEventListener("orientationchange", handleOrientationChange);
+
+    return () => {
+      window.removeEventListener("orientationchange", handleOrientationChange);
+    };
+  }, []);
 
   // Used to disable fullscreen for testing purposes
   useDisableFS({ use: true });
