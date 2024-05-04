@@ -163,7 +163,9 @@ const Controls = ({
   const handleFullscreenClick = () => {
     // Handle Safari being an out of date piece of garbage
     if (!document.fullscreenEnabled) {
-      console.log("Shitty browser detected.");
+      console.error(
+        "Your browser does not support the fullscreen API. Experience will be sub-optimal."
+      );
       setOutdatedBrowserFS((prev) => !prev);
       return;
     }
