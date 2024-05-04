@@ -73,7 +73,7 @@ const GameOfLife = () => {
       <div
         className={`${
           canvasState.windowAspect === "landscape" ? "" : "absolute"
-        } ${outdatedBrowserFS ? "w-svh h-svh" : "top-16"}`}
+        } ${outdatedBrowserFS ? "h-svh grid items-center" : "top-16"}`}
       >
         <GameCanvas
           canvasRef={canvasRef}
@@ -83,7 +83,6 @@ const GameOfLife = () => {
           controlRefs={controlRefs}
           gridSize={gridSize}
           cellAnimation={cellAnimation}
-          outdatedBrowserFS={outdatedBrowserFS}
         />
       </div>
       <div
