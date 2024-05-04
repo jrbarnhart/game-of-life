@@ -40,8 +40,9 @@ const FullscreenControls = ({
 }) => {
   const [showControls, setShowControls] = useState<boolean>(true);
   const controlsContainerRef = useRef<HTMLDivElement | null>(null);
-  const timeoutRef = useRef<number | null>(null);
+  const controlsTimeoutRef = useRef<number | null>(null);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const popupTimerRef = useRef<number | null>(null);
 
   useEffect(() => {
     const handleWindowClick = () => {
@@ -54,11 +55,11 @@ const FullscreenControls = ({
         setShowControls(false);
       }
 
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
+      if (controlsTimeoutRef.current) {
+        clearTimeout(controlsTimeoutRef.current);
       }
       if (controlRefs.isPlaying.current) {
-        timeoutRef.current = setTimeout(() => {
+        controlsTimeoutRef.current = setTimeout(() => {
           setShowControls(false);
         }, 2500);
       }
@@ -73,7 +74,10 @@ const FullscreenControls = ({
 
   useEffect(() => {
     if (popupRef.current) {
-      setTimeout(() => {
+      if (popupTimerRef.current) {
+        clearTimeout(popupTimerRef.current);
+      }
+      popupTimerRef.current = setTimeout(() => {
         popupRef.current?.classList.add("opacity-0");
       }, 3000);
     }
@@ -91,7 +95,7 @@ const FullscreenControls = ({
       {outdatedBrowserFS && (
         <div
           ref={popupRef}
-          className="absolute bottom-20 translate-x-1/2 text-center bg-zinc-800 p-2 rounded-lg"
+          className="absolute bottom-20 w-full text-center bg-zinc-800 p-2 rounded-lg pointer-events-none"
         >
           <p>Your device does not support Fullscreen API.</p>
           <p>Your experience may be limited.</p>
