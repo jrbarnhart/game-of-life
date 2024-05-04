@@ -152,28 +152,31 @@ const FullscreenControls = ({
         </button>
       </div>
 
-      <div className="col-start-4 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg">
-        <button aria-label="toggle fullscreen" className="size-8">
-          {!isFullscreen && (
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
-              <path
-                fill="currentColor"
-                d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z"
-              />
-            </svg>
-          )}
-          {isFullscreen && (
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 -960 960 960"
-              fill="#e8eaed"
-            >
-              <path
-                fill="currentColor"
-                d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z"
-              />
-            </svg>
-          )}
+      <div className="col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg">
+        <button className="grid grid-flow-col items-center gap-x-2">
+          <p className="text-lg">Full Screen:</p>
+          <div className="size-8">
+            {!isFullscreen && (
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
+                <path
+                  fill="currentColor"
+                  d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z"
+                />
+              </svg>
+            )}
+            {isFullscreen && (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 -960 960 960"
+                fill="#e8eaed"
+              >
+                <path
+                  fill="currentColor"
+                  d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z"
+                />
+              </svg>
+            )}
+          </div>
         </button>
       </div>
     </div>
