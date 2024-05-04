@@ -164,11 +164,16 @@ const Controls = ({
 
   const handleFullscreenClick = () => {
     // Handle Safari being an out of date piece of garbage
-    if (!document.fullscreenEnabled) {
+    if (
+      !document.fullscreenEnabled &&
+      canvasState.windowAspect === "landscape"
+    ) {
       console.error(
         "Your browser does not support the fullscreen API. Experience will be sub-optimal."
       );
       setOutdatedBrowserFS((prev) => !prev);
+      return;
+    } else if (!document.fullscreenEnabled) {
       return;
     }
 
