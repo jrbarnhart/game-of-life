@@ -214,7 +214,9 @@ const Controls = ({
           handleTotalCellsSelect={handleTotalCellsSelect}
         />
       )}
-      {canvasState.windowAspect === "landscape" && <FullscreenControls />}
+      {canvasState.windowAspect === "landscape" && (
+        <FullscreenControls isFullscreen={isFullscreen} />
+      )}
     </>
   );
 };
