@@ -7,8 +7,13 @@ export const GRID_SIZES = {
   xl: { x: 300, y: 200 },
 };
 
+export interface GridSize {
+  width: number;
+  height: number;
+}
+
 const useGridSize = () => {
-  const gridSize = useRef<{ width: number; height: number }>({
+  const gridSize = useRef<GridSize>({
     width: GRID_SIZES.sm.x,
     height: GRID_SIZES.sm.y,
   });
