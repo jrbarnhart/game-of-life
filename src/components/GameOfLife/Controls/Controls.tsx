@@ -123,6 +123,7 @@ const Controls = ({
       cellAnimation.clearCanvas();
     }
     controlRefs.isDrawing.current = !controlRefs.isDrawing.current;
+    controlRefs.setShowOnlyDraw(controlRefs.isDrawing.current);
     setHighlightDraw(controlRefs.isDrawing.current);
     if (!controlRefs.isDrawing.current) {
       controlRefs.isErasing.current = false;
