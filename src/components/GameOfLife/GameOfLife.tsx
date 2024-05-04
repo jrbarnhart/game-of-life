@@ -1,24 +1,26 @@
 import Controls from "./Controls/Controls";
 import GameCanvas from "./GameCanvas/GameCanvas";
-import useCellData from "./GameCanvas/useCellData";
 import useCanvasState from "./GameCanvas/useCanvasState";
 import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
-import useGridSize from "./GameCanvas/useGridSize";
 import { useRef } from "react";
 import usePseudoFS from "./GameCanvas/usePseudoFS";
+import { GridSize } from "./GameCanvas/useGridSize";
+import { CellData } from "./GameCanvas/useCellData";
 
-const GameOfLife = () => {
+const GameOfLife = ({
+  gridSize,
+  cellData,
+  initialData,
+}: {
+  gridSize: React.MutableRefObject<GridSize>;
+  cellData: CellData;
+  initialData: Set<number>;
+}) => {
   const controlRefs = useControlRefs();
 
   const canvasState = useCanvasState();
-
-  const gridSize = useGridSize();
-
-  const cellData = useCellData(gridSize);
-
-  const initialData = new Set<number>();
 
   const {
     canvasInitialized,

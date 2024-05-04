@@ -1,10 +1,22 @@
 import GameOfLife from "./components/GameOfLife/GameOfLife";
+import useCellData from "./components/GameOfLife/GameCanvas/useCellData";
+import useGridSize from "./components/GameOfLife/GameCanvas/useGridSize";
 
 function App() {
+  const gridSize = useGridSize();
+
+  const cellData = useCellData(gridSize);
+
+  const initialData = new Set<number>();
+
   return (
     <>
       <main className="text-neutral-50 h-full grid justify-items-center">
-        <GameOfLife />
+        <GameOfLife
+          gridSize={gridSize}
+          cellData={cellData}
+          initialData={initialData}
+        />
       </main>
     </>
   );
