@@ -10,11 +10,11 @@ const FullscreenControls = ({
   controlRefs: ControlRefs;
 }) => {
   return (
-    <div className="absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-3">
-      <div className="ml-2 mt-2">
-        <label htmlFor="total-cells">
+    <div className="absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4">
+      <div className="col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg">
+        <label htmlFor="total-cells" className="text-neutral-50">
           Cells:{" "}
-          <select id="total-cells">
+          <select id="total-cells" className="text-neutral-950">
             {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
                 Values must fit this size AND ratio or game will not function. */}
             <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
@@ -32,16 +32,18 @@ const FullscreenControls = ({
           </select>
         </label>
       </div>
-      <div className="col-start-3 mr-2 mt-2">
+
+      <div className="col-start-3 col-span-2 justify-self-end p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-bl-lg">
         <InfoHeader
           text="Conway's 'Life'"
           link="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
         />
       </div>
+
       <div className="col-span-full row-start-2 justify-self-center self-center grid grid-flow-col items-center gap-x-14">
         <button
           aria-label="stop"
-          className="size-16 bg-neutral-950 bg-opacity-90 rounded-full"
+          className="size-16 bg-neutral-500 bg-opacity-90 rounded-full"
         >
           <svg
             aria-hidden
@@ -59,7 +61,7 @@ const FullscreenControls = ({
         </button>
         <button
           aria-label={!controlRefs.isPlaying.current ? "play" : "pause"}
-          className="size-20 bg-neutral-950 bg-opacity-90 rounded-full"
+          className="size-20 bg-neutral-500 bg-opacity-90 rounded-full"
         >
           {!controlRefs.isPlaying.current && (
             <svg
@@ -94,7 +96,7 @@ const FullscreenControls = ({
         </button>
         <button
           aria-label="next frame"
-          className="size-16 bg-neutral-950 bg-opacity-90 rounded-full"
+          className="size-16 bg-neutral-500 bg-opacity-90 rounded-full"
         >
           <svg
             aria-hidden
@@ -111,8 +113,9 @@ const FullscreenControls = ({
           </svg>
         </button>
       </div>
-      <div className="col-start-1 row-start-3 self-end grid grid-flow-col">
-        <button aria-label="draw" className="size-8 ml-2 mb-2">
+
+      <div className="col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg">
+        <button aria-label="draw" className="size-8">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -120,7 +123,7 @@ const FullscreenControls = ({
             />
           </svg>
         </button>
-        <button aria-label="erase" className="size-8 mb-2">
+        <button aria-label="erase" className="size-8">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -128,7 +131,7 @@ const FullscreenControls = ({
             />
           </svg>
         </button>
-        <button aria-label="mirror vertical drawing" className="size-8 mb-2">
+        <button aria-label="mirror vertical drawing" className="size-8">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -138,7 +141,7 @@ const FullscreenControls = ({
         </button>
         <button
           aria-label="mirror horizontal drawing"
-          className="rotate-90 size-8 mb-2"
+          className="rotate-90 size-8"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
@@ -149,8 +152,8 @@ const FullscreenControls = ({
         </button>
       </div>
 
-      <div className="col-start-3 row-start-3 justify-self-end self-end">
-        <button aria-label="toggle fullscreen" className="size-10 mr-2">
+      <div className="col-start-4 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg">
+        <button aria-label="toggle fullscreen" className="size-8">
           {!isFullscreen && (
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
               <path
@@ -162,12 +165,13 @@ const FullscreenControls = ({
           {isFullscreen && (
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              height="24px"
               viewBox="0 -960 960 960"
-              width="24px"
               fill="#e8eaed"
             >
-              <path d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z" />
+              <path
+                fill="currentColor"
+                d="M240-120v-120H120v-80h200v200h-80Zm400 0v-200h200v80H720v120h-80ZM120-640v-80h120v-120h80v200H120Zm520 0v-200h80v120h120v80H640Z"
+              />
             </svg>
           )}
         </button>
