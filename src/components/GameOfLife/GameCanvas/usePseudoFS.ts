@@ -1,7 +1,11 @@
 import { useState, useEffect } from "react";
 import useDisableFS from "./useDisableFS";
 
-const usePseudoFS = ({ debugNoFs = false }: { debugNoFs: boolean }) => {
+const usePseudoFS = ({
+  debugNoFs = false,
+}: {
+  debugNoFs: boolean;
+}): [boolean, React.Dispatch<React.SetStateAction<boolean>>] => {
   const [outdatedBrowserFS, setOutdatedBrowserFS] = useState<boolean>(false);
 
   useEffect(() => {
