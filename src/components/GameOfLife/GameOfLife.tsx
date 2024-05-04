@@ -6,8 +6,8 @@ import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
 import useGridSize from "./GameCanvas/useGridSize";
-import { useEffect, useRef, useState } from "react";
-import useDisableFS from "./GameCanvas/useDisableFS";
+import { useRef } from "react";
+import usePseudoFS from "./GameCanvas/usePseudoFS";
 
 const GameOfLife = () => {
   const controlRefs = useControlRefs();
@@ -45,27 +45,9 @@ const GameOfLife = () => {
 
   const gameContainerRef = useRef<HTMLDivElement | null>(null);
 
-  const [outdatedBrowserFS, setOutdatedBrowserFS] = useState<boolean>(false);
-
-  useEffect(() => {
-    const handleOrientationChange = () => {
-      if (
-        screen.orientation.type === "portrait-primary" ||
-        screen.orientation.type === "portrait-secondary"
-      ) {
-        setOutdatedBrowserFS(false);
-      }
-    };
-
-    window.addEventListener("orientationchange", handleOrientationChange);
-
-    return () => {
-      window.removeEventListener("orientationchange", handleOrientationChange);
-    };
-  }, []);
-
-  // Used to disable fullscreen for testing purposes
-  useDisableFS({ use: false });
+  const [outdatedBrowserFS, setOutdatedBrowserFS] = usePseudoFS({
+    debugNoFs: false,
+  });
 
   return (
     <div
