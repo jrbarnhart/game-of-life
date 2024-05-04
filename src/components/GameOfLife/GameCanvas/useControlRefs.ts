@@ -1,6 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export interface ControlRefs {
+  showOnlyDraw: boolean;
+  setShowOnlyDraw: React.Dispatch<React.SetStateAction<boolean>>;
   isPlaying: React.MutableRefObject<boolean>;
   isPaused: React.MutableRefObject<boolean>;
   isDrawing: React.MutableRefObject<boolean>;
@@ -12,6 +14,7 @@ export interface ControlRefs {
 }
 
 const useControlRefs = () => {
+  const [showOnlyDraw, setShowOnlyDraw] = useState<boolean>(false);
   const isPlaying = useRef(false);
   const isPaused = useRef(false);
   const isDrawing = useRef(false);
@@ -22,6 +25,8 @@ const useControlRefs = () => {
   const totalCells = useRef(1350); // 45 x 30 default
 
   const controlRefs: ControlRefs = {
+    showOnlyDraw,
+    setShowOnlyDraw,
     isPlaying,
     isPaused,
     isDrawing,
