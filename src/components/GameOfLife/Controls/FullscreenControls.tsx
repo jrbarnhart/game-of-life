@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import { ControlRefs } from "../GameCanvas/useControlRefs";
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
@@ -35,8 +36,28 @@ const FullscreenControls = ({
   handleFullscreenClick: () => void;
   handleTotalCellsSelect: React.ChangeEventHandler;
 }) => {
+  const [showControls, setShowControls] = useState<boolean>(true);
+
+  useEffect(() => {
+    const handleClick = () => {
+      if (!showControls) {
+        setShowControls(true);
+      }
+    };
+
+    window.addEventListener("click", handleClick);
+
+    return () => {
+      window.removeEventListener("click", handleClick);
+    };
+  });
+
   return (
-    <div className="absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4">
+    <div
+      className={`${
+        !showControls ? "opacity-0" : ""
+      } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4`}
+    >
       <div className="col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg">
         <label htmlFor="total-cells" className="text-neutral-50">
           Cells:{" "}
