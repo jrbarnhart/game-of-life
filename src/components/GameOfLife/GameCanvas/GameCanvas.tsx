@@ -151,21 +151,21 @@ const GameCanvas = ({
   };
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className={!outdatedBrowserFS ? "relative" : ""}>
       <canvas
         onMouseDown={handleMouseOrTouchStart}
         onMouseMove={handleMouseOrTouch}
         onTouchStart={handleMouseOrTouchStart}
         onTouchMove={handleMouseOrTouch}
         className={`${
-          outdatedBrowserFS ? "h-lvh w-lvw" : ""
-        } bg-transparent absolute top-0 z-10 touch-none`}
+          outdatedBrowserFS ? "h-lvh w-lvw bottom-0" : "top-0"
+        } bg-transparent absolute z-10 touch-none`}
         ref={overlayRef}
       />
       <canvas
         className={`${
-          outdatedBrowserFS ? "h-lvh w-lvw" : ""
-        } bg-black absolute top-0 touch-none`}
+          outdatedBrowserFS ? "h-lvh w-lvw bottom-0" : "top-0"
+        } bg-black absolute touch-none`}
         ref={canvasRef}
       />
     </div>
