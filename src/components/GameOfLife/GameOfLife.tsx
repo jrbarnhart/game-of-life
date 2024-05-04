@@ -106,6 +106,7 @@ const GameOfLife = () => {
           canvasState={canvasState}
           gridSize={gridSize}
           gameContainerRef={gameContainerRef}
+          outdatedBrowserFS={outdatedBrowserFS}
           setOutdatedBrowserFS={setOutdatedBrowserFS}
         />
         {canvasState.windowAspect === "portrait" && (

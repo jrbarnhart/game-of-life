@@ -14,6 +14,7 @@ const Controls = ({
   canvasState,
   gridSize,
   gameContainerRef,
+  outdatedBrowserFS,
   setOutdatedBrowserFS,
 }: {
   controlRefs: ControlRefs;
@@ -23,6 +24,7 @@ const Controls = ({
   canvasState: CanvasStateInterface;
   gridSize: React.MutableRefObject<{ width: number; height: number }>;
   gameContainerRef: React.MutableRefObject<HTMLDivElement | null>;
+  outdatedBrowserFS: boolean;
   setOutdatedBrowserFS: React.Dispatch<SetStateAction<boolean>>;
 }) => {
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
@@ -245,6 +247,7 @@ const Controls = ({
           highlightMirrorY={highlightMirrorY}
           handleFullscreenClick={handleFullscreenClick}
           handleTotalCellsSelect={handleTotalCellsSelect}
+          outdatedBrowserFS={outdatedBrowserFS}
         />
       )}
     </>
