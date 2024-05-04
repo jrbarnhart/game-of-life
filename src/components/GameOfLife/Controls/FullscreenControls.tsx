@@ -150,7 +150,11 @@ const FullscreenControls = ({
       </div>
 
       <div className="col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg">
-        <button aria-label="draw" onClick={handleDrawClick} className="size-8">
+        <button
+          aria-label="draw"
+          onClick={handleDrawClick}
+          className={`${highlightDraw ? "text-green-500" : ""} size-8`}
+        >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
               fill="currentColor"
@@ -161,7 +165,13 @@ const FullscreenControls = ({
         <button
           aria-label="erase"
           onClick={handleEraseClick}
-          className="size-8"
+          className={`${
+            highlightErase === 1
+              ? "text-green-500"
+              : highlightErase === -1
+              ? "text-neutral-800"
+              : ""
+          } size-8`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
@@ -175,7 +185,13 @@ const FullscreenControls = ({
           onClick={() => {
             handleMirrorClick("x");
           }}
-          className="size-8"
+          className={`${
+            highlightMirrorX === 1
+              ? "text-green-500"
+              : highlightMirrorX === -1
+              ? "text-neutral-800"
+              : ""
+          } size-8`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
@@ -189,7 +205,13 @@ const FullscreenControls = ({
           onClick={() => {
             handleMirrorClick("y");
           }}
-          className="rotate-90 size-8"
+          className={`${
+            highlightMirrorY === 1
+              ? "text-green-500"
+              : highlightMirrorY === -1
+              ? "text-neutral-800"
+              : ""
+          } size-8 rotate-90`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
