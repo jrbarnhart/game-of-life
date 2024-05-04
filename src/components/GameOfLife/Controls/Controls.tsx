@@ -218,6 +218,19 @@ const Controls = ({
         <FullscreenControls
           isFullscreen={isFullscreen}
           controlRefs={controlRefs}
+          handlePlayClick={handlePlayClick}
+          handlePauseClick={handlePauseClick}
+          handleNextClick={handleNextClick}
+          handleStopClick={handleStopClick}
+          handleDrawClick={handleDrawClick}
+          highlightDraw={highlightDraw}
+          handleEraseClick={handleEraseClick}
+          highlightErase={highlightErase}
+          handleMirrorClick={handleMirrorClick}
+          highlightMirrorX={highlightMirrorX}
+          highlightMirrorY={highlightMirrorY}
+          handleFullscreenClick={handleFullscreenClick}
+          handleTotalCellsSelect={handleTotalCellsSelect}
         />
       )}
     </>
