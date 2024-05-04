@@ -158,13 +158,13 @@ const GameCanvas = ({
         onTouchStart={handleMouseOrTouchStart}
         onTouchMove={handleMouseOrTouch}
         className={`${
-          outdatedBrowserFS ? "h-lvh w-lvw bottom-0" : "top-0"
+          outdatedBrowserFS ? "h-svh w-svw bottom-0 left-0" : "top-0"
         } bg-transparent absolute z-10 touch-none`}
         ref={overlayRef}
       />
       <canvas
         className={`${
-          outdatedBrowserFS ? "h-lvh w-lvw bottom-0" : "top-0"
+          outdatedBrowserFS ? "h-svh w-svw bottom-0 left-0" : "top-0"
         } bg-black absolute touch-none`}
         ref={canvasRef}
       />

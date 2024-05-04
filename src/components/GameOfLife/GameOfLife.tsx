@@ -6,7 +6,7 @@ import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
 import useControlRefs from "./GameCanvas/useControlRefs";
 import useGridSize from "./GameCanvas/useGridSize";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useDisableFS from "./GameCanvas/useDisableFS";
 
 const GameOfLife = () => {
@@ -47,6 +47,15 @@ const GameOfLife = () => {
 
   const [outdatedBrowserFS, setOutdatedBrowserFS] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (outdatedBrowserFS && gameContainerRef.current) {
+      window.scrollTo({
+        top: document.documentElement.scrollHeight,
+        behavior: "instant",
+      });
+    }
+  }, [outdatedBrowserFS]);
+
   // Used to disable fullscreen for testing purposes
   useDisableFS({ use: true });
 
@@ -58,13 +67,13 @@ const GameOfLife = () => {
           ? "relative self-center w-min"
           : "pt-5"
       } 
-      ${outdatedBrowserFS ? "bg-red-500" : ""}
+      ${outdatedBrowserFS ? "w-svw h-svh" : ""}
       grid justify-items-center w-full overflow-hidden relative`}
     >
       <div
-        className={
-          canvasState.windowAspect === "landscape" ? "" : "absolute top-16"
-        }
+        className={`${
+          canvasState.windowAspect === "landscape" ? "" : "absolute"
+        } ${outdatedBrowserFS ? "w-svh h-svh" : "top-16"}`}
       >
         <GameCanvas
           canvasRef={canvasRef}
@@ -74,6 +83,7 @@ const GameOfLife = () => {
           controlRefs={controlRefs}
           gridSize={gridSize}
           cellAnimation={cellAnimation}
+          outdatedBrowserFS={outdatedBrowserFS}
         />
       </div>
       <div
