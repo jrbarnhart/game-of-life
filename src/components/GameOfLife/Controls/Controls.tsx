@@ -196,7 +196,6 @@ const Controls = ({
     <>
       {canvasState.windowAspect === "portrait" && (
         <DefaultControls
-          canvasState={canvasState}
           handlePlayClick={handlePlayClick}
           highlightPlay={highlightPlay}
           handlePauseClick={handlePauseClick}

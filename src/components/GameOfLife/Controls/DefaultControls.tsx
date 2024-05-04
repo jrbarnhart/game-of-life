@@ -1,10 +1,8 @@
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 import InfoHeader from "../../InfoHeader/InfoHeader";
-import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
 import React from "react";
 
 const DefaultControls = ({
-  canvasState,
   handlePlayClick,
   highlightPlay,
   handlePauseClick,
@@ -22,7 +20,6 @@ const DefaultControls = ({
   isFullscreen,
   handleTotalCellsSelect,
 }: {
-  canvasState: CanvasStateInterface;
   handlePlayClick: () => void;
   highlightPlay: boolean;
   handlePauseClick: () => void;
@@ -50,13 +47,7 @@ const DefaultControls = ({
           />
         </div>
       </div>
-      <div
-        className={`${
-          canvasState.windowAspect === "landscape"
-            ? "absolute bottom-0 left-1/2 -translate-x-1/2 lg:grid-flow-col"
-            : "justify-self-center"
-        } grid`}
-      >
+      <div className="grid justify-self-center">
         <div className="h-12 w-72 p-1 grid grid-flow-col content-center gap-x-1 bg-neutral-400 rounded-sm border-2 border-b-0 lg:border-b-2 border-black">
           <button
             aria-label="play"
