@@ -49,7 +49,7 @@ const GameOfLife = () => {
       ref={gameContainerRef}
       className={`${
         canvasState.windowAspect === "landscape"
-          ? "relative self-center"
+          ? "relative self-center w-min"
           : "pt-5"
       } grid justify-items-center w-full overflow-hidden relative`}
     >
