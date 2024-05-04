@@ -19,6 +19,7 @@ const FullscreenControls = ({
   highlightMirrorY,
   handleFullscreenClick,
   handleTotalCellsSelect,
+  outdatedBrowserFS,
 }: {
   isFullscreen: boolean;
   controlRefs: ControlRefs;
@@ -35,10 +36,12 @@ const FullscreenControls = ({
   highlightMirrorY: number;
   handleFullscreenClick: () => void;
   handleTotalCellsSelect: React.ChangeEventHandler;
+  outdatedBrowserFS: boolean;
 }) => {
   const [showControls, setShowControls] = useState<boolean>(true);
   const controlsContainerRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<number | null>(null);
+  const popupRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleWindowClick = () => {
@@ -66,7 +69,15 @@ const FullscreenControls = ({
     return () => {
       window.removeEventListener("click", handleWindowClick);
     };
-  });
+  }, [controlRefs.isPaused, controlRefs.isPlaying, showControls]);
+
+  useEffect(() => {
+    if (popupRef.current) {
+      setTimeout(() => {
+        popupRef.current?.classList.add("opacity-0");
+      }, 3000);
+    }
+  }, [outdatedBrowserFS]);
 
   return (
     <div
@@ -77,6 +88,16 @@ const FullscreenControls = ({
           : ""
       } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4 transition-opacity`}
     >
+      {outdatedBrowserFS && (
+        <div
+          ref={popupRef}
+          className="absolute bottom-20 translate-x-1/2 text-center bg-zinc-800 p-2 rounded-lg"
+        >
+          <p>Your device does not support Fullscreen API.</p>
+          <p>Your experience may be limited.</p>
+        </div>
+      )}
+
       <div
         className={`${
           !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
