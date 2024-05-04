@@ -72,10 +72,16 @@ const FullscreenControls = ({
     <div
       ref={controlsContainerRef}
       className={`${
-        !showControls ? "opacity-0 pointer-events-none" : ""
+        !showControls || controlRefs.isDrawing.current
+          ? "pointer-events-none"
+          : ""
       } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4 transition-opacity`}
     >
-      <div className="col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg">
+      <div
+        className={`${
+          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+        } col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg`}
+      >
         <label htmlFor="total-cells" className="text-neutral-50">
           Cells:{" "}
           <select
@@ -101,14 +107,22 @@ const FullscreenControls = ({
         </label>
       </div>
 
-      <div className="col-start-3 col-span-2 justify-self-end p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-bl-lg">
+      <div
+        className={`${
+          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+        } col-start-3 col-span-2 justify-self-end p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-bl-lg`}
+      >
         <InfoHeader
           text="Conway's 'Life'"
           link="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
         />
       </div>
 
-      <div className="col-span-full row-start-2 justify-self-center self-center grid grid-flow-col items-center gap-x-14">
+      <div
+        className={`${
+          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+        } col-span-full row-start-2 justify-self-center self-center grid grid-flow-col items-center gap-x-14`}
+      >
         <button
           aria-label="stop"
           onClick={handleStopClick}
@@ -187,7 +201,13 @@ const FullscreenControls = ({
         </button>
       </div>
 
-      <div className="col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg">
+      <div
+        className={`${
+          controlRefs.isDrawing.current ? "pointer-events-auto" : ""
+        } ${
+          !showControls ? "opacity-0" : ""
+        } col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg`}
+      >
         <button
           aria-label="draw"
           onClick={handleDrawClick}
@@ -260,7 +280,11 @@ const FullscreenControls = ({
         </button>
       </div>
 
-      <div className="col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg">
+      <div
+        className={`${
+          !showControls || controlRefs.isDrawing.current ? "opacity-0" : ""
+        } col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg`}
+      >
         <button
           onClick={handleFullscreenClick}
           className="grid grid-flow-col items-center gap-x-2"
