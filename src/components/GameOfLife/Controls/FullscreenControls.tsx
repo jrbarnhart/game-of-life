@@ -1,3 +1,5 @@
+import { GRID_SIZES } from "../GameCanvas/useGridSize";
+
 const FullscreenControls = ({ isFullscreen }: { isFullscreen: boolean }) => {
   return (
     <div className="absolute top-0 left-0 size-full">
@@ -105,7 +107,7 @@ const FullscreenControls = ({ isFullscreen }: { isFullscreen: boolean }) => {
           <path d="M360-120H200q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h160v80H200v560h160v80Zm80 80v-880h80v880h-80Zm160-80v-80h80v80h-80Zm0-640v-80h80v80h-80Zm160 640v-80h80q0 33-23.5 56.5T760-120Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80h80v80h-80Zm0-160v-80q33 0 56.5 23.5T840-760h-80Z" />
         </svg>
       </button>
-      <button>
+      <button aria-label="toggle fullscreen">
         {!isFullscreen && (
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -129,6 +131,25 @@ const FullscreenControls = ({ isFullscreen }: { isFullscreen: boolean }) => {
           </svg>
         )}
       </button>
+      <label htmlFor="total-cells">
+        Cells:{" "}
+        <select id="total-cells">
+          {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
+                Values must fit this size AND ratio or game will not function. */}
+          <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
+            {(GRID_SIZES.sm.x * GRID_SIZES.sm.y).toLocaleString()}
+          </option>
+          <option value={GRID_SIZES.md.x * GRID_SIZES.md.y}>
+            {(GRID_SIZES.md.x * GRID_SIZES.md.y).toLocaleString()}
+          </option>
+          <option value={GRID_SIZES.lg.x * GRID_SIZES.lg.y}>{`${(
+            GRID_SIZES.lg.x * GRID_SIZES.lg.y
+          ).toLocaleString()} (No Grid)`}</option>
+          <option value={GRID_SIZES.xl.x * GRID_SIZES.xl.y}>{`${(
+            GRID_SIZES.xl.x * GRID_SIZES.xl.y
+          ).toLocaleString()} (No Grid)`}</option>
+        </select>
+      </label>
     </div>
   );
 };
