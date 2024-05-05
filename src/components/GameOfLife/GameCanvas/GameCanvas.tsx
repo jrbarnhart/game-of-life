@@ -147,13 +147,13 @@ const GameCanvas = ({
   };
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="box-content border-2 h-fit border-white">
       <canvas
         onMouseDown={handleMouseOrTouchStart}
         onMouseMove={handleMouseOrTouch}
         onTouchStart={handleMouseOrTouchStart}
         onTouchMove={handleMouseOrTouch}
-        className="bg-black absolute top-0 z-10 touch-none"
+        className="bg-black z-10 touch-none"
         ref={canvasRef}
       />
     </div>
