@@ -245,7 +245,6 @@ const Controls = ({
           handleNextClick={handleNextClick}
           handleStopClick={handleStopClick}
           handleDrawClick={handleDrawClick}
-          highlightDraw={highlightDraw}
           handleEraseClick={handleEraseClick}
           highlightErase={highlightErase}
           handleMirrorClick={handleMirrorClick}
