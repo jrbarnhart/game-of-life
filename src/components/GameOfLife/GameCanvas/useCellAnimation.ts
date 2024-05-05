@@ -287,7 +287,6 @@ const useCellAnimation = (
   }, [startAnimation, canvasState.windowAspect]);
 
   useEffect(() => {
-    console.log("Fuck Safari");
     drawCurrentCells();
   }, [canvasState.windowAspect, controlRefs.showOnlyDraw, drawCurrentCells]);
 
