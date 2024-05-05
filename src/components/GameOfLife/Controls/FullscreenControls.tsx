@@ -11,7 +11,6 @@ const FullscreenControls = ({
   handleNextClick,
   handleStopClick,
   handleDrawClick,
-  highlightDraw,
   handleEraseClick,
   highlightErase,
   handleMirrorClick,
@@ -28,7 +27,6 @@ const FullscreenControls = ({
   handleNextClick: () => void;
   handleStopClick: () => void;
   handleDrawClick: () => void;
-  highlightDraw: boolean;
   handleEraseClick: () => void;
   highlightErase: number;
   handleMirrorClick: (allignment: "x" | "y") => void;
@@ -232,7 +230,9 @@ const FullscreenControls = ({
         <button
           aria-label="draw"
           onClick={handleDrawClick}
-          className={`${highlightDraw ? "text-green-500" : ""} size-8`}
+          className={`${
+            controlRefs.showOnlyDraw ? "text-green-500" : ""
+          } size-8`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
             <path
