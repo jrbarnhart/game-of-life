@@ -26,6 +26,7 @@ const GameOfLife = ({
     useInitCanvas(canvasState.canvasSize.width, canvasState.canvasSize.height);
 
   const cellAnimation = useCellAnimation(
+    canvasState,
     canvasRef.current,
     contextRef.current,
     canvasInitialized,
