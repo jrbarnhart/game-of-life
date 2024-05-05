@@ -55,7 +55,7 @@ const GameOfLife = ({
         className={
           canvasState.windowAspect === "portrait"
             ? "absolute top-16 bottom-0"
-            : ""
+            : "grid items-center"
         }
       >
         <GameCanvas
