@@ -63,6 +63,7 @@ const Controls = ({
       controlRefs.isPaused.current = false;
     }
     controlRefs.isDrawing.current = false;
+    controlRefs.setShowOnlyDraw(false);
     controlRefs.isErasing.current = false;
     controlRefs.mirrorX.current = false;
     controlRefs.mirrorY.current = false;
@@ -218,6 +219,8 @@ const Controls = ({
     <>
       {canvasState.windowAspect === "portrait" && (
         <DefaultControls
+          isFullscreen={isFullscreen}
+          controlRefs={controlRefs}
           handlePlayClick={handlePlayClick}
           highlightPlay={highlightPlay}
           handlePauseClick={handlePauseClick}
@@ -232,7 +235,6 @@ const Controls = ({
           highlightMirrorX={highlightMirrorX}
           highlightMirrorY={highlightMirrorY}
           handleFullscreenClick={handleFullscreenClick}
-          isFullscreen={isFullscreen}
           handleTotalCellsSelect={handleTotalCellsSelect}
         />
       )}

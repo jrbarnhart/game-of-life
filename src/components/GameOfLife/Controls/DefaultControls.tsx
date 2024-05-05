@@ -152,7 +152,7 @@ const DefaultControls = ({
             className={`${
               highlightErase === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightErase === -1
+                : highlightErase === -1 && !controlRefs.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
@@ -167,7 +167,7 @@ const DefaultControls = ({
             className={`${
               highlightMirrorX === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightMirrorX === -1
+                : highlightMirrorX === -1 && !controlRefs.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
@@ -182,7 +182,7 @@ const DefaultControls = ({
             className={`${
               highlightMirrorY === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightMirrorY === -1
+                : highlightMirrorY === -1 && !controlRefs.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
