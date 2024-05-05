@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CellData } from "./useCellData";
 import { ControlRefs } from "./useControlRefs";
+import { CanvasStateInterface } from "./useCanvasState";
 
 export interface CellAnimation {
   cellSize: React.MutableRefObject<{
@@ -20,6 +21,7 @@ export interface CellAnimation {
 }
 
 const useCellAnimation = (
+  canvasState: CanvasStateInterface,
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
@@ -83,33 +85,33 @@ const useCellAnimation = (
     []
   );
 
-  const drawInitialCell = (
-    cellIndex: number,
-    options?: { erase: boolean } | undefined
-  ) => {
-    if (
-      !ctx ||
-      !canvas ||
-      gridSize.current.height === 0 ||
-      gridSize.current.width === 0
-    ) {
-      return;
-    }
+  const drawInitialCell = useCallback(
+    (cellIndex: number, options?: { erase: boolean } | undefined) => {
+      if (
+        !ctx ||
+        !canvas ||
+        gridSize.current.height === 0 ||
+        gridSize.current.width === 0
+      ) {
+        return;
+      }
 
-    const row = Math.floor(cellIndex / gridSize.current.width);
-    const col = cellIndex % gridSize.current.width;
-    const x = col * cellSize.current.width + cellSize.current.offX;
-    const y = row * cellSize.current.height + cellSize.current.offY;
+      const row = Math.floor(cellIndex / gridSize.current.width);
+      const col = cellIndex % gridSize.current.width;
+      const x = col * cellSize.current.width + cellSize.current.offX;
+      const y = row * cellSize.current.height + cellSize.current.offY;
 
-    if (options?.erase) {
-      ctx.fillStyle = "black";
-    } else {
-      ctx.fillStyle = "white";
-    }
-    ctx.beginPath();
-    ctx.rect(x, y, cellSize.current.width, cellSize.current.height);
-    ctx.fill();
-  };
+      if (options?.erase) {
+        ctx.fillStyle = "black";
+      } else {
+        ctx.fillStyle = "white";
+      }
+      ctx.beginPath();
+      ctx.rect(x, y, cellSize.current.width, cellSize.current.height);
+      ctx.fill();
+    },
+    [canvas, ctx, gridSize]
+  );
 
   const animationLoop = useCallback(
     (
@@ -200,19 +202,28 @@ const useCellAnimation = (
     }
   }; */
 
-  const drawCurrentCells = () => {
-    // If not playing draw initial cells if they exist
-    // Else draw the current living cells
+  const drawCurrentCells = useCallback(() => {
     if (!controlRefs.isPlaying.current && ctx) {
+      console.log("Drawing current initial cells.", initialData);
       for (const cellIndex of initialData) {
-        drawCell(ctx, gridSize.current, cellData.gameState.current, cellIndex);
+        drawInitialCell(cellIndex);
       }
     } else if (ctx) {
+      console.log("Drawing current living cells.", cellData.livingCells);
       for (const cellIndex of cellData.livingCells) {
         drawCell(ctx, gridSize.current, cellData.gameState.current, cellIndex);
       }
     }
-  };
+  }, [
+    cellData.gameState,
+    cellData.livingCells,
+    controlRefs.isPlaying,
+    ctx,
+    drawCell,
+    drawInitialCell,
+    gridSize,
+    initialData,
+  ]);
 
   const clearCanvas = useCallback(() => {
     if (canvas && ctx) {
@@ -274,6 +285,11 @@ const useCellAnimation = (
       }
     };
   }, [startAnimation]);
+
+  useEffect(() => {
+    console.log("Fuck Safari");
+    drawCurrentCells();
+  }, [canvasState.windowAspect, controlRefs.showOnlyDraw, drawCurrentCells]);
 
   const cellAnimation: CellAnimation = {
     cellSize,
