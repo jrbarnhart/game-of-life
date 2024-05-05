@@ -1,8 +1,11 @@
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import React from "react";
+import { ControlRefs } from "../GameCanvas/useControlRefs";
 
 const DefaultControls = ({
+  isFullscreen,
+  controlRefs,
   handlePlayClick,
   highlightPlay,
   handlePauseClick,
@@ -10,16 +13,16 @@ const DefaultControls = ({
   handleNextClick,
   handleStopClick,
   handleDrawClick,
-  highlightDraw,
   handleEraseClick,
   highlightErase,
   handleMirrorClick,
   highlightMirrorX,
   highlightMirrorY,
   handleFullscreenClick,
-  isFullscreen,
   handleTotalCellsSelect,
 }: {
+  isFullscreen: boolean;
+  controlRefs: ControlRefs;
   handlePlayClick: () => void;
   highlightPlay: boolean;
   handlePauseClick: () => void;
@@ -34,7 +37,6 @@ const DefaultControls = ({
   highlightMirrorX: number;
   highlightMirrorY: number;
   handleFullscreenClick: () => void;
-  isFullscreen: boolean;
   handleTotalCellsSelect: React.ChangeEventHandler;
 }) => {
   return (
@@ -138,7 +140,7 @@ const DefaultControls = ({
           <button
             onClick={handleDrawClick}
             className={`${
-              highlightDraw
+              controlRefs.showOnlyDraw
                 ? "text-orange-400 border-orange-400"
                 : "text-white border-black"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
