@@ -284,7 +284,7 @@ const useCellAnimation = (
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [startAnimation]);
+  }, [startAnimation, canvasState.windowAspect]);
 
   useEffect(() => {
     console.log("Fuck Safari");
