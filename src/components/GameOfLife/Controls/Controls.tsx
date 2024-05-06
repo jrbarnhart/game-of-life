@@ -41,8 +41,8 @@ const Controls = ({
 
   const handlePlayClick = () => {
     controlState.setShowPlay(false);
-    if (!controlState.isPlaying.current) {
-      controlState.isPlaying.current = true;
+    if (!controlState.isPlayingRef.current) {
+      controlState.isPlayingRef.current = true;
       if (initialData.size > 0) {
         cellData.initData(initialData);
       } else {
@@ -50,14 +50,14 @@ const Controls = ({
       }
       initialData.clear();
     }
-    if (controlState.isPaused.current) {
-      controlState.isPaused.current = false;
+    if (controlState.isPausedRef.current) {
+      controlState.isPausedRef.current = false;
     }
-    controlState.isDrawing.current = false;
+    controlState.isDrawingRef.current = false;
     controlState.setShowOnlyDraw(false);
-    controlState.isErasing.current = false;
-    controlState.mirrorX.current = false;
-    controlState.mirrorY.current = false;
+    controlState.isErasingRef.current = false;
+    controlState.mirrorXRef.current = false;
+    controlState.mirrorYRef.current = false;
     controlState.setHighlightDraw(false);
     controlState.setHighlightErase(-1);
     controlState.setHighlightMirrorX(-1);
@@ -67,16 +67,19 @@ const Controls = ({
   };
 
   const handlePauseClick = () => {
-    if (!controlState.isPaused.current && controlState.isPlaying.current) {
-      controlState.isPaused.current = true;
+    if (
+      !controlState.isPausedRef.current &&
+      controlState.isPlayingRef.current
+    ) {
+      controlState.isPausedRef.current = true;
       controlState.setShowPlay(true);
       controlState.setHighlightPause(true);
       controlState.setHighlightPlay(false);
     } else if (
-      controlState.isPaused.current &&
-      controlState.isPlaying.current
+      controlState.isPausedRef.current &&
+      controlState.isPlayingRef.current
     ) {
-      controlState.isPaused.current = false;
+      controlState.isPausedRef.current = false;
       controlState.setShowPlay(false);
       controlState.setHighlightPause(false);
       controlState.setHighlightPlay(true);
@@ -84,12 +87,12 @@ const Controls = ({
   };
 
   const handleStopClick = () => {
-    controlState.isPlaying.current = false;
-    controlState.isPaused.current = false;
-    controlState.isDrawing.current = false;
-    controlState.isErasing.current = false;
-    controlState.mirrorX.current = false;
-    controlState.mirrorY.current = false;
+    controlState.isPlayingRef.current = false;
+    controlState.isPausedRef.current = false;
+    controlState.isDrawingRef.current = false;
+    controlState.isErasingRef.current = false;
+    controlState.mirrorXRef.current = false;
+    controlState.mirrorYRef.current = false;
     controlState.setShowPlay(true);
     controlState.setHighlightPlay(false);
     controlState.setHighlightPause(false);
@@ -103,8 +106,8 @@ const Controls = ({
   };
 
   const handleNextClick = () => {
-    if (controlState.isPlaying.current) {
-      controlState.isPaused.current = true;
+    if (controlState.isPlayingRef.current) {
+      controlState.isPausedRef.current = true;
       controlState.setShowPlay(true);
       controlState.setHighlightPlay(false);
       controlState.setHighlightPause(true);
@@ -113,22 +116,22 @@ const Controls = ({
   };
 
   const handleDrawClick = () => {
-    if (controlState.isPlaying.current) {
-      controlState.isPlaying.current = false;
-      controlState.isPaused.current = false;
+    if (controlState.isPlayingRef.current) {
+      controlState.isPlayingRef.current = false;
+      controlState.isPausedRef.current = false;
       controlState.setShowPlay(true);
       controlState.setHighlightPlay(false);
       controlState.setHighlightPause(false);
       cellData.clear();
       cellAnimation.clearCanvas();
     }
-    controlState.isDrawing.current = !controlState.isDrawing.current;
-    controlState.setShowOnlyDraw(controlState.isDrawing.current);
-    controlState.setHighlightDraw(controlState.isDrawing.current);
-    if (!controlState.isDrawing.current) {
-      controlState.isErasing.current = false;
-      controlState.mirrorX.current = false;
-      controlState.mirrorY.current = false;
+    controlState.isDrawingRef.current = !controlState.isDrawingRef.current;
+    controlState.setShowOnlyDraw(controlState.isDrawingRef.current);
+    controlState.setHighlightDraw(controlState.isDrawingRef.current);
+    if (!controlState.isDrawingRef.current) {
+      controlState.isErasingRef.current = false;
+      controlState.mirrorXRef.current = false;
+      controlState.mirrorYRef.current = false;
       controlState.setHighlightErase(-1);
       controlState.setHighlightMirrorX(-1);
       controlState.setHighlightMirrorY(-1);
@@ -140,26 +143,26 @@ const Controls = ({
   };
 
   const handleEraseClick = () => {
-    if (!controlState.isDrawing.current) {
+    if (!controlState.isDrawingRef.current) {
       return;
     }
 
-    controlState.isErasing.current = !controlState.isErasing.current;
-    controlState.setHighlightErase(controlState.isErasing.current ? 1 : 0);
+    controlState.isErasingRef.current = !controlState.isErasingRef.current;
+    controlState.setHighlightErase(controlState.isErasingRef.current ? 1 : 0);
   };
 
   const handleMirrorClick = (allignment: "x" | "y") => {
-    if (!controlState.isDrawing.current) {
+    if (!controlState.isDrawingRef.current) {
       return;
     }
 
     if (allignment === "x") {
-      controlState.mirrorX.current = !controlState.mirrorX.current;
-      controlState.setHighlightMirrorX(controlState.mirrorX.current ? 1 : 0);
+      controlState.mirrorXRef.current = !controlState.mirrorXRef.current;
+      controlState.setHighlightMirrorX(controlState.mirrorXRef.current ? 1 : 0);
     }
     if (allignment === "y") {
-      controlState.mirrorY.current = !controlState.mirrorY.current;
-      controlState.setHighlightMirrorY(controlState.mirrorY.current ? 1 : 0);
+      controlState.mirrorYRef.current = !controlState.mirrorYRef.current;
+      controlState.setHighlightMirrorY(controlState.mirrorYRef.current ? 1 : 0);
     }
   };
 
@@ -199,15 +202,16 @@ const Controls = ({
     handleStopClick();
 
     const newTotal = parseInt(event.target.value);
-    controlState.totalCells.current = newTotal;
+    controlState.totalCellsRef.current = newTotal;
 
     const width = Math.sqrt(
-      (controlState.totalCells.current * controlState.aspect.current.width) /
-        controlState.aspect.current.height
+      (controlState.totalCellsRef.current *
+        controlState.aspectRef.current.width) /
+        controlState.aspectRef.current.height
     );
     const height =
-      (width * controlState.aspect.current.height) /
-      controlState.aspect.current.width;
+      (width * controlState.aspectRef.current.height) /
+      controlState.aspectRef.current.width;
 
     gridSize.current = { width, height };
     cellData.initStateArrays(width, height);

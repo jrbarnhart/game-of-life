@@ -23,7 +23,7 @@ const GameCanvas = ({
 
   const handleMouseOrTouch = (event: React.MouseEvent | React.TouchEvent) => {
     if (
-      controlState.isDrawing.current &&
+      controlState.isDrawingRef.current &&
       canvasRef.current &&
       isMouseOrTouchDown.current
     ) {
@@ -50,9 +50,9 @@ const GameCanvas = ({
         }
       }
 
-      const isErasing = controlState.isErasing.current;
-      const mirrorX = controlState.mirrorX.current;
-      const mirrorY = controlState.mirrorY.current;
+      const isErasing = controlState.isErasingRef.current;
+      const mirrorX = controlState.mirrorXRef.current;
+      const mirrorY = controlState.mirrorYRef.current;
       const gridWidth = gridSize.current.width;
       const gridHeight = gridSize.current.height;
       const cellWidth = cellAnimation.cellSize.current.width;

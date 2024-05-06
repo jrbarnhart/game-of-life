@@ -203,7 +203,7 @@ const useCellAnimation = (
   }; */
 
   const drawCurrentCells = useCallback(() => {
-    if (!controlState.isPlaying.current && ctx) {
+    if (!controlState.isPlayingRef.current && ctx) {
       console.log("Drawing current initial cells.", initialData);
       for (const cellIndex of initialData) {
         drawInitialCell(cellIndex);
@@ -217,7 +217,7 @@ const useCellAnimation = (
   }, [
     cellData.gameState,
     cellData.livingCells,
-    controlState.isPlaying,
+    controlState.isPlayingRef,
     ctx,
     drawCell,
     drawInitialCell,
@@ -255,8 +255,8 @@ const useCellAnimation = (
         ctx,
         canvas,
         cellData,
-        controlState.isPlaying,
-        controlState.isPaused,
+        controlState.isPlayingRef,
+        controlState.isPausedRef,
         {
           initialDraw: true,
         }
@@ -269,8 +269,8 @@ const useCellAnimation = (
     canvasInitialized,
     cellData,
     clearCanvas,
-    controlState.isPaused,
-    controlState.isPlaying,
+    controlState.isPausedRef,
+    controlState.isPlayingRef,
     ctx,
     updateCellSize,
   ]);

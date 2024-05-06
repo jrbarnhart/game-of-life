@@ -19,14 +19,14 @@ export interface ControlState {
   setHighlightMirrorX: React.Dispatch<React.SetStateAction<number>>;
   highlightMirrorY: number;
   setHighlightMirrorY: React.Dispatch<React.SetStateAction<number>>;
-  isPlaying: React.MutableRefObject<boolean>;
-  isPaused: React.MutableRefObject<boolean>;
-  isDrawing: React.MutableRefObject<boolean>;
-  isErasing: React.MutableRefObject<boolean>;
-  mirrorX: React.MutableRefObject<boolean>;
-  mirrorY: React.MutableRefObject<boolean>;
-  aspect: React.MutableRefObject<{ width: number; height: number }>;
-  totalCells: React.MutableRefObject<number>;
+  isPlayingRef: React.MutableRefObject<boolean>;
+  isPausedRef: React.MutableRefObject<boolean>;
+  isDrawingRef: React.MutableRefObject<boolean>;
+  isErasingRef: React.MutableRefObject<boolean>;
+  mirrorXRef: React.MutableRefObject<boolean>;
+  mirrorYRef: React.MutableRefObject<boolean>;
+  aspectRef: React.MutableRefObject<{ width: number; height: number }>;
+  totalCellsRef: React.MutableRefObject<number>;
 }
 
 const useControlState = () => {
@@ -41,14 +41,14 @@ const useControlState = () => {
   const [highlightMirrorX, setHighlightMirrorX] = useState<number>(-1);
   const [highlightMirrorY, setHighlightMirrorY] = useState<number>(-1);
 
-  const isPlaying = useRef(false);
-  const isPaused = useRef(false);
-  const isDrawing = useRef(false);
-  const isErasing = useRef(false);
-  const mirrorX = useRef(false);
-  const mirrorY = useRef(false);
-  const aspect = useRef({ width: 3, height: 2 });
-  const totalCells = useRef(1350); // 45 x 30 default
+  const isPlayingRef = useRef(false);
+  const isPausedRef = useRef(false);
+  const isDrawingRef = useRef(false);
+  const isErasingRef = useRef(false);
+  const mirrorXRef = useRef(false);
+  const mirrorYRef = useRef(false);
+  const aspectRef = useRef({ width: 3, height: 2 });
+  const totalCellsRef = useRef(1350); // 45 x 30 default
 
   const controlState: ControlState = {
     fullscreen,
@@ -69,14 +69,14 @@ const useControlState = () => {
     setHighlightMirrorX,
     highlightMirrorY,
     setHighlightMirrorY,
-    isPlaying,
-    isPaused,
-    isDrawing,
-    isErasing,
-    mirrorX,
-    mirrorY,
-    aspect,
-    totalCells,
+    isPlayingRef,
+    isPausedRef,
+    isDrawingRef,
+    isErasingRef,
+    mirrorXRef,
+    mirrorYRef,
+    aspectRef,
+    totalCellsRef,
   };
 
   return controlState;

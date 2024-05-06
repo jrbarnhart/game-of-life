@@ -39,8 +39,8 @@ const FullscreenControls = ({
       if (!showControls) {
         setShowControls(true);
       } else if (
-        controlState.isPlaying.current &&
-        !controlState.isPaused.current
+        controlState.isPlayingRef.current &&
+        !controlState.isPausedRef.current
       ) {
         setShowControls(false);
       }
@@ -48,7 +48,7 @@ const FullscreenControls = ({
       if (controlsTimeoutRef.current) {
         clearTimeout(controlsTimeoutRef.current);
       }
-      if (controlState.isPlaying.current) {
+      if (controlState.isPlayingRef.current) {
         controlsTimeoutRef.current = setTimeout(() => {
           setShowControls(false);
         }, 2500);
@@ -60,7 +60,7 @@ const FullscreenControls = ({
     return () => {
       window.removeEventListener("click", handleWindowClick);
     };
-  }, [controlState.isPaused, controlState.isPlaying, showControls]);
+  }, [controlState.isPausedRef, controlState.isPlayingRef, showControls]);
 
   useEffect(() => {
     if (popupRef.current) {
