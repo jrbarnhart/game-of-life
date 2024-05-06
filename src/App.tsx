@@ -1,24 +1,12 @@
-import GameOfLife from "./components/GameOfLife/GameOfLife";
-import useCellData from "./components/GameOfLife/GameCanvas/useCellData";
-import useGridSize from "./components/GameOfLife/GameCanvas/useGridSize";
+import { ErrorBoundary } from "react-error-boundary";
+import ErrorFallback from "./ErrorFallback";
+import GameHookContainer from "./GameHookContainer";
 
 function App() {
-  const gridSize = useGridSize();
-
-  const cellData = useCellData(gridSize);
-
-  const initialData = new Set<number>();
-
   return (
-    <>
-      <main className="text-neutral-50 h-full grid justify-items-center">
-        <GameOfLife
-          gridSize={gridSize}
-          cellData={cellData}
-          initialData={initialData}
-        />
-      </main>
-    </>
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <GameHookContainer />
+    </ErrorBoundary>
   );
 }
 
