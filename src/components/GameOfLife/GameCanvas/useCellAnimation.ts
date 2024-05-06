@@ -278,17 +278,18 @@ const useCellAnimation = (
   // Start the animation if canvas is initialized
   useEffect(() => {
     startAnimation();
-
+    drawCurrentCells();
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [startAnimation, canvasState.windowAspect]);
-
-  useEffect(() => {
-    drawCurrentCells();
-  }, [canvasState.windowAspect, controlState.showOnlyDraw, drawCurrentCells]);
+  }, [
+    startAnimation,
+    canvasState.windowAspect,
+    controlState.fullscreen,
+    drawCurrentCells,
+  ]);
 
   const cellAnimation: CellAnimation = {
     cellSize,
