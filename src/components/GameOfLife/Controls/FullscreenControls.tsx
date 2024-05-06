@@ -156,14 +156,11 @@ const FullscreenControls = ({
           </svg>
         </button>
         <button
-          aria-label={!controlState.isPlaying.current ? "play" : "pause"}
-          onClick={
-            !controlState.isPlaying.current ? handlePlayClick : handlePauseClick
-          }
+          aria-label={!controlState.showPlay ? "play" : "pause"}
+          onClick={!controlState.showPlay ? handlePlayClick : handlePauseClick}
           className="size-20 bg-neutral-500 bg-opacity-90 rounded-full"
         >
-          {(!controlState.isPlaying.current ||
-            controlState.isPaused.current) && (
+          {!controlState.showPlay && (
             <svg
               aria-hidden
               xmlns="http://www.w3.org/2000/svg"
@@ -178,7 +175,7 @@ const FullscreenControls = ({
               />
             </svg>
           )}
-          {controlState.isPlaying.current && !controlState.isPaused.current && (
+          {controlState.showPlay && (
             <svg
               aria-hidden
               xmlns="http://www.w3.org/2000/svg"
