@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CellData } from "./useCellData";
-import { ControlRefs } from "./useControlRefs";
+import { ControlRefs } from "./useControlState";
 import { CanvasStateInterface } from "./useCanvasState";
 
 export interface CellAnimation {

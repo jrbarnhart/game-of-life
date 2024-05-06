@@ -1,7 +1,7 @@
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import React from "react";
-import { ControlRefs } from "../GameCanvas/useControlRefs";
+import { ControlRefs } from "../GameCanvas/useControlState";
 
 const DefaultControls = ({
   isFullscreen,

@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import InfoHeader from "../../InfoHeader/InfoHeader";
-import { ControlRefs } from "../GameCanvas/useControlRefs";
+import { ControlRefs } from "../GameCanvas/useControlState";
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 
 const FullscreenControls = ({

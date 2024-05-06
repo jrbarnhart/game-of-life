@@ -1,6 +1,6 @@
 import React from "react";
 import { useRef } from "react";
-import { ControlRefs } from "./useControlRefs";
+import { ControlRefs } from "./useControlState";
 import { CellAnimation } from "./useCellAnimation";
 
 const GameCanvas = ({

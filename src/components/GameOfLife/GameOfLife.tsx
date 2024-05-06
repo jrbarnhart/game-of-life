@@ -3,7 +3,7 @@ import GameCanvas from "./GameCanvas/GameCanvas";
 import useCanvasState from "./GameCanvas/useCanvasState";
 import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
-import useControlRefs from "./GameCanvas/useControlRefs";
+import useControlRefs from "./GameCanvas/useControlState";
 import { useRef } from "react";
 import usePseudoFS from "./GameCanvas/usePseudoFS";
 import { GridSize } from "./GameCanvas/useGridSize";

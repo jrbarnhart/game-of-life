@@ -1,6 +1,6 @@
 import { useState, useEffect, SetStateAction } from "react";
 import { CellData } from "../GameCanvas/useCellData";
-import { ControlRefs } from "../GameCanvas/useControlRefs";
+import { ControlRefs } from "../GameCanvas/useControlState";
 import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
 import { CellAnimation } from "../GameCanvas/useCellAnimation";
 import DefaultControls from "./DefaultControls";
