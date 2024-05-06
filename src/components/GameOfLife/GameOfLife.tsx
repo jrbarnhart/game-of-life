@@ -3,7 +3,7 @@ import GameCanvas from "./GameCanvas/GameCanvas";
 import useCanvasState from "./GameCanvas/useCanvasState";
 import useInitCanvas from "./GameCanvas/useInitCanvas";
 import useCellAnimation from "./GameCanvas/useCellAnimation";
-import useControlRefs from "./GameCanvas/useControlState";
+import useControlState from "./GameCanvas/useControlState";
 import { useRef } from "react";
 import usePseudoFS from "./GameCanvas/usePseudoFS";
 import { GridSize } from "./GameCanvas/useGridSize";
@@ -18,7 +18,7 @@ const GameOfLife = ({
   cellData: CellData;
   initialData: Set<number>;
 }) => {
-  const controlRefs = useControlRefs();
+  const controlState = useControlState();
 
   const canvasState = useCanvasState();
 
@@ -30,7 +30,7 @@ const GameOfLife = ({
     canvasRef.current,
     contextRef.current,
     canvasInitialized,
-    controlRefs,
+    controlState,
     gridSize,
     cellData,
     initialData
@@ -62,7 +62,7 @@ const GameOfLife = ({
           canvasRef={canvasRef}
           containerRef={containerRef}
           initialData={initialData}
-          controlRefs={controlRefs}
+          controlState={controlState}
           gridSize={gridSize}
           cellAnimation={cellAnimation}
         />
@@ -70,7 +70,7 @@ const GameOfLife = ({
       {canvasState.windowAspect === "portrait" && (
         <div className="self-end grid content-end auto-rows-min mb-10 z-50 h-fit">
           <Controls
-            controlRefs={controlRefs}
+            controlState={controlState}
             cellData={cellData}
             cellAnimation={cellAnimation}
             initialData={initialData}
@@ -89,11 +89,11 @@ const GameOfLife = ({
       {canvasState.windowAspect === "landscape" && (
         <div
           className={`${
-            controlRefs.showOnlyDraw ? "pointer-events-none" : ""
+            controlState.showOnlyDraw ? "pointer-events-none" : ""
           } z-50 absolute top-0 left-0 h-full w-full`}
         >
           <Controls
-            controlRefs={controlRefs}
+            controlState={controlState}
             cellData={cellData}
             cellAnimation={cellAnimation}
             initialData={initialData}

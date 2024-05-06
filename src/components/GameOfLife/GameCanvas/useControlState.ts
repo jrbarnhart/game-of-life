@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-export interface ControlRefs {
+export interface ControlState {
   showOnlyDraw: boolean;
   setShowOnlyDraw: React.Dispatch<React.SetStateAction<boolean>>;
   isPlaying: React.MutableRefObject<boolean>;
@@ -13,7 +13,7 @@ export interface ControlRefs {
   totalCells: React.MutableRefObject<number>;
 }
 
-const useControlRefs = () => {
+const useControlState = () => {
   const [showOnlyDraw, setShowOnlyDraw] = useState<boolean>(false);
   const isPlaying = useRef(false);
   const isPaused = useRef(false);
@@ -24,7 +24,7 @@ const useControlRefs = () => {
   const aspect = useRef({ width: 3, height: 2 });
   const totalCells = useRef(1350); // 45 x 30 default
 
-  const controlRefs: ControlRefs = {
+  const controlState: ControlState = {
     showOnlyDraw,
     setShowOnlyDraw,
     isPlaying,
@@ -37,7 +37,7 @@ const useControlRefs = () => {
     totalCells,
   };
 
-  return controlRefs;
+  return controlState;
 };
 
-export default useControlRefs;
+export default useControlState;

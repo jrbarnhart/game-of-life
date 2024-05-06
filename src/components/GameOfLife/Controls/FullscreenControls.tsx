@@ -1,11 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import InfoHeader from "../../InfoHeader/InfoHeader";
-import { ControlRefs } from "../GameCanvas/useControlState";
+import { ControlState } from "../GameCanvas/useControlState";
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 
 const FullscreenControls = ({
   isFullscreen,
-  controlRefs,
+  controlState,
   handlePlayClick,
   handlePauseClick,
   handleNextClick,
@@ -21,7 +21,7 @@ const FullscreenControls = ({
   outdatedBrowserFS,
 }: {
   isFullscreen: boolean;
-  controlRefs: ControlRefs;
+  controlState: ControlState;
   handlePlayClick: () => void;
   handlePauseClick: () => void;
   handleNextClick: () => void;
@@ -47,8 +47,8 @@ const FullscreenControls = ({
       if (!showControls) {
         setShowControls(true);
       } else if (
-        controlRefs.isPlaying.current &&
-        !controlRefs.isPaused.current
+        controlState.isPlaying.current &&
+        !controlState.isPaused.current
       ) {
         setShowControls(false);
       }
@@ -56,7 +56,7 @@ const FullscreenControls = ({
       if (controlsTimeoutRef.current) {
         clearTimeout(controlsTimeoutRef.current);
       }
-      if (controlRefs.isPlaying.current) {
+      if (controlState.isPlaying.current) {
         controlsTimeoutRef.current = setTimeout(() => {
           setShowControls(false);
         }, 2500);
@@ -68,7 +68,7 @@ const FullscreenControls = ({
     return () => {
       window.removeEventListener("click", handleWindowClick);
     };
-  }, [controlRefs.isPaused, controlRefs.isPlaying, showControls]);
+  }, [controlState.isPaused, controlState.isPlaying, showControls]);
 
   useEffect(() => {
     if (popupRef.current) {
@@ -85,7 +85,7 @@ const FullscreenControls = ({
     <div
       ref={controlsContainerRef}
       className={`${
-        !showControls || controlRefs.showOnlyDraw ? "pointer-events-none" : ""
+        !showControls || controlState.showOnlyDraw ? "pointer-events-none" : ""
       } absolute top-0 left-0 size-full grid grid-rows-3 grid-cols-4 transition-opacity`}
     >
       {outdatedBrowserFS && (
@@ -100,7 +100,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
+          !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
         } col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg`}
       >
         <label htmlFor="total-cells" className="text-neutral-50">
@@ -130,7 +130,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
+          !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
         } col-start-3 col-span-2 justify-self-end p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-bl-lg`}
       >
         <InfoHeader
@@ -141,7 +141,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
+          !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
         } col-span-full row-start-2 justify-self-center self-center grid grid-flow-col items-center gap-x-14`}
       >
         <button
@@ -164,13 +164,14 @@ const FullscreenControls = ({
           </svg>
         </button>
         <button
-          aria-label={!controlRefs.isPlaying.current ? "play" : "pause"}
+          aria-label={!controlState.isPlaying.current ? "play" : "pause"}
           onClick={
-            !controlRefs.isPlaying.current ? handlePlayClick : handlePauseClick
+            !controlState.isPlaying.current ? handlePlayClick : handlePauseClick
           }
           className="size-20 bg-neutral-500 bg-opacity-90 rounded-full"
         >
-          {(!controlRefs.isPlaying.current || controlRefs.isPaused.current) && (
+          {(!controlState.isPlaying.current ||
+            controlState.isPaused.current) && (
             <svg
               aria-hidden
               xmlns="http://www.w3.org/2000/svg"
@@ -185,7 +186,7 @@ const FullscreenControls = ({
               />
             </svg>
           )}
-          {controlRefs.isPlaying.current && !controlRefs.isPaused.current && (
+          {controlState.isPlaying.current && !controlState.isPaused.current && (
             <svg
               aria-hidden
               xmlns="http://www.w3.org/2000/svg"
@@ -223,7 +224,7 @@ const FullscreenControls = ({
       </div>
 
       <div
-        className={`${controlRefs.showOnlyDraw ? "pointer-events-auto" : ""} ${
+        className={`${controlState.showOnlyDraw ? "pointer-events-auto" : ""} ${
           !showControls ? "opacity-0" : ""
         } col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg`}
       >
@@ -231,7 +232,7 @@ const FullscreenControls = ({
           aria-label="draw"
           onClick={handleDrawClick}
           className={`${
-            controlRefs.showOnlyDraw ? "text-green-500" : ""
+            controlState.showOnlyDraw ? "text-green-500" : ""
           } size-8`}
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -303,7 +304,7 @@ const FullscreenControls = ({
 
       <div
         className={`${
-          !showControls || controlRefs.showOnlyDraw ? "opacity-0" : ""
+          !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
         } col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg`}
       >
         <button

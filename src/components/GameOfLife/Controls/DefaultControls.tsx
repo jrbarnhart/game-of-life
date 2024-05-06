@@ -1,11 +1,11 @@
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import React from "react";
-import { ControlRefs } from "../GameCanvas/useControlState";
+import { ControlState } from "../GameCanvas/useControlState";
 
 const DefaultControls = ({
   isFullscreen,
-  controlRefs,
+  controlState,
   handlePlayClick,
   highlightPlay,
   handlePauseClick,
@@ -22,7 +22,7 @@ const DefaultControls = ({
   handleTotalCellsSelect,
 }: {
   isFullscreen: boolean;
-  controlRefs: ControlRefs;
+  controlState: ControlState;
   handlePlayClick: () => void;
   highlightPlay: boolean;
   handlePauseClick: () => void;
@@ -140,7 +140,7 @@ const DefaultControls = ({
           <button
             onClick={handleDrawClick}
             className={`${
-              controlRefs.showOnlyDraw
+              controlState.showOnlyDraw
                 ? "text-orange-400 border-orange-400"
                 : "text-white border-black"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
@@ -152,7 +152,7 @@ const DefaultControls = ({
             className={`${
               highlightErase === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightErase === -1 && !controlRefs.showOnlyDraw
+                : highlightErase === -1 && !controlState.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
@@ -167,7 +167,7 @@ const DefaultControls = ({
             className={`${
               highlightMirrorX === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightMirrorX === -1 && !controlRefs.showOnlyDraw
+                : highlightMirrorX === -1 && !controlState.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
@@ -182,7 +182,7 @@ const DefaultControls = ({
             className={`${
               highlightMirrorY === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightMirrorY === -1 && !controlRefs.showOnlyDraw
+                : highlightMirrorY === -1 && !controlState.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef } from "react";
 import { CellData } from "./useCellData";
-import { ControlRefs } from "./useControlState";
+import { ControlState } from "./useControlState";
 import { CanvasStateInterface } from "./useCanvasState";
 
 export interface CellAnimation {
@@ -25,7 +25,7 @@ const useCellAnimation = (
   canvas: HTMLCanvasElement | null,
   ctx: CanvasRenderingContext2D | null,
   canvasInitialized: boolean,
-  controlRefs: ControlRefs,
+  controlState: ControlState,
   gridSize: React.MutableRefObject<{ width: number; height: number }>,
   cellData: CellData,
   initialData: Set<number>
@@ -203,7 +203,7 @@ const useCellAnimation = (
   }; */
 
   const drawCurrentCells = useCallback(() => {
-    if (!controlRefs.isPlaying.current && ctx) {
+    if (!controlState.isPlaying.current && ctx) {
       console.log("Drawing current initial cells.", initialData);
       for (const cellIndex of initialData) {
         drawInitialCell(cellIndex);
@@ -217,7 +217,7 @@ const useCellAnimation = (
   }, [
     cellData.gameState,
     cellData.livingCells,
-    controlRefs.isPlaying,
+    controlState.isPlaying,
     ctx,
     drawCell,
     drawInitialCell,
@@ -255,8 +255,8 @@ const useCellAnimation = (
         ctx,
         canvas,
         cellData,
-        controlRefs.isPlaying,
-        controlRefs.isPaused,
+        controlState.isPlaying,
+        controlState.isPaused,
         {
           initialDraw: true,
         }
@@ -269,8 +269,8 @@ const useCellAnimation = (
     canvasInitialized,
     cellData,
     clearCanvas,
-    controlRefs.isPaused,
-    controlRefs.isPlaying,
+    controlState.isPaused,
+    controlState.isPlaying,
     ctx,
     updateCellSize,
   ]);
@@ -288,7 +288,7 @@ const useCellAnimation = (
 
   useEffect(() => {
     drawCurrentCells();
-  }, [canvasState.windowAspect, controlRefs.showOnlyDraw, drawCurrentCells]);
+  }, [canvasState.windowAspect, controlState.showOnlyDraw, drawCurrentCells]);
 
   const cellAnimation: CellAnimation = {
     cellSize,

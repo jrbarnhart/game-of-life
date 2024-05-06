@@ -1,20 +1,20 @@
 import React from "react";
 import { useRef } from "react";
-import { ControlRefs } from "./useControlState";
+import { ControlState } from "./useControlState";
 import { CellAnimation } from "./useCellAnimation";
 
 const GameCanvas = ({
   canvasRef,
   containerRef,
   initialData,
-  controlRefs,
+  controlState,
   gridSize,
   cellAnimation,
 }: {
   canvasRef: React.MutableRefObject<HTMLCanvasElement | null>;
   containerRef: React.MutableRefObject<HTMLDivElement | null>;
   initialData: Set<number>;
-  controlRefs: ControlRefs;
+  controlState: ControlState;
   gridSize: React.MutableRefObject<{ width: number; height: number }>;
   cellAnimation: CellAnimation;
 }) => {
@@ -23,7 +23,7 @@ const GameCanvas = ({
 
   const handleMouseOrTouch = (event: React.MouseEvent | React.TouchEvent) => {
     if (
-      controlRefs.isDrawing.current &&
+      controlState.isDrawing.current &&
       canvasRef.current &&
       isMouseOrTouchDown.current
     ) {
@@ -50,9 +50,9 @@ const GameCanvas = ({
         }
       }
 
-      const isErasing = controlRefs.isErasing.current;
-      const mirrorX = controlRefs.mirrorX.current;
-      const mirrorY = controlRefs.mirrorY.current;
+      const isErasing = controlState.isErasing.current;
+      const mirrorX = controlState.mirrorX.current;
+      const mirrorY = controlState.mirrorY.current;
       const gridWidth = gridSize.current.width;
       const gridHeight = gridSize.current.height;
       const cellWidth = cellAnimation.cellSize.current.width;
