@@ -1,6 +1,6 @@
-import GameOfLife from "./components/GameOfLife/GameOfLife";
-import useCellData from "./components/GameOfLife/GameCanvas/useCellData";
-import useGridSize from "./components/GameOfLife/GameCanvas/useGridSize";
+import GameOfLife from "./GameOfLife";
+import useCellData from "./GameCanvas/useCellData";
+import useGridSize from "./GameCanvas/useGridSize";
 
 const GameHookContainer = () => {
   const gridSize = useGridSize();
