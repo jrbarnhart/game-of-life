@@ -4,38 +4,25 @@ import React from "react";
 import { ControlState } from "../GameCanvas/useControlState";
 
 const DefaultControls = ({
-  isFullscreen,
   controlState,
   handlePlayClick,
-  highlightPlay,
   handlePauseClick,
-  highlightPause,
   handleNextClick,
   handleStopClick,
   handleDrawClick,
   handleEraseClick,
-  highlightErase,
   handleMirrorClick,
-  highlightMirrorX,
-  highlightMirrorY,
   handleFullscreenClick,
   handleTotalCellsSelect,
 }: {
-  isFullscreen: boolean;
   controlState: ControlState;
   handlePlayClick: () => void;
-  highlightPlay: boolean;
   handlePauseClick: () => void;
-  highlightPause: boolean;
   handleNextClick: () => void;
   handleStopClick: () => void;
   handleDrawClick: () => void;
-  highlightDraw: boolean;
   handleEraseClick: () => void;
-  highlightErase: number;
   handleMirrorClick: (allignment: "x" | "y") => void;
-  highlightMirrorX: number;
-  highlightMirrorY: number;
   handleFullscreenClick: () => void;
   handleTotalCellsSelect: React.ChangeEventHandler;
 }) => {
@@ -55,7 +42,7 @@ const DefaultControls = ({
             aria-label="play"
             onClick={handlePlayClick}
             className={`${
-              highlightPlay
+              controlState.highlightPlay
                 ? "border-orange-400 text-orange-400"
                 : "border-black text-neutral-50"
             } h-9 focus:outline-none focus:ring-4 focus:ring-orange-500 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
@@ -78,7 +65,7 @@ const DefaultControls = ({
             aria-label="pause"
             onClick={handlePauseClick}
             className={`${
-              highlightPause
+              controlState.highlightPause
                 ? "border-orange-400 text-orange-400"
                 : "border-black text-neutral-50"
             } h-9 focus:outline-none focus:ring-4 focus:ring-orange-500 hover:text-orange-400 bg-neutral-700 active:bg-neutral-600 rounded-md border-2 hover:border-orange-400 active:border-orange-500 grid items-center justify-items-center`}
@@ -150,13 +137,14 @@ const DefaultControls = ({
           <button
             onClick={handleEraseClick}
             className={`${
-              highlightErase === 1
+              controlState.highlightErase === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightErase === -1 && !controlState.showOnlyDraw
+                : controlState.highlightErase === -1 &&
+                  !controlState.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
-            aria-disabled={highlightMirrorX === -1 ? true : false}
+            aria-disabled={controlState.highlightMirrorX === -1 ? true : false}
           >
             Erase
           </button>
@@ -165,13 +153,14 @@ const DefaultControls = ({
               handleMirrorClick("x");
             }}
             className={`${
-              highlightMirrorX === 1
+              controlState.highlightMirrorX === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightMirrorX === -1 && !controlState.showOnlyDraw
+                : controlState.highlightMirrorX === -1 &&
+                  !controlState.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
-            aria-disabled={highlightMirrorX === -1 ? true : false}
+            aria-disabled={controlState.highlightMirrorX === -1 ? true : false}
           >
             Mirror X
           </button>
@@ -180,13 +169,14 @@ const DefaultControls = ({
               handleMirrorClick("y");
             }}
             className={`${
-              highlightMirrorY === 1
+              controlState.highlightMirrorY === 1
                 ? "text-orange-400 bg-neutral-700 border-orange-400"
-                : highlightMirrorY === -1 && !controlState.showOnlyDraw
+                : controlState.highlightMirrorY === -1 &&
+                  !controlState.showOnlyDraw
                 ? "text-neutral-950 bg-neutral-400 active:bg-red-500 border-neutral-700"
                 : "text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
             } h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center`}
-            aria-disabled={highlightMirrorX === -1 ? true : false}
+            aria-disabled={controlState.highlightMirrorX === -1 ? true : false}
           >
             Mirror Y
           </button>
@@ -197,7 +187,7 @@ const DefaultControls = ({
             onClick={handleFullscreenClick}
             className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           >
-            {!isFullscreen && (
+            {!controlState.fullscreen && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"
@@ -208,7 +198,7 @@ const DefaultControls = ({
                 <path d="M120-120v-200h80v120h120v80H120Zm520 0v-80h120v-120h80v200H640ZM120-640v-200h200v80H200v120h-80Zm640 0v-120H640v-80h200v200h-80Z" />
               </svg>
             )}
-            {isFullscreen && (
+            {controlState.fullscreen && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="24px"
