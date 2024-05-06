@@ -32,7 +32,7 @@ export interface ControlState {
 const useControlState = () => {
   const [fullscreen, setFullscreen] = useState<boolean>(false);
   const [showOnlyDraw, setShowOnlyDraw] = useState<boolean>(false);
-  const [showPlay, setShowPlay] = useState<boolean>(false);
+  const [showPlay, setShowPlay] = useState<boolean>(true);
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
   const [highlightDraw, setHighlightDraw] = useState<boolean>(false);
