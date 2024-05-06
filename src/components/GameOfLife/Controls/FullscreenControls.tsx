@@ -4,7 +4,6 @@ import { ControlState } from "../GameCanvas/useControlState";
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 
 const FullscreenControls = ({
-  isFullscreen,
   controlState,
   handlePlayClick,
   handlePauseClick,
@@ -12,15 +11,11 @@ const FullscreenControls = ({
   handleStopClick,
   handleDrawClick,
   handleEraseClick,
-  highlightErase,
   handleMirrorClick,
-  highlightMirrorX,
-  highlightMirrorY,
   handleFullscreenClick,
   handleTotalCellsSelect,
   outdatedBrowserFS,
 }: {
-  isFullscreen: boolean;
   controlState: ControlState;
   handlePlayClick: () => void;
   handlePauseClick: () => void;
@@ -28,10 +23,7 @@ const FullscreenControls = ({
   handleStopClick: () => void;
   handleDrawClick: () => void;
   handleEraseClick: () => void;
-  highlightErase: number;
   handleMirrorClick: (allignment: "x" | "y") => void;
-  highlightMirrorX: number;
-  highlightMirrorY: number;
   handleFullscreenClick: () => void;
   handleTotalCellsSelect: React.ChangeEventHandler;
   outdatedBrowserFS: boolean;
@@ -246,9 +238,9 @@ const FullscreenControls = ({
           aria-label="erase"
           onClick={handleEraseClick}
           className={`${
-            highlightErase === 1
+            controlState.highlightErase === 1
               ? "text-green-500"
-              : highlightErase === -1
+              : controlState.highlightErase === -1
               ? "text-neutral-800"
               : ""
           } size-8`}
@@ -266,9 +258,9 @@ const FullscreenControls = ({
             handleMirrorClick("x");
           }}
           className={`${
-            highlightMirrorX === 1
+            controlState.highlightMirrorX === 1
               ? "text-green-500"
-              : highlightMirrorX === -1
+              : controlState.highlightMirrorX === -1
               ? "text-neutral-800"
               : ""
           } size-8`}
@@ -286,9 +278,9 @@ const FullscreenControls = ({
             handleMirrorClick("y");
           }}
           className={`${
-            highlightMirrorY === 1
+            controlState.highlightMirrorY === 1
               ? "text-green-500"
-              : highlightMirrorY === -1
+              : controlState.highlightMirrorY === -1
               ? "text-neutral-800"
               : ""
           } size-8 rotate-90`}
@@ -313,7 +305,7 @@ const FullscreenControls = ({
         >
           <p className="text-lg">Full Screen:</p>
           <div className="size-8">
-            {!isFullscreen && (
+            {!controlState.fullscreen && (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
                 <path
                   fill="currentColor"
@@ -321,7 +313,7 @@ const FullscreenControls = ({
                 />
               </svg>
             )}
-            {isFullscreen && (
+            {controlState.fullscreen && (
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 -960 960 960"
