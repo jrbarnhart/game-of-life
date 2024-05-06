@@ -10,11 +10,13 @@ const usePseudoFS = ({
 
   useEffect(() => {
     const handleOrientationChange = () => {
-      if (
-        screen.orientation.type === "portrait-primary" ||
-        screen.orientation.type === "portrait-secondary"
-      ) {
+      if (screen.orientation.type === "portrait-primary") {
         setOutdatedBrowserFS(false);
+      } else if (
+        !document.fullscreenEnabled &&
+        screen.orientation.type === "landscape-primary"
+      ) {
+        setOutdatedBrowserFS(true);
       }
     };
 
