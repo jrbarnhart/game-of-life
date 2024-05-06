@@ -40,6 +40,7 @@ const Controls = ({
   }, [controlState]);
 
   const handlePlayClick = () => {
+    controlState.setShowPlay(false);
     if (!controlState.isPlaying.current) {
       controlState.isPlaying.current = true;
       if (initialData.size > 0) {
@@ -68,6 +69,7 @@ const Controls = ({
   const handlePauseClick = () => {
     if (!controlState.isPaused.current && controlState.isPlaying.current) {
       controlState.isPaused.current = true;
+      controlState.setShowPlay(true);
       controlState.setHighlightPause(true);
       controlState.setHighlightPlay(false);
     } else if (
@@ -75,6 +77,7 @@ const Controls = ({
       controlState.isPlaying.current
     ) {
       controlState.isPaused.current = false;
+      controlState.setShowPlay(false);
       controlState.setHighlightPause(false);
       controlState.setHighlightPlay(true);
     }
@@ -87,6 +90,7 @@ const Controls = ({
     controlState.isErasing.current = false;
     controlState.mirrorX.current = false;
     controlState.mirrorY.current = false;
+    controlState.setShowPlay(true);
     controlState.setHighlightPlay(false);
     controlState.setHighlightPause(false);
     controlState.setHighlightDraw(false);
@@ -101,6 +105,7 @@ const Controls = ({
   const handleNextClick = () => {
     if (controlState.isPlaying.current) {
       controlState.isPaused.current = true;
+      controlState.setShowPlay(true);
       controlState.setHighlightPlay(false);
       controlState.setHighlightPause(true);
       cellAnimation.drawNext();
@@ -111,6 +116,7 @@ const Controls = ({
     if (controlState.isPlaying.current) {
       controlState.isPlaying.current = false;
       controlState.isPaused.current = false;
+      controlState.setShowPlay(true);
       controlState.setHighlightPlay(false);
       controlState.setHighlightPause(false);
       cellData.clear();
