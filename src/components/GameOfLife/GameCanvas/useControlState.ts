@@ -5,6 +5,8 @@ export interface ControlState {
   setFullscreen: React.Dispatch<React.SetStateAction<boolean>>;
   showOnlyDraw: boolean;
   setShowOnlyDraw: React.Dispatch<React.SetStateAction<boolean>>;
+  showPlay: boolean;
+  setShowPlay: React.Dispatch<React.SetStateAction<boolean>>;
   highlightPlay: boolean;
   setHighlightPlay: React.Dispatch<React.SetStateAction<boolean>>;
   highlightPause: boolean;
@@ -30,6 +32,7 @@ export interface ControlState {
 const useControlState = () => {
   const [fullscreen, setFullscreen] = useState<boolean>(false);
   const [showOnlyDraw, setShowOnlyDraw] = useState<boolean>(false);
+  const [showPlay, setShowPlay] = useState<boolean>(false);
   const [highlightPlay, setHighlightPlay] = useState<boolean>(false);
   const [highlightPause, setHighlightPause] = useState<boolean>(false);
   const [highlightDraw, setHighlightDraw] = useState<boolean>(false);
@@ -52,6 +55,8 @@ const useControlState = () => {
     setFullscreen,
     showOnlyDraw,
     setShowOnlyDraw,
+    showPlay,
+    setShowPlay,
     highlightPlay,
     setHighlightPlay,
     highlightPause,
