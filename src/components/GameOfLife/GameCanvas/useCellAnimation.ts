@@ -284,12 +284,7 @@ const useCellAnimation = (
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [
-    startAnimation,
-    canvasState.windowAspect,
-    controlState.fullscreen,
-    drawCurrentCells,
-  ]);
+  }, [startAnimation, canvasState.sizeChangedFlag, drawCurrentCells]);
 
   const cellAnimation: CellAnimation = {
     cellSize,
