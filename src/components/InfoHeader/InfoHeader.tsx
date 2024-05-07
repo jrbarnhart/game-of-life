@@ -8,7 +8,7 @@ const InfoHeader = ({ text, link }: { text: string; link: string }) => {
         href={link}
         target="_blank"
         rel="noreferrer noopener"
-        className="ml-2 lg:ml-6 justify-self-start font-bold text-center text-sm lg:text-lg bg-neutral-700 w-6 lg:w-8 aspect-square rounded-full border-2 border-black focus:outline-none focus:ring-2 focus:ring-orange-500 hover:text-orange-400 hover:border-orange-400 active:bg-neutral-600 active:border-orange-500"
+        className="ml-2 lg:ml-6 justify-self-end font-bold text-center text-sm lg:text-lg bg-neutral-700 w-6 lg:w-8 aspect-square rounded-full border-2 border-black focus:outline-none focus:ring-2 focus:ring-orange-500 hover:text-orange-400 hover:border-orange-400 active:bg-neutral-600 active:border-orange-500"
       >
         ?
       </a>
