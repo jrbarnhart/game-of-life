@@ -7,6 +7,7 @@ export interface CanvasStateInterface {
     width: number;
     height: number;
   };
+  sizeChangedFlag: boolean;
   windowAspect: "portrait" | "landscape";
   handleResize: () => void;
 }
@@ -47,6 +48,8 @@ function useCanvasState() {
     width: CANVAS_SIZES[0].width,
     height: CANVAS_SIZES[0].height,
   });
+
+  const [sizeChangedFlag, setSizeChangedFlag] = useState<boolean>(false);
 
   const [windowAspect, setWindowAspect] = useState<"portrait" | "landscape">(
     "portrait"
@@ -108,8 +111,14 @@ function useCanvasState() {
     };
   }, [handleResize]);
 
+  useEffect(() => {
+    setSizeChangedFlag((prev) => !prev);
+    console.log("Canvas size done changing.");
+  }, [canvasSize]);
+
   const canvasState: CanvasStateInterface = {
     canvasSize,
+    sizeChangedFlag,
     windowAspect,
     handleResize,
   };
