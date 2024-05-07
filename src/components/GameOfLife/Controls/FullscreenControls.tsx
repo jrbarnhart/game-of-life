@@ -93,7 +93,7 @@ const FullscreenControls = ({
       <div
         className={`${
           !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
-        } col-span-2 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-br-lg text-lg`}
+        } col-span-2 p-2 w-56 h-12 grid items-center bg-neutral-500 bg-opacity-90 rounded-br-lg md:text-lg`}
       >
         <label htmlFor="total-cells" className="text-neutral-50">
           Cells:{" "}
@@ -123,12 +123,14 @@ const FullscreenControls = ({
       <div
         className={`${
           !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
-        } col-start-3 col-span-2 justify-self-end p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-bl-lg`}
+        } col-start-3 col-span-2 justify-self-end p-2 w-44 h-12 grid items-center bg-neutral-500 bg-opacity-90 rounded-bl-lg`}
       >
-        <InfoHeader
-          text="Conway's 'Life'"
-          link="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
-        />
+        <div className="w-40 justify-self-end">
+          <InfoHeader
+            text="Conway's 'Life'"
+            link="https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life"
+          />
+        </div>
       </div>
 
       <div
@@ -215,7 +217,7 @@ const FullscreenControls = ({
       <div
         className={`${controlState.showOnlyDraw ? "pointer-events-auto" : ""} ${
           !showControls ? "opacity-0" : ""
-        } col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-fit bg-neutral-500 bg-opacity-90 rounded-tr-lg`}
+        } col-span-2 row-start-3 self-end grid grid-flow-col gap-x-6 p-2 w-fit h-12 bg-neutral-500 bg-opacity-90 rounded-tr-lg`}
       >
         <button
           aria-label="draw"
@@ -294,13 +296,13 @@ const FullscreenControls = ({
       <div
         className={`${
           !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
-        } col-start-3 col-span-2 row-start-3 justify-self-end self-end grid p-2 h-fit bg-neutral-500 bg-opacity-90 rounded-tl-lg`}
+        } col-start-3 col-span-2 row-start-3 justify-self-end self-end grid justify-items-end p-2 w-44 h-12 bg-neutral-500 bg-opacity-90 rounded-tl-lg`}
       >
         <button
           onClick={handleFullscreenClick}
-          className="grid grid-flow-col items-center gap-x-2"
+          className="grid grid-flow-col items-center gap-x-3"
         >
-          <p className="text-lg">Full Screen:</p>
+          <p className="md:text-lg">Full Screen:</p>
           <div className="size-8">
             {!controlState.fullscreen && (
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
