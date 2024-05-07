@@ -1,7 +1,7 @@
 const InfoHeader = ({ text, link }: { text: string; link: string }) => {
   return (
     <div className="w-full grid grid-flow-col items-center">
-      <h1 className=" text-2xl lg:text-4xl text-nowrap text-center font-bold">
+      <h1 className="text-lg md:text-2xl lg:text-4xl text-nowrap text-center font-bold">
         {text}
       </h1>
       <a
