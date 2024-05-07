@@ -147,7 +147,7 @@ const GameCanvas = ({
   };
 
   return (
-    <div ref={containerRef} className="box-content border-2 h-fit border-white">
+    <div ref={containerRef} className="h-fit ">
       <canvas
         onMouseDown={handleMouseOrTouchStart}
         onMouseMove={handleMouseOrTouch}
