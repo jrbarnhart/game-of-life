@@ -190,6 +190,46 @@ const useCellAnimation = (
     initialData,
   ]);
 
+  const colorCanvasOffset = useCallback(() => {
+    if (!canvas || !ctx) return;
+
+    // Create a linear gradient
+    const gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop(0, "rgba(200, 200, 200, 0.2)"); // Start color with transparency
+    gradient.addColorStop(0.5, "rgba(220, 220, 220, 0.5)"); // Middle color with transparency
+    gradient.addColorStop(1, "rgba(200, 200, 200, 0.2)"); // End color with transparency
+
+    // Fill offset areas with the gradient
+    ctx.fillStyle = gradient;
+
+    // Top offset area
+    ctx.fillRect(0, 0, canvas.width, cellSize.current.offY);
+
+    // Bottom offset area
+    ctx.fillRect(
+      0,
+      canvas.height - cellSize.current.offY,
+      canvas.width,
+      cellSize.current.offY
+    );
+
+    // Left offset area
+    ctx.fillRect(
+      0,
+      cellSize.current.offY,
+      cellSize.current.offX,
+      canvas.height - cellSize.current.offY * 2
+    );
+
+    // Right offset area
+    ctx.fillRect(
+      canvas.width - cellSize.current.offX,
+      cellSize.current.offY,
+      cellSize.current.offX,
+      canvas.height - cellSize.current.offY * 2
+    );
+  }, [canvas, ctx, cellSize]);
+
   const clearCanvas = useCallback(() => {
     if (canvas && ctx) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -225,6 +265,8 @@ const useCellAnimation = (
           initialDraw: true,
         }
       );
+      drawCurrentCells();
+      colorCanvasOffset();
       console.log("Animation started");
     }
   }, [
@@ -233,22 +275,23 @@ const useCellAnimation = (
     canvasInitialized,
     cellData,
     clearCanvas,
+    colorCanvasOffset,
     controlState.isPausedRef,
     controlState.isPlayingRef,
     ctx,
+    drawCurrentCells,
     updateCellSize,
   ]);
 
   // Start the animation if canvas is initialized
   useEffect(() => {
     startAnimation();
-    drawCurrentCells();
     return () => {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [startAnimation, canvasState.sizeChangedFlag, drawCurrentCells]);
+  }, [startAnimation, canvasState.sizeChangedFlag]);
 
   const cellAnimation: CellAnimation = {
     cellSize,
