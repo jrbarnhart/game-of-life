@@ -65,6 +65,15 @@ const GameCanvas = ({
       const indexPosY = Math.floor(canvasY / cellHeight);
       const index = indexPosY * gridSize.current.width + indexPosX;
 
+      if (
+        mouseX < boundingRect.left + offX ||
+        mouseX >= boundingRect.right - offX ||
+        mouseY < boundingRect.top + offY ||
+        mouseY >= boundingRect.bottom - offY
+      ) {
+        return;
+      }
+
       if (index !== previousIndex.current) {
         if (isErasing) {
           initialData.delete(index);
