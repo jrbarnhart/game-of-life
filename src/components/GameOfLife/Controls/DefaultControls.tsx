@@ -1,7 +1,7 @@
-import { GRID_SIZES } from "../GameCanvas/useGridSize";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import React from "react";
 import { ControlState } from "../GameCanvas/useControlState";
+import CellsSelect from "./CellsSelect";
 
 const DefaultControls = ({
   controlState,
@@ -181,11 +181,11 @@ const DefaultControls = ({
             Mirror Y
           </button>
         </div>
-        <div className="h-12 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
+        <div className="h-14 w-72 p-1 grid grid-flow-col gap-x-1 grid-cols-4 bg-neutral-400 border-2 border-t-0 lg:border-t-2 border-black">
           <button
             aria-label="toggle fullscreen"
             onClick={handleFullscreenClick}
-            className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
+            className="self-center h-11 focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md border-2  grid items-center justify-items-center text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600  border-black hover:border-orange-400"
           >
             {!controlState.fullscreen && (
               <svg
@@ -210,33 +210,9 @@ const DefaultControls = ({
               </svg>
             )}
           </button>
-          <label
-            htmlFor="total-cells"
-            className="h-full text-center grid items-center text-black"
-          >
-            Cells:
-          </label>
-          <select
-            onChange={handleTotalCellsSelect}
-            name="totalCells"
-            id="total-cells"
-            className="h-full focus:outline-none focus:ring-4 focus:ring-orange-500 rounded-md col-span-2 text-white hover:text-orange-400  bg-neutral-700 active:bg-neutral-600 border-2 border-black hover:border-orange-400"
-          >
-            {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
-                Values must fit this size AND ratio or game will not function. */}
-            <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
-              {(GRID_SIZES.sm.x * GRID_SIZES.sm.y).toLocaleString()}
-            </option>
-            <option value={GRID_SIZES.md.x * GRID_SIZES.md.y}>
-              {(GRID_SIZES.md.x * GRID_SIZES.md.y).toLocaleString()}
-            </option>
-            <option value={GRID_SIZES.lg.x * GRID_SIZES.lg.y}>{`${(
-              GRID_SIZES.lg.x * GRID_SIZES.lg.y
-            ).toLocaleString()} (No Grid)`}</option>
-            <option value={GRID_SIZES.xl.x * GRID_SIZES.xl.y}>{`${(
-              GRID_SIZES.xl.x * GRID_SIZES.xl.y
-            ).toLocaleString()} (No Grid)`}</option>
-          </select>
+          <div className="col-span-3 self-center justify-self-center bg-zinc-700 p-2 rounded-md border-2 border-black">
+            <CellsSelect handleTotalCellsSelect={handleTotalCellsSelect} />
+          </div>
         </div>
       </div>
     </div>
