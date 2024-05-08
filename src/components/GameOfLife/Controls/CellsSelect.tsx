@@ -17,9 +17,9 @@ const CellsSelect = ({
         <option value="null">--Select--</option>
         {GRID_SIZES.map((size, index) => {
           return (
-            <option value={index} key={index}>{`${(
-              size.x * size.y
-            ).toLocaleString()} Cells`}</option>
+            <option value={index} key={index}>
+              {(size.x * size.y).toLocaleString()}
+            </option>
           );
         })}
       </select>
