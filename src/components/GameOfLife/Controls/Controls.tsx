@@ -5,6 +5,7 @@ import { CanvasStateInterface } from "../GameCanvas/useCanvasState";
 import { CellAnimation } from "../GameCanvas/useCellAnimation";
 import DefaultControls from "./DefaultControls";
 import FullscreenControls from "./FullscreenControls";
+import { GRID_SIZES } from "../GameCanvas/useGridSize";
 
 const Controls = ({
   controlState,
@@ -201,18 +202,12 @@ const Controls = ({
     // "click" stop to handle ref and highlight state updates
     handleStopClick();
 
-    const newTotal = parseInt(event.target.value);
-    controlState.totalCellsRef.current = newTotal;
-
-    const width = Math.sqrt(
-      (controlState.totalCellsRef.current *
-        controlState.aspectRef.current.width) /
-        controlState.aspectRef.current.height
-    );
-    const height =
-      (width * controlState.aspectRef.current.height) /
-      controlState.aspectRef.current.width;
-
+    const value = parseInt(event.target.value);
+    const selectedSize = GRID_SIZES[value];
+    const width = selectedSize.x;
+    const height = selectedSize.y;
+    const newTotalCells = width * height;
+    controlState.totalCellsRef.current = newTotalCells;
     gridSize.current = { width, height };
     cellData.initStateArrays(width, height);
     cellAnimation.startAnimation();
