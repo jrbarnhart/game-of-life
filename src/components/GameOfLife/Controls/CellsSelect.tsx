@@ -14,6 +14,7 @@ const CellsSelect = ({
         id="total-cells"
         className="text-neutral-950 rounded-sm"
       >
+        <option value="null">--Select--</option>
         {GRID_SIZES.map((size, index) => {
           return (
             <option value={index} key={index}>{`${(
