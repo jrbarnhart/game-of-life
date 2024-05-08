@@ -200,6 +200,10 @@ const Controls = ({
   const handleTotalCellsSelect: React.ChangeEventHandler<HTMLSelectElement> = (
     event
   ) => {
+    if (event.target.value === "null") {
+      return;
+    }
+
     // "click" stop to handle ref and highlight state updates
     handleStopClick();
 
