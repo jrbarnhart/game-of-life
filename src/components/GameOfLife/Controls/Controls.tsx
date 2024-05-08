@@ -95,6 +95,7 @@ const Controls = ({
     controlState.mirrorXRef.current = false;
     controlState.mirrorYRef.current = false;
     controlState.setShowPlay(true);
+    controlState.setShowOnlyDraw(false);
     controlState.setHighlightPlay(false);
     controlState.setHighlightPause(false);
     controlState.setHighlightDraw(false);
@@ -102,7 +103,7 @@ const Controls = ({
     controlState.setHighlightMirrorX(-1);
     controlState.setHighlightMirrorY(-1);
     cellData.clear();
-    cellAnimation.clearCanvas();
+    cellAnimation.startAnimation();
     initialData.clear();
   };
 
