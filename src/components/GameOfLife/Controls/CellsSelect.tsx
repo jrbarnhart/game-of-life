@@ -12,7 +12,7 @@ const CellsSelect = ({
       <select
         onChange={handleTotalCellsSelect}
         id="total-cells"
-        className="text-neutral-950"
+        className="text-neutral-950 rounded-sm"
       >
         {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
               Values must fit this size AND ratio or game will not function. */}
