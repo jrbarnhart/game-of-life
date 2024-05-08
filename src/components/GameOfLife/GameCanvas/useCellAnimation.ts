@@ -167,41 +167,6 @@ const useCellAnimation = (
     [drawCell, gridSize]
   );
 
-  /*   const drawGridLines = (
-    overlay: HTMLCanvasElement | null,
-    overlayCtx: CanvasRenderingContext2D | null,
-    gridSize: React.MutableRefObject<{ width: number; height: number }>
-  ) => {
-    if (!overlay || !overlayCtx) return;
-    console.log("Lines!");
-
-    const cellWidth = Math.floor(overlay.width / gridSize.current.width);
-    const cellHeight = Math.floor(overlay.height / gridSize.current.height);
-
-    const offX = Math.floor(
-      (overlay.width - gridSize.current.width * cellWidth) / 2
-    );
-    const offY = Math.floor(
-      (overlay.height - gridSize.current.height * cellHeight) / 2
-    );
-
-    overlayCtx.strokeStyle = "grey";
-
-    for (let x = 0 + offX; x <= overlay.width - offX; x += cellWidth) {
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(x, offY);
-      overlayCtx.lineTo(x, overlay.height - offY);
-      overlayCtx.stroke();
-    }
-
-    for (let y = 0 + offY; y <= overlay.height - offY; y += cellHeight) {
-      overlayCtx.beginPath();
-      overlayCtx.moveTo(offX, y);
-      overlayCtx.lineTo(overlay.width - offX, y);
-      overlayCtx.stroke();
-    }
-  }; */
-
   const drawCurrentCells = useCallback(() => {
     if (!controlState.isPlayingRef.current && ctx) {
       console.log("Drawing current initial cells.", initialData);
