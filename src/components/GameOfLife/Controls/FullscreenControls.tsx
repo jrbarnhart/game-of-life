@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import InfoHeader from "../../InfoHeader/InfoHeader";
 import { ControlState } from "../GameCanvas/useControlState";
-import { GRID_SIZES } from "../GameCanvas/useGridSize";
+import CellsSelect from "./CellsSelect";
 
 const FullscreenControls = ({
   controlState,
@@ -95,29 +95,7 @@ const FullscreenControls = ({
           !showControls || controlState.showOnlyDraw ? "opacity-0" : ""
         } col-span-2 p-2 w-56 md:w-60 h-12 md:h-14 grid items-center bg-neutral-500 bg-opacity-90 rounded-br-lg md:text-lg`}
       >
-        <label htmlFor="total-cells" className="text-neutral-50">
-          <span className="font-bold">Cells: </span>
-          <select
-            onChange={handleTotalCellsSelect}
-            id="total-cells"
-            className="text-neutral-950"
-          >
-            {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
-                Values must fit this size AND ratio or game will not function. */}
-            <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
-              {(GRID_SIZES.sm.x * GRID_SIZES.sm.y).toLocaleString()}
-            </option>
-            <option value={GRID_SIZES.md.x * GRID_SIZES.md.y}>
-              {(GRID_SIZES.md.x * GRID_SIZES.md.y).toLocaleString()}
-            </option>
-            <option value={GRID_SIZES.lg.x * GRID_SIZES.lg.y}>{`${(
-              GRID_SIZES.lg.x * GRID_SIZES.lg.y
-            ).toLocaleString()} (No Grid)`}</option>
-            <option value={GRID_SIZES.xl.x * GRID_SIZES.xl.y}>{`${(
-              GRID_SIZES.xl.x * GRID_SIZES.xl.y
-            ).toLocaleString()} (No Grid)`}</option>
-          </select>
-        </label>
+        <CellsSelect handleTotalCellsSelect={handleTotalCellsSelect} />
       </div>
 
       <div
