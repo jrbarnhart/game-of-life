@@ -14,20 +14,13 @@ const CellsSelect = ({
         id="total-cells"
         className="text-neutral-950 rounded-sm"
       >
-        {/* Min canvas size is 300, meaning 300x200 is the max cells possible w/o subpixel rendering
-              Values must fit this size AND ratio or game will not function. */}
-        <option value={GRID_SIZES.sm.x * GRID_SIZES.sm.y}>
-          {(GRID_SIZES.sm.x * GRID_SIZES.sm.y).toLocaleString()}
-        </option>
-        <option value={GRID_SIZES.md.x * GRID_SIZES.md.y}>
-          {(GRID_SIZES.md.x * GRID_SIZES.md.y).toLocaleString()}
-        </option>
-        <option value={GRID_SIZES.lg.x * GRID_SIZES.lg.y}>{`${(
-          GRID_SIZES.lg.x * GRID_SIZES.lg.y
-        ).toLocaleString()} (No Grid)`}</option>
-        <option value={GRID_SIZES.xl.x * GRID_SIZES.xl.y}>{`${(
-          GRID_SIZES.xl.x * GRID_SIZES.xl.y
-        ).toLocaleString()} (No Grid)`}</option>
+        {GRID_SIZES.map((size, index) => {
+          return (
+            <option value={index} key={index}>{`${(
+              size.x * size.y
+            ).toLocaleString()} Cells`}</option>
+          );
+        })}
       </select>
     </label>
   );
