@@ -200,7 +200,6 @@ const useCellAnimation = (
     for (const cellIndex of cellData.changedCells) {
       if (canvas && ctx) {
         drawCell(ctx, gridSize.current, cellData.gameState.current, cellIndex);
-        cellData.computeNext;
       }
     }
 
