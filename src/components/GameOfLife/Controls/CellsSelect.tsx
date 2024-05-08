@@ -1,9 +1,10 @@
+import { ChangeEventHandler } from "react";
 import { GRID_SIZES } from "../GameCanvas/useGridSize";
 
 const CellsSelect = ({
   handleTotalCellsSelect,
 }: {
-  handleTotalCellsSelect: VoidFunction;
+  handleTotalCellsSelect: ChangeEventHandler;
 }) => {
   return (
     <label htmlFor="total-cells" className="text-neutral-50">
