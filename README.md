@@ -11,7 +11,7 @@
 <h3 align="center">John Conway's Game of Life</h3>
 
   <p align="center">
-    This is a simple implementation of John Conway's Game of Life, also known as simply Life. It is a cellular automaton, or simulation.
+    This is a simple implementation of John Conway's Game of Life, also known as Life. It is a cellular automaton, or simulation.
     <br />
     <br />
     <a href="https://conway-life-simulation.netlify.app/">View Demo</a>
@@ -53,7 +53,7 @@
 
 My aim with this project was to create a Life simulation capable of simulating a large number of cells at a target of 10fps. I also included the ability to determine the initial state by drawing cells to the grid before starting the simulation.
 
-The performance was achieved through my approach to implementing Life's rules, which themselves are simple:
+The performance was achieved through my approach to implementing Life's rules. First I considered the "naive" approach:
 1. For every cell, consider the cell's 8 adjacent neighbors on the grid.
 2. If the cell is dead and has exactly three living neighbors then it comes to life.
 3. If the cell is alive and has less than 2 or more than 3 living neighbors it dies.
@@ -62,31 +62,31 @@ For example, consider the following grid:
 
 ![Initial state for Life](/src/assets/grid.jpg)
 
-The naive apporach to implementing these rules would be to apply them to every single cell for every single frame. This will work, but you end up with a many to many comparison. This means that adding more cells increases the computation time exponentially. This is illustrated in the grid below. 
+This brute force approch applies the rules to every single cell for every frame. This will work, but you end up with a many to many calculation. This means that adding more cells increases the computation exponentially.
 
-(Note: the arrows are just for illustration. All 8 neighbors per cell are considered in the rules.)
+(Every cell with arrows is being put through the algorithm.)
 
 ![Naive Approach](/src/assets/naiveApproach.jpg)
 
-That is a lot of calculations! There is a better way, but it requires some setup. First I store every cell's data as an unsigned 8 bit integer in a Uint8 array. This is done by using the most significant bit to track if the cell is alive or dead, and the last four bits to track how many living neighbors it has.
+There is a better way, but it requires some setup. First I store every cell's data as an unsigned 8 bit integer in a Uint8 array. This is done by using the most significant bit to track if the cell is alive or dead, and the last four bits to track how many living neighbors it has.
 
 For example, a cell that is alive with three living neighbors will have the binary value of 10000011, or 131 as a Uint8.
 
-When the simulation starts all cells have their neighbors stored. This only needs to be done once.
+When the simulation starts all cells have their living neighbor count set. This only needs to be done once.
 
 ![Neighbor Count](/src/assets/neighborCount.jpg)
 
-Now that the cell data has been initialized with their living neighbor counts we can take a shortcut. Instead of every cell we can focus on just the living cells and use a slightly different algorithm:
+Now that the cell data has been initialized with living neighbor counts a faster algorithm can be used. Instead of every cell the following is applied to just the living cells:
 1. If the cell has less than 2 or more than 3 living neighbors then it dies.
-2. If the cell dies then update it's neighbor's living neighbor count values.
+2. If the cell dies then update its neighbor's living neighbor count values.
 3. If any any of the cell's neighbors now have exactly 3 living neighbors then they come to life.
 4. Repeat from step 2 for any neighbor cells that come to life.
 
-This recursive approach means most dead cells are never touched for most frames which prevents many useless calculations that result in no changes.
+This recursive approach means that most dead cells are never touched for most frames which prevents useless calculations that result in no changes.
 
 ![Better Approach](/src/assets/betterApproach.jpg)
 
-I wanted to avoid subpixel rendering so I limit the max grid resolution to the smallest canvas size resolution that I support, which is 384 x 216 for a total of 82,944 cells. This means the smallest cell will ever be is one pixel. However this is a graphical limitation only. Depending on the hardware running the simulation, the algorithm can handle more cells. In initial states with many living cells things can be a bit slower but as soon as most cells die off and the grid is sparse performance improves dramatically.
+Finally, I wanted to avoid subpixel rendering so I limited the max grid resolution to the smallest canvas size resolution possible, which is 384 x 216 px. This allows for a maximum total of 82,944 cells. This means the smallest a cell will ever be is one pixel. Even more cells could be calculated and displayed if a zoom functionality were to be implemented. In initial states with many living cells things can be a bit slower but as soon as the excessive cells die off and the grid is sparse performance improves dramatically.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
