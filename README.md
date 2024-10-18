@@ -107,18 +107,7 @@ Finally, I wanted to avoid subpixel rendering so I limited the max grid resoluti
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-Note: Requires Node.js to run locally.
-
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
+To get a local copy up and running follow these steps:
 
 1. Clone the repo
    ```sh
@@ -148,11 +137,9 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Joshua Barnhart - joshua.r.barnhart@gmail.com
+[My Portfolio](https://joshuarbarnhart.com)
 
 [LinkedIn](https://linkedin.com/in/joshuarbarnhart)
-
-Project Link: [https://github.com/jrbarnhart/game-of-life](https://github.com/jrbarnhart/game-of-life)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
