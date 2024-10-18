@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/jrbarnhart/game-of-life">
+  <a href="https://conway-life-simulation.netlify.app/">
     <img src="public/GOL.svg" alt="Logo" width="80" height="80">
   </a>
 
@@ -49,7 +49,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[<img src="src/assets/GoLSplash.jpg">](https://conway-life-simulation.netlify.app/)
+<img src="src/assets/GoLSplash.jpg">
 
 My aim with this project was to create a Life simulation capable of simulating a large number of cells at a target of 10fps. I also included the ability to determine the initial state by drawing cells to the grid before starting the simulation.
 
