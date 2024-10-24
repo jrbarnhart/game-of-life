@@ -11,7 +11,7 @@
 <h3 align="center">John Conway's Game of Life</h3>
 
   <p align="center">
-    This is a simple implementation of John Conway's Game of Life, also known as Life. It is a cellular automaton, or simulation.
+    This is a customizable implementation of John Conway's Game of Life, also known as Life. It is a cellular automaton, or simulation.
     <br />
     <br />
     <a href="https://conway-life-simulation.netlify.app/">View Demo</a>
@@ -51,7 +51,7 @@
 
 <img src="src/assets/GoLSplash.jpg">
 
-My aim with this project was to create a Life simulation capable of simulating a large number of cells at a target of 10fps. I also included the ability to determine the initial state by drawing cells to the grid before starting the simulation.
+My goal with this project was to create a Game of Life simulation capable of rendering a large number of cells at a target of 10fps. I also wanted to include the ability to determine the initial state by drawing cells to the grid before starting the simulation.
 
 The performance was achieved through my approach to implementing Life's rules. First I considered the "naive" approach:
 1. For every cell, consider the cell's 8 adjacent neighbors on the grid.
@@ -62,9 +62,9 @@ For example, consider the following grid:
 
 ![Initial state for Life](/src/assets/grid.jpg)
 
-This brute force approch applies the rules to every single cell for every frame. This will work, but you end up with a many to many calculation. This means that adding more cells increases the computation exponentially.
+This brute force method applies the rules to every single cell for every frame. This will work, but you end up with a many to many calculation. This means that adding more cells increases the computation exponentially.
 
-(Every cell with arrows is being put through the algorithm.)
+Every cell with arrows is being put through the algorithm.
 
 ![Naive Approach](/src/assets/naiveApproach.jpg)
 
@@ -82,11 +82,11 @@ Now that the cell data has been initialized with living neighbor counts a faster
 3. If any any of the cell's neighbors now have exactly 3 living neighbors then they come to life.
 4. Repeat from step 2 for any neighbor cells that come to life.
 
-This recursive approach means that most dead cells are never touched for most frames which prevents useless calculations that result in no changes.
+This recursive approach means that most dead cells are never touched for most frames which prevents redundant calculations.
 
 ![Better Approach](/src/assets/betterApproach.jpg)
 
-Finally, I wanted to avoid subpixel rendering so I limited the max grid resolution to the smallest canvas size resolution possible, which is 384 x 216 px. This allows for a maximum total of 82,944 cells. This means the smallest a cell will ever be is one pixel. Even more cells could be calculated and displayed if a zoom functionality were to be implemented. In initial states with many living cells things can be a bit slower but as soon as the excessive cells die off and the grid is sparse performance improves dramatically.
+Finally, I wanted to avoid subpixel rendering so I limited the max grid resolution to the smallest canvas resolution I wanted to support, which was 384 x 216 px. This allows for a maximum total of 82,944 cells. This means the smallest a cell will ever be is one pixel. Many more cells could be calculated and displayed, but zoom functionality would need to be implemented. 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
